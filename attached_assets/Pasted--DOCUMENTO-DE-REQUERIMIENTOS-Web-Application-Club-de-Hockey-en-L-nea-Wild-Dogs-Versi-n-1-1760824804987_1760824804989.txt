@@ -1,0 +1,885 @@
+# DOCUMENTO DE REQUERIMIENTOS
+## Web Application - Club de Hockey en Línea Wild Dogs
+
+**Versión:** 1.0  
+**Fecha:** 18 de Octubre, 2025  
+**Ubicación:** Bogotá, Colombia  
+**Cliente:** Club Wild Dogs
+
+---
+
+## 1. INFORMACIÓN GENERAL DEL PROYECTO
+
+### 1.1 Descripción General
+Desarrollo de una aplicación web integral para la gestión y promoción del Club de Hockey en Línea Wild Dogs en Bogotá, Colombia. La plataforma servirá como punto central de información, gestión de jugadores, administración financiera y seguimiento de actividades deportivas del club.
+
+### 1.2 Objetivos del Proyecto
+- Establecer presencia digital profesional del club Wild Dogs
+- Facilitar la gestión administrativa y financiera del club
+- Proporcionar acceso personalizado a jugadores y padres de familia
+- Centralizar información de torneos y resultados
+- Automatizar el control de pagos y cartera
+- Mostrar la estructura organizacional por categorías
+
+### 1.3 Alcance
+La aplicación web incluirá módulos públicos e internos con diferentes niveles de acceso para visitantes, jugadores registrados y administradores del club.
+
+---
+
+## 2. STAKEHOLDERS
+
+### 2.1 Usuarios del Sistema
+- **Visitantes:** Público general interesado en conocer el club
+- **Jugadores:** Miembros activos del club con credenciales de acceso
+- **Padres/Tutores:** Responsables de jugadores menores de edad
+- **Entrenadores:** Staff técnico de cada categoría
+- **Administradores:** Directivos del club con acceso total al sistema
+
+---
+
+## 3. REQUERIMIENTOS FUNCIONALES
+
+### 3.1 MÓDULO PÚBLICO (Sin Autenticación)
+
+#### 3.1.1 Página de Inicio (Home)
+**Descripción:** Landing page principal del club
+
+**Requerimientos:**
+- RF-001: Slider/Banner principal con imágenes destacadas del club
+- RF-002: Presentación breve del club Wild Dogs (misión, visión)
+- RF-003: Acceso rápido a las principales secciones
+- RF-004: Noticias o anuncios recientes (últimas 3-5 publicaciones)
+- RF-005: Llamados a la acción (CTA): "Únete al club", "Conoce nuestras categorías"
+- RF-006: Galería fotográfica destacada
+- RF-007: Footer con información de contacto y redes sociales
+
+#### 3.1.2 Sección "Nosotros"
+**Descripción:** Información institucional del club
+
+**Requerimientos:**
+- RF-008: Historia del club Wild Dogs
+- RF-009: Misión y Visión
+- RF-010: Valores institucionales
+- RF-011: Junta directiva y staff administrativo
+- RF-012: Logros y reconocimientos del club
+- RF-013: Instalaciones y sedes de entrenamiento
+- RF-014: Galería de imágenes institucionales
+
+#### 3.1.3 Sección "Servicios"
+**Descripción:** Oferta de servicios del club
+
+**Requerimientos:**
+- RF-015: Listado detallado de servicios ofrecidos:
+  - Escuela de formación deportiva
+  - Entrenamiento técnico especializado
+  - Preparación física
+  - Participación en torneos
+  - Asesoría nutricional (si aplica)
+  - Préstamo de equipamiento (si aplica)
+- RF-016: Descripción de cada servicio con imágenes
+- RF-017: Información de horarios de entrenamiento
+- RF-018: Costos y planes de membresía
+- RF-019: Proceso de inscripción
+
+#### 3.1.4 Sección "Categorías"
+**Descripción:** Estructura competitiva del club organizada por edades
+
+El club maneja las siguientes categorías:
+- Sub 8 (menores de 8 años)
+- Sub 12 (menores de 12 años)
+- Sub 14 (menores de 14 años)
+- Sub 16 (menores de 16 años)
+- Sub 18 (menores de 18 años)
+- Mayores (18 años en adelante)
+
+**Requerimientos por Categoría:**
+
+**RF-020: Página individual para cada categoría con:**
+- Descripción de la categoría
+- Edad requerida
+- Horarios de entrenamiento
+- Objetivos formativos/competitivos
+
+**RF-021: Roster de Jugadores**
+- Listado completo de jugadores de la categoría
+- Información por jugador:
+  - Fotografía
+  - Nombre completo
+  - Número de camiseta
+  - Posición de juego
+  - Fecha de nacimiento/edad
+  - Estadísticas básicas (goles, asistencias, partidos jugados) - opcional
+
+**RF-022: Staff Técnico (Coaches)**
+- Listado del cuerpo técnico de cada categoría:
+  - Entrenador principal
+  - Asistentes técnicos
+  - Preparador físico
+  - Staff médico (si aplica)
+- Por cada miembro del staff:
+  - Fotografía
+  - Nombre
+  - Rol/Cargo
+  - Experiencia/Trayectoria breve
+
+**RF-023: Galería fotográfica de la categoría**
+
+**RF-024: Logros y títulos de la categoría**
+
+#### 3.1.5 Sección "Torneos y Resultados"
+**Descripción:** Información de competencias y resultados deportivos
+
+**Requerimientos:**
+
+**RF-025: Programación de Torneos**
+- Calendario de próximos partidos y torneos
+- Información por partido:
+  - Fecha y hora
+  - Categoría
+  - Rival
+  - Sede/ubicación
+  - Tipo de competencia
+
+**RF-026: Resultados**
+- Historial de partidos jugados
+- Marcadores
+- Estadísticas del partido
+- Tabla de posiciones por categoría
+
+**RF-027: Integración con Fuentes Oficiales**
+- Integración mediante scraping o API (si está disponible) con:
+  - Fedepatin (Federación Colombiana de Patinaje)
+  - Federación de Hockey sobre Hielo de Bogotá
+- Actualización automática o semi-automática de:
+  - Fixture de partidos
+  - Resultados
+  - Tablas de posiciones
+  - Clasificaciones
+
+**RF-028: Filtros de búsqueda**
+- Por categoría
+- Por torneo/competencia
+- Por fecha
+- Por resultado (victorias, derrotas, empates)
+
+#### 3.1.6 Sección "Contacto"
+**Requerimientos:**
+- RF-029: Formulario de contacto con campos:
+  - Nombre completo
+  - Email
+  - Teléfono
+  - Asunto
+  - Mensaje
+  - Validación de campos obligatorios
+- RF-030: Información de contacto del club:
+  - Dirección física
+  - Teléfonos
+  - Email institucional
+  - Redes sociales
+- RF-031: Mapa de ubicación integrado (Google Maps)
+- RF-032: Horarios de atención
+
+---
+
+### 3.2 MÓDULO PRIVADO (Con Autenticación)
+
+#### 3.2.1 Sistema de Autenticación y Registro
+
+**RF-033: Registro de Nuevos Usuarios**
+- Formulario de registro con información requerida:
+  - Datos personales:
+    - Nombre completo
+    - Tipo y número de documento de identidad
+    - Fecha de nacimiento
+    - Género
+    - Fotografía
+  - Datos de contacto:
+    - Email
+    - Teléfono
+    - Dirección
+  - Información del jugador:
+    - Categoría a la que pertenece
+    - Posición de juego
+    - Número de camiseta preferido
+    - Talla de uniforme
+  - Datos del acudiente (para menores de edad):
+    - Nombre completo
+    - Parentesco
+    - Documento de identidad
+    - Teléfono
+    - Email
+  - Información médica básica:
+    - Tipo de sangre
+    - Alergias
+    - Condiciones médicas relevantes
+    - Contacto de emergencia
+  - Datos de acceso:
+    - Usuario (puede ser email)
+    - Contraseña (con requisitos de seguridad)
+    - Confirmación de contraseña
+
+**RF-034: Proceso de Aprobación**
+- Los registros requieren aprobación administrativa
+- Notificación por email cuando el usuario es aprobado
+- Estado del usuario: Pendiente, Aprobado, Rechazado, Inactivo
+
+**RF-035: Inicio de Sesión**
+- Login con usuario/email y contraseña
+- Opción "Recordar sesión"
+- Link "¿Olvidaste tu contraseña?"
+- Recuperación de contraseña mediante email
+
+**RF-036: Recuperación de Contraseña**
+- Solicitud mediante email registrado
+- Envío de link de recuperación con token temporal
+- Formulario para establecer nueva contraseña
+
+#### 3.2.2 Perfil de Usuario
+
+**RF-037: Visualización de Perfil**
+- Dashboard personal con información del jugador
+- Datos personales
+- Fotografía de perfil
+- Categoría actual
+- Estadísticas personales
+- Historial de participación
+
+**RF-038: Edición de Perfil**
+- Actualización de datos personales (limitados)
+- Cambio de fotografía
+- Actualización de información de contacto
+- Cambio de contraseña
+
+**RF-039: Documentación**
+- Subida de documentos requeridos:
+  - Documento de identidad
+  - Carnet EPS
+  - Certificado médico
+  - Autorización de derechos de imagen
+  - Otros documentos según reglamento del club
+- Visualización de estado de documentos
+
+---
+
+### 3.3 MÓDULO DE GESTIÓN FINANCIERA
+
+#### 3.3.1 Concepto de Pagos
+
+**RF-040: Definición de Conceptos de Pago**
+Los administradores pueden crear conceptos como:
+- Mensualidad/Cuota de entrenamiento
+- Inscripción a torneos
+- Uniforme y equipamiento
+- Transporte a eventos
+- Inscripción anual
+- Otros conceptos personalizables
+
+**RF-041: Configuración por Concepto**
+- Nombre del concepto
+- Descripción
+- Monto
+- Frecuencia (única, mensual, trimestral, anual)
+- Categorías aplicables
+- Fecha de vencimiento
+- Estado (activo/inactivo)
+
+#### 3.3.2 Gestión de Cartera
+
+**RF-042: Generación Automática de Cuentas por Cobrar**
+- El sistema genera automáticamente las cuentas según:
+  - Conceptos de pago activos
+  - Categoría del jugador
+  - Frecuencia configurada
+- Notificación al jugador/acudiente sobre nuevos cargos
+
+**RF-043: Estado de Cuenta del Jugador**
+- Visualización desde el perfil del usuario
+- Información mostrada:
+  - Saldo total pendiente
+  - Detalle de cuentas por pagar:
+    - Concepto
+    - Monto
+    - Fecha de vencimiento
+    - Estado (pendiente, vencida, pagada)
+  - Historial de pagos realizados:
+    - Fecha de pago
+    - Concepto
+    - Monto
+    - Método de pago
+    - Recibo/Comprobante
+  - Saldo a favor (si aplica)
+
+**RF-044: Alertas de Pago**
+- Notificaciones automáticas:
+  - Recordatorio 7 días antes del vencimiento
+  - Recordatorio en fecha de vencimiento
+  - Alerta de mora (después del vencimiento)
+- Envío por email y/o notificación en plataforma
+
+**RF-045: Restricciones por Mora**
+- El sistema debe alertar sobre jugadores con mora
+- Configuración de restricciones (ej: no puede participar en torneos si tiene mora mayor a X meses)
+
+#### 3.3.3 Registro de Pagos
+
+**RF-046: Registro Manual de Pagos**
+- Los administradores pueden registrar pagos realizados por:
+  - Transferencia bancaria
+  - Efectivo
+  - Tarjeta de crédito/débito
+  - Otros métodos
+- Información del pago:
+  - Jugador
+  - Concepto(s) pagado(s)
+  - Monto
+  - Fecha de pago
+  - Método de pago
+  - Número de referencia/comprobante
+  - Observaciones
+
+**RF-047: Comprobante de Pago**
+- Generación automática de recibo digital
+- Descarga en formato PDF
+- Envío por email
+- Incluye:
+  - Logo del club
+  - Número de recibo
+  - Fecha
+  - Datos del pagador
+  - Detalle del pago
+  - Firma/sello digital
+
+**RF-048: Aplicación de Pagos**
+- Aplicación automática a las cuentas más antiguas
+- Opción de aplicar a cuentas específicas
+- Actualización inmediata del estado de cuenta
+
+#### 3.3.4 Reportes Financieros
+
+**RF-049: Dashboard Financiero (Solo Administradores)**
+- Resumen ejecutivo:
+  - Ingresos del mes actual
+  - Ingresos año a la fecha
+  - Cartera total pendiente
+  - Cartera vencida
+  - Jugadores al día
+  - Jugadores en mora
+- Gráficos y estadísticas visuales
+
+**RF-050: Reportes Detallados**
+- Reporte de ingresos por:
+  - Período
+  - Categoría
+  - Concepto
+  - Método de pago
+- Reporte de cartera:
+  - Por jugador
+  - Por categoría
+  - Por antigüedad de saldo
+  - Por concepto
+- Reporte de mora
+- Exportación a Excel/PDF
+
+**RF-051: Proyección de Ingresos**
+- Cálculo de ingresos esperados según conceptos recurrentes
+- Alertas de variaciones significativas
+
+---
+
+### 3.4 MÓDULO ADMINISTRATIVO
+
+#### 3.4.1 Gestión de Usuarios
+
+**RF-052: Listado de Usuarios**
+- Vista completa de todos los usuarios registrados
+- Filtros por:
+  - Categoría
+  - Estado (activo, inactivo, pendiente)
+  - Estado de pago (al día, en mora)
+  - Tipo de usuario (jugador, entrenador, administrador)
+
+**RF-053: Gestión Individual**
+- Aprobación/rechazo de registros pendientes
+- Edición completa de información del usuario
+- Asignación de categoría
+- Cambio de estado (activar/desactivar)
+- Eliminación de cuenta
+- Reseteo de contraseña
+
+**RF-054: Roles y Permisos**
+- Definición de roles:
+  - Super Administrador
+  - Administrador
+  - Entrenador
+  - Jugador
+  - Padre/Acudiente
+- Permisos específicos por rol
+
+#### 3.4.2 Gestión de Contenido
+
+**RF-055: Gestión de Noticias/Anuncios**
+- Creación, edición y eliminación de publicaciones
+- Campos:
+  - Título
+  - Contenido (editor de texto enriquecido)
+  - Imagen destacada
+  - Categoría de noticia
+  - Fecha de publicación
+  - Estado (borrador, publicado)
+
+**RF-056: Gestión de Galería**
+- Subida múltiple de imágenes
+- Organización por álbumes
+- Asociación a categorías o eventos
+- Optimización automática de imágenes
+
+**RF-057: Gestión de Categorías**
+- Edición de información de cada categoría
+- Asignación de entrenadores
+- Actualización de horarios
+- Gestión de logros
+
+**RF-058: Gestión de Jugadores**
+- Actualización de roster
+- Asignación/cambio de número de camiseta
+- Actualización de estadísticas
+- Gestión de fotografías
+
+**RF-059: Gestión de Torneos**
+- Creación manual de eventos/torneos
+- Edición de fixture
+- Registro de resultados
+- Actualización de tablas de posiciones
+
+#### 3.4.3 Notificaciones y Comunicaciones
+
+**RF-060: Sistema de Notificaciones**
+- Envío de notificaciones masivas o selectivas
+- Por categoría, individual o global
+- Canales:
+  - Notificación en plataforma
+  - Email
+  - SMS (opcional)
+
+**RF-061: Plantillas de Mensajes**
+- Creación de plantillas reutilizables
+- Variables dinámicas (nombre, categoría, etc.)
+
+---
+
+## 4. REQUERIMIENTOS NO FUNCIONALES
+
+### 4.1 Seguridad
+
+**RNF-001: Autenticación y Autorización**
+- Implementación de JWT (JSON Web Tokens) o similar
+- Sesiones seguras con timeout configurable
+- Encriptación de contraseñas con algoritmo robusto (bcrypt, Argon2)
+
+**RNF-002: Protección de Datos**
+- Cumplimiento con Ley de Protección de Datos Personales de Colombia
+- Encriptación de datos sensibles
+- Backup automático diario
+- Políticas de privacidad y términos de uso
+
+**RNF-003: Prevención de Ataques**
+- Protección contra SQL Injection
+- Protección contra XSS (Cross-Site Scripting)
+- Protección contra CSRF (Cross-Site Request Forgery)
+- Rate limiting en endpoints críticos
+- Validación de inputs en cliente y servidor
+
+**RNF-004: Gestión de Archivos**
+- Validación de tipo y tamaño de archivos
+- Sanitización de nombres de archivo
+- Almacenamiento seguro
+- Control de acceso a archivos sensibles
+
+### 4.2 Rendimiento
+
+**RNF-005: Tiempos de Respuesta**
+- Páginas públicas: carga < 3 segundos
+- Operaciones CRUD: respuesta < 2 segundos
+- Dashboard y reportes: carga < 5 segundos
+
+**RNF-006: Optimización**
+- Compresión de imágenes automática
+- Lazy loading de imágenes
+- Minificación de CSS/JS
+- Caching de contenido estático
+- Optimización de consultas a base de datos
+
+**RNF-007: Escalabilidad**
+- Arquitectura que soporte crecimiento de usuarios
+- Base de datos optimizada para consultas frecuentes
+- Posibilidad de escalamiento horizontal
+
+### 4.3 Usabilidad
+
+**RNF-008: Diseño Responsivo**
+- Adaptación completa a dispositivos móviles (smartphones, tablets)
+- Diseño mobile-first
+- Pruebas en principales navegadores (Chrome, Firefox, Safari, Edge)
+
+**RNF-009: Accesibilidad**
+- Cumplimiento de estándares WCAG 2.1 nivel AA
+- Navegación por teclado
+- Textos alternativos en imágenes
+- Contraste adecuado de colores
+
+**RNF-010: Experiencia de Usuario**
+- Interfaz intuitiva y fácil de navegar
+- Mensajes de error claros y útiles
+- Confirmaciones en acciones críticas
+- Indicadores de carga en operaciones largas
+
+### 4.4 Compatibilidad
+
+**RNF-011: Navegadores Soportados**
+- Chrome (últimas 2 versiones)
+- Firefox (últimas 2 versiones)
+- Safari (últimas 2 versiones)
+- Edge (últimas 2 versiones)
+- Navegadores móviles (iOS Safari, Chrome Android)
+
+**RNF-012: Dispositivos**
+- Computadores de escritorio
+- Laptops
+- Tablets (iOS, Android)
+- Smartphones (iOS, Android)
+
+### 4.5 Mantenibilidad
+
+**RNF-013: Código**
+- Código limpio y bien documentado
+- Seguir principios SOLID
+- Uso de patrones de diseño apropiados
+- Versionamiento con Git
+
+**RNF-014: Documentación**
+- Manual de usuario
+- Documentación técnica
+- Guía de instalación y configuración
+- Comentarios en código cuando sea necesario
+
+### 4.6 Disponibilidad
+
+**RNF-015: Uptime**
+- Disponibilidad del 99% (objetivo)
+- Mantenimientos programados fuera de horario pico
+- Notificación previa de mantenimientos
+
+**RNF-016: Recuperación**
+- Plan de recuperación ante desastres
+- Backups automáticos diarios
+- Posibilidad de restauración rápida
+
+---
+
+## 5. STACK TECNOLÓGICO RECOMENDADO
+
+### 5.1 Frontend
+- **Framework:** Astro (según especificación del cliente)
+- **UI Framework:** React o Svelte (como islands)
+- **Estilos:** Tailwind CSS
+- **Gestión de Estado:** Context API o Zustand
+- **Formularios:** React Hook Form
+- **HTTP Client:** Axios
+
+### 5.2 Backend
+- **Framework:** Node.js con Express o Fastify
+- **Alternativa:** Django (Python) o Laravel (PHP)
+- **API:** RESTful API o GraphQL
+
+### 5.3 Base de Datos
+- **Principal:** PostgreSQL o MySQL
+- **Cache:** Redis (opcional, para mejorar rendimiento)
+
+### 5.4 Autenticación
+- JWT (JSON Web Tokens)
+- Passport.js o similar
+
+### 5.5 Almacenamiento de Archivos
+- AWS S3, Cloudinary, o similar
+- Alternativa: Almacenamiento local con gestión adecuada
+
+### 5.6 Email
+- SendGrid, Mailgun, o Amazon SES
+
+### 5.7 Scraping/Integración
+- Puppeteer o Cheerio (para obtener datos de Fedepatin)
+- Axios para llamadas HTTP
+
+### 5.8 Hosting y Despliegue
+- **Frontend:** Netlify (según especificación del cliente)
+- **Backend:** Heroku, Railway, DigitalOcean, o AWS
+- **Base de Datos:** Railway, Supabase, o instancia dedicada
+- **Control de Versiones:** GitHub (según especificación del cliente)
+
+---
+
+## 6. FASES DE DESARROLLO
+
+### Fase 1: Planificación y Diseño (2 semanas)
+- Definición detallada de requerimientos
+- Diseño de arquitectura del sistema
+- Diseño de base de datos
+- Wireframes y mockups de UI/UX
+- Aprobación del cliente
+
+### Fase 2: Desarrollo del Core (4-6 semanas)
+- Configuración del entorno de desarrollo
+- Implementación de la estructura base
+- Desarrollo del módulo público:
+  - Páginas estáticas (Home, Nosotros, Servicios, Contacto)
+  - Páginas de categorías con roster y staff
+- Sistema de autenticación
+- Gestión de perfiles de usuario
+
+### Fase 3: Módulos Avanzados (4-6 semanas)
+- Módulo de torneos y resultados
+- Integración con Fedepatin y Federación de Hockey
+- Sistema de gestión financiera:
+  - Conceptos de pago
+  - Estado de cuenta
+  - Registro de pagos
+  - Reportes
+- Panel administrativo
+
+### Fase 4: Testing y Ajustes (2-3 semanas)
+- Testing funcional
+- Testing de seguridad
+- Testing de rendimiento
+- Testing en múltiples dispositivos y navegadores
+- Corrección de bugs
+- Optimización
+
+### Fase 5: Despliegue y Capacitación (1-2 semanas)
+- Despliegue a producción
+- Configuración de dominio y SSL
+- Migración de datos iniciales
+- Capacitación a administradores
+- Entrega de documentación
+- Soporte post-lanzamiento
+
+**Tiempo Total Estimado:** 13-19 semanas (3-5 meses)
+
+---
+
+## 7. ENTREGABLES
+
+### 7.1 Código Fuente
+- Repositorio completo en GitHub
+- Código frontend y backend
+- Scripts de base de datos
+- Archivos de configuración
+
+### 7.2 Documentación
+- Manual de usuario (administradores)
+- Manual de usuario (jugadores)
+- Documentación técnica
+- Guía de instalación y configuración
+- Documentación de API
+
+### 7.3 Diseño
+- Mockups y wireframes
+- Guía de estilos (colores, tipografías, componentes)
+- Recursos gráficos (logos, iconos)
+
+### 7.4 Aplicación Desplegada
+- Sitio web en producción (Netlify)
+- Backend en funcionamiento
+- Base de datos configurada
+- Certificado SSL activo
+
+---
+
+## 8. CONSIDERACIONES ADICIONALES
+
+### 8.1 Datos de Prueba
+- Crear datos de ejemplo para testing:
+  - Usuarios de prueba por cada categoría
+  - Partidos y torneos ficticios
+  - Transacciones de pago de ejemplo
+
+### 8.2 Migración de Datos
+- Si el club tiene datos existentes (jugadores, historial), planificar migración
+- Importación masiva desde Excel/CSV
+
+### 8.3 Capacitación
+- Sesiones de capacitación para administradores
+- Videos tutoriales
+- FAQ
+
+### 8.4 Soporte y Mantenimiento
+- Definir período de garantía
+- Plan de soporte técnico
+- Actualizaciones y mejoras futuras
+
+### 8.5 Evolución Futura
+Funcionalidades que podrían añadirse en versiones posteriores:
+- App móvil nativa (iOS/Android)
+- Sistema de mensajería interna
+- Integración con pasarelas de pago (PSE, PayU, Mercado Pago)
+- Sistema de reserva de canchas
+- Tienda en línea para merchandising
+- Transmisión en vivo de partidos
+- Análisis estadístico avanzado
+- Integración con redes sociales
+- Blog/sección de noticias
+- Chat en vivo para soporte
+
+---
+
+## 9. PRESUPUESTO Y RECURSOS
+
+### 9.1 Recursos Humanos Necesarios
+- Product Owner / Project Manager
+- UI/UX Designer
+- Frontend Developer (Astro, React)
+- Backend Developer (Node.js/Python)
+- QA Tester
+- DevOps Engineer (para configuración de servidores)
+
+### 9.2 Costos Estimados
+
+**Desarrollo:**
+- Diseño UI/UX: [A definir según mercado]
+- Desarrollo Frontend: [A definir]
+- Desarrollo Backend: [A definir]
+- Testing y QA: [A definir]
+
+**Infraestructura Mensual:**
+- Hosting Backend: $15-50 USD/mes
+- Base de Datos: $15-30 USD/mes
+- Almacenamiento (S3/Cloudinary): $5-20 USD/mes
+- Email Service: $10-15 USD/mes
+- Dominio: $10-15 USD/año
+- SSL: Gratis (Let's Encrypt)
+- Netlify: Gratis (plan básico)
+
+**Total Infraestructura Estimada:** $45-115 USD/mes
+
+---
+
+## 10. MÉTRICAS DE ÉXITO
+
+### 10.1 KPIs Técnicos
+- Tiempo de carga de página < 3 segundos
+- Uptime > 99%
+- 0 vulnerabilidades críticas de seguridad
+- Tasa de error < 1%
+
+### 10.2 KPIs de Negocio
+- Tasa de adopción de usuarios registrados > 80% (de jugadores actuales)
+- Reducción del tiempo de gestión administrativa en 50%
+- Procesamiento de pagos más eficiente
+- Satisfacción del usuario > 4/5
+
+### 10.3 KPIs de Usuario
+- Facilidad de uso percibida > 4/5
+- Tiempo promedio para completar una tarea < 3 minutos
+- Tasa de abandono de formularios < 20%
+
+---
+
+## 11. RIESGOS Y MITIGACIÓN
+
+### 11.1 Riesgos Identificados
+
+| Riesgo | Probabilidad | Impacto | Mitigación |
+|--------|--------------|---------|------------|
+| Integración con Fedepatin no disponible o difícil | Alta | Medio | Desarrollar scraping robusto con manejo de errores; Permitir carga manual como backup |
+| Resistencia al cambio por parte de usuarios | Media | Alto | Capacitación adecuada; Diseño intuitivo; Soporte continuo |
+| Problemas de rendimiento con muchos usuarios | Baja | Alto | Testing de carga; Optimización desde el inicio; Arquitectura escalable |
+| Seguridad de datos financieros | Media | Muy Alto | Implementar mejores prácticas de seguridad; Auditorías; Cumplimiento de normativas |
+| Retrasos en el desarrollo | Media | Medio | Metodología ágil; Sprints cortos; Comunicación constante |
+
+### 11.2 Plan de Contingencia
+- Backups automáticos diarios
+- Servidor de respaldo
+- Documentación exhaustiva para facilitar transición de desarrolladores
+- Pruebas exhaustivas antes de cada despliegue
+
+---
+
+## 12. CRONOGRAMA DETALLADO
+
+### Sprint 1-2 (Semanas 1-2): Planificación
+- Reuniones de kick-off
+- Definición de requerimientos finales
+- Diseño de arquitectura
+- Diseño de base de datos
+- Wireframes
+
+### Sprint 3-4 (Semanas 3-4): Diseño UI/UX
+- Mockups de alta fidelidad
+- Guía de estilos
+- Aprobación del cliente
+- Preparación de assets
+
+### Sprint 5-7 (Semanas 5-7): Core Público
+- Setup del proyecto (Astro + Backend)
+- Páginas estáticas
+- Sistema de categorías y roster
+- Sección de contacto
+
+### Sprint 8-10 (Semanas 8-10): Autenticación y Perfiles
+- Sistema de login/registro
+- Gestión de perfiles
+- Dashboard de usuario
+- Sistema de roles
+
+### Sprint 11-13 (Semanas 11-13): Módulo Financiero
+- Gestión de conceptos de pago
+- Estado de cuenta
+- Registro de pagos
+- Generación de recibos
+
+### Sprint 14-16 (Semanas 14-16): Torneos y Admin
+- Módulo de torneos
+- Integración con federaciones
+- Panel administrativo completo
+- Reportes
+
+### Sprint 17-18 (Semanas 17-18): Testing
+- Testing funcional completo
+- Testing de seguridad
+- Testing de rendimiento
+- Corrección de bugs
+
+### Sprint 19 (Semana 19): Despliegue
+- Despliegue a producción
+- Configuración final
+- Capacitación
+- Documentación
+
+---
+
+## 13. APROBACIONES
+
+### Cliente (Club Wild Dogs)
+**Nombre:** ______________________  
+**Cargo:** ______________________  
+**Firma:** ______________________  
+**Fecha:** ______________________
+
+### Equipo de Desarrollo
+**Nombre:** ______________________  
+**Cargo:** ______________________  
+**Firma:** ______________________  
+**Fecha:** ______________________
+
+---
+
+## CONTROL DE VERSIONES
+
+| Versión | Fecha | Autor | Descripción |
+|---------|-------|-------|-------------|
+| 1.0 | 18/10/2025 | [Nombre] | Versión inicial del documento |
+|  |  |  |  |
+|  |  |  |  |
+
+---
+
+**FIN DEL DOCUMENTO**
