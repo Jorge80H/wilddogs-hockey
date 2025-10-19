@@ -46,12 +46,12 @@ export function PublicNav() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-2">
-            <a href="/api/login" data-testid="button-login">
+            <a href="/login" data-testid="button-login">
               <Button variant="outline" size="sm">
                 Iniciar Sesión
               </Button>
             </a>
-            <a href="/api/login" data-testid="button-join">
+            <a href="/login" data-testid="button-join">
               <Button size="sm">
                 Únete al Club
               </Button>
@@ -87,12 +87,12 @@ export function PublicNav() {
               </Link>
             ))}
             <div className="pt-4 space-y-2 border-t">
-              <a href="/api/login" className="block" data-testid="button-mobile-login">
+              <a href="/login" className="block" data-testid="button-mobile-login">
                 <Button variant="outline" className="w-full">
                   Iniciar Sesión
                 </Button>
               </a>
-              <a href="/api/login" className="block" data-testid="button-mobile-join">
+              <a href="/login" className="block" data-testid="button-mobile-join">
                 <Button className="w-full">
                   Únete al Club
                 </Button>

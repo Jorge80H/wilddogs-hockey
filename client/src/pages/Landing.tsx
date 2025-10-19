@@ -39,7 +39,7 @@ export default function Landing() {
             Club de Hockey en Línea profesional en Bogotá, Colombia
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/api/login" data-testid="button-hero-join">
+            <a href="/login" data-testid="button-hero-join">
               <Button
                 size="lg"
                 className="text-lg px-8 py-6 bg-primary/90 backdrop-blur-sm border border-primary-border hover-elevate active-elevate-2"
@@ -225,7 +225,7 @@ export default function Landing() {
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             Forma parte del mejor club de hockey en línea de Bogotá. Desarrolla tus habilidades, compite al más alto nivel y haz amigos para toda la vida.
           </p>
-          <a href="/api/login" data-testid="button-cta-join">
+          <a href="/login" data-testid="button-cta-join">
             <Button
               size="lg"
               variant="outline"

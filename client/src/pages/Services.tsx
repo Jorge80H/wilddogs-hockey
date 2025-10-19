@@ -213,7 +213,7 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
-                  <a href="/api/login">
+                  <a href="/login">
                     <Button
                       className="w-full"
                       variant={plan.popular ? "default" : "outline"}
@@ -261,7 +261,7 @@ export default function Services() {
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             Únete a Wild Dogs hoy y comienza tu camino hacia la excelencia deportiva
           </p>
-          <a href="/api/login" data-testid="button-cta-enroll">
+          <a href="/login" data-testid="button-cta-enroll">
             <Button
               size="lg"
               variant="outline"
