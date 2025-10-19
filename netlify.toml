@@ -1,21 +1,11 @@
 [build]
-  command = "npm run build"
-  publish = "dist/public"
-  functions = "dist"
+  command = "npm run build:client"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/index/:splat"
-  status = 200
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[functions]
-  node_bundler = "esbuild"
-  directory = "dist"
