@@ -3,7 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useAuth } from "@/hooks/useAuth";
+import { db } from "@/lib/instant";
 import NotFound from "@/pages/not-found";
 
 // Public Pages
@@ -14,28 +14,38 @@ import Categories from "@/pages/Categories";
 import CategoryDetail from "@/pages/CategoryDetail";
 import Tournaments from "@/pages/Tournaments";
 import Contact from "@/pages/Contact";
+import Login from "@/pages/Login";
 
 // Private Pages
 import PlayerDashboard from "@/pages/PlayerDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 
 function Router() {
-  const { isAuthenticated, isLoading, isAdmin } = useAuth();
+  const { isLoading, user } = db.useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-2xl">Cargando...</div>
+      </div>
+    );
+  }
 
   return (
     <Switch>
       {/* Public Routes - Always accessible */}
-      <Route path="/" component={isLoading || !isAuthenticated ? Landing : (isAdmin ? AdminDashboard : PlayerDashboard)} />
+      <Route path="/" component={user ? (user.email?.includes('admin') ? AdminDashboard : PlayerDashboard) : Landing} />
       <Route path="/nosotros" component={About} />
       <Route path="/servicios" component={Services} />
       <Route path="/categorias" component={Categories} />
       <Route path="/categorias/:id" component={CategoryDetail} />
       <Route path="/torneos" component={Tournaments} />
       <Route path="/contacto" component={Contact} />
+      <Route path="/login" component={Login} />
 
       {/* Private Routes - Require Authentication */}
-      <Route path="/dashboard" component={PlayerDashboard} />
-      <Route path="/admin" component={AdminDashboard} />
+      <Route path="/dashboard" component={user ? PlayerDashboard : Login} />
+      <Route path="/admin" component={user ? AdminDashboard : Login} />
 
       {/* 404 */}
       <Route component={NotFound} />
