@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import { db } from '@/lib/instant';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const handleMagicCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,13 +42,17 @@ export default function Login() {
         title: '¡Bienvenido!',
         description: 'Has iniciado sesión correctamente.',
       });
+
+      // Redirigir al dashboard después de 1 segundo
+      setTimeout(() => {
+        setLocation('/dashboard');
+      }, 1000);
     } catch (error: any) {
       toast({
         title: 'Error',
         description: error.message || 'Código inválido',
         variant: 'destructive',
       });
-    } finally {
       setIsLoading(false);
     }
   };
