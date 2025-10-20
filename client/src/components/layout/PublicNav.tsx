@@ -22,8 +22,8 @@ export function PublicNav() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" data-testid="link-home">
-            <div className="flex items-center gap-2 hover-elevate active-elevate-2 rounded-md px-3 py-2 -ml-3">
-              <div className="text-2xl font-bold text-primary">Wild Dogs</div>
+            <div className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-3 py-2 -ml-3">
+              <img src="/logo-wild-dogs.jpg" alt="Wild Dogs Hockey Club" className="h-12 w-auto" />
             </div>
           </Link>
 

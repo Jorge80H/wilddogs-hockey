@@ -69,16 +69,17 @@ export default function About() {
               <h2 className="text-4xl font-bold mb-6">Nuestra Historia</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  El Club Wild Dogs nació en 2013 con un sueño: crear un espacio donde los jóvenes de Bogotá pudieran desarrollar su pasión por el hockey en línea en un ambiente profesional y familiar.
+                  <strong className="text-primary">Wild Dogs Hockey Club</strong> es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
                 </p>
                 <p>
-                  Fundado por un grupo de entusiastas del hockey que vieron la necesidad de formar un club que no solo se enfocara en la competencia, sino también en la formación integral de deportistas, Wild Dogs ha crecido hasta convertirse en uno de los clubes más respetados de Colombia.
+                  <strong className="text-accent">El Poder de la Manada, El Poder de la Energía.</strong> Wild Dogs refleja unión y fuerza colectiva. Como en la naturaleza, trabajamos juntos para alcanzar metas, combinando talentos únicos en un equipo sólido y ganador.
                 </p>
                 <p>
-                  A lo largo de más de 10 años, hemos formado cientos de jugadores, ganado numerosos campeonatos y, lo más importante, creado una comunidad unida por el amor al deporte.
+                  En nuestra <strong>visión integral</strong> combinamos entrenamiento en equipo, desarrollo de habilidades personalizado, preparación física personalizada, teoría de juego tanto en roller como ice hockey, y priorizamos el acompañamiento mental de nuestros deportistas.
                 </p>
-                <p>
-                  Hoy contamos con 6 categorías competitivas, instalaciones de primer nivel y un cuerpo técnico altamente capacitado que trabaja día a día para mantener vivo el espíritu Wild Dogs.
+                <p className="italic border-l-4 border-primary pl-4 text-foreground">
+                  "Creemos que el trabajo duro siempre da frutos. Por eso, estamos construyendo un programa profesional, centrado en el desarrollo integral, donde el deporte trascienda en la vida de cada deportista y lo prepare para enfrentar cualquier reto dentro y fuera de la pista."
+                  <span className="block mt-2 text-sm text-primary">— Juan Vinueza, Director deportivo</span>
                 </p>
               </div>
             </div>
@@ -103,7 +104,7 @@ export default function About() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Formar deportistas integrales a través del hockey en línea, promoviendo valores de trabajo en equipo, disciplina y excelencia deportiva. Brindar a nuestros jugadores las herramientas técnicas y tácticas necesarias para competir al más alto nivel mientras desarrollan habilidades para la vida.
+                  Formar deportistas integrales a través del hockey, promoviendo valores de trabajo en equipo, disciplina y excelencia deportiva. Brindar a nuestros jugadores las herramientas técnicas, tácticas y mentales necesarias para competir al más alto nivel, desarrollando habilidades que trascienden el deporte y los preparan para enfrentar cualquier reto en la vida.
                 </p>
               </CardContent>
             </Card>
@@ -114,7 +115,7 @@ export default function About() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Ser reconocidos como el club líder en formación de hockey en línea en Colombia, expandiendo nuestra influencia a nivel internacional y siendo referente en desarrollo deportivo juvenil. Aspiramos a que nuestros jugadores representen a Colombia en competencias internacionales y sean ejemplo de excelencia deportiva y humana.
+                  Ser reconocidos como el club líder en formación de hockey en Colombia, siendo referente en desarrollo deportivo integral. Aspiramos a que nuestros jugadores representen a Colombia en competencias nacionales e internacionales, y sean ejemplo de excelencia deportiva y humana, llevando el espíritu Wild Dogs a cada reto que enfrenten.
                 </p>
               </CardContent>
             </Card>
@@ -198,16 +199,18 @@ export default function About() {
               <CardContent className="p-8">
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    <strong>Sede Principal:</strong> Contamos con una moderna pista de hockey en línea ubicada en el norte de Bogotá, con superficie de alta calidad, iluminación profesional y gradas para espectadores.
+                    <strong className="text-primary">Nuestra Sede - Hockey.One Academy:</strong> La sede de Hockey.One Academy es el hogar oficial de los Wild Dogs, equipada para brindar un entorno ideal para el desarrollo deportivo.
                   </p>
                   <p>
-                    <strong>Área de Entrenamiento:</strong> Espacios dedicados para preparación física, técnica individual y análisis táctico con equipamiento de última generación.
+                    Todos los deportistas que forman parte del equipo cuentan con <strong>acceso ilimitado</strong> a las instalaciones de Hockey.One Academy.
                   </p>
                   <p>
-                    <strong>Vestidores:</strong> Amplios vestidores separados por categorías, con casilleros personales y duchas de agua caliente.
+                    <strong>Ubicación:</strong> Carrera 22 # 164-83, Bogotá
                   </p>
                   <p>
-                    <strong>Sala de Reuniones:</strong> Espacio equipado con pantallas y pizarras para charlas técnicas y análisis de video.
+                    <strong>Contacto:</strong><br />
+                    Teléfono: +57 314 310 0208<br />
+                    Web: www.hockeyone.co
                   </p>
                 </div>
               </CardContent>

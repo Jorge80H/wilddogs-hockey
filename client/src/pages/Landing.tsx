@@ -36,7 +36,7 @@ export default function Landing() {
             Wild Dogs
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
-            Club de Hockey en Línea profesional en Bogotá, Colombia
+            El Poder de la Manada, El Poder de la Energía
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/login" data-testid="button-hero-join">
@@ -106,7 +106,7 @@ export default function Landing() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Nuestra Misión</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-12">
-              Formar deportistas integrales a través del hockey en línea, promoviendo valores de trabajo en equipo, disciplina y excelencia deportiva. Brindar a nuestros jugadores las herramientas técnicas y tácticas necesarias para competir al más alto nivel mientras desarrollan habilidades para la vida.
+              Wild Dogs Hockey Club es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
             </p>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function Landing() {
             ¿Listo para Unirte a la Manada?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Forma parte del mejor club de hockey en línea de Bogotá. Desarrolla tus habilidades, compite al más alto nivel y haz amigos para toda la vida.
+            Únete a la manada Wild Dogs. Desarrollo integral, entrenamiento personalizado y acompañamiento mental para alcanzar tu máximo potencial dentro y fuera de la pista.
           </p>
           <a href="/login" data-testid="button-cta-join">
             <Button
