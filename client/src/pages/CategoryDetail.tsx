@@ -2,9 +2,8 @@ import { useParams } from "wouter";
 import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
 import { Trophy, Clock, Target } from "lucide-react";
-import type { PlayerProfile, User, Coach, CategoryAchievement } from "@shared/schema";
+import { db } from "@/lib/instant";
 import playerPlaceholder from "@assets/generated_images/Player_portrait_placeholder_d8c2b3f0.png";
 import coachPlaceholder from "@assets/generated_images/Coach_portrait_placeholder_9533f352.png";
 import sub8Image from "@assets/generated_images/Sub_8_category_action_a72d36d1.png";
@@ -14,23 +13,58 @@ import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
 
-type PlayerWithUser = PlayerProfile & { user: User };
-
 export default function CategoryDetail() {
   const params = useParams();
   const categoryId = params.id as string;
 
-  const { data: players = [], isLoading: playersLoading } = useQuery<PlayerWithUser[]>({
-    queryKey: ["/api/categories", categoryId, "players"],
+  // Query players for this category
+  const { data: playersData, isLoading: playersLoading } = db.useQuery({
+    playerProfiles: {
+      $: {
+        where: {
+          category: categoryId,
+        },
+      },
+    },
   });
 
-  const { data: coaches = [], isLoading: coachesLoading } = useQuery<Coach[]>({
-    queryKey: ["/api/categories", categoryId, "coaches"],
+  // Query coaches for this category
+  const { data: coachesData, isLoading: coachesLoading } = db.useQuery({
+    coaches: {
+      $: {
+        where: {
+          categoryId: categoryId,
+        },
+      },
+    },
   });
 
-  const { data: achievements = [], isLoading: achievementsLoading } = useQuery<CategoryAchievement[]>({
-    queryKey: ["/api/categories", categoryId, "achievements"],
+  // Query achievements for this category
+  const { data: achievementsData, isLoading: achievementsLoading } = db.useQuery({
+    categoryAchievements: {
+      $: {
+        where: {
+          categoryId: categoryId,
+        },
+      },
+    },
   });
+
+  // Query category info from database
+  const { data: categoryData } = db.useQuery({
+    categories: {
+      $: {
+        where: {
+          id: categoryId,
+        },
+      },
+    },
+  });
+
+  const players = playersData?.playerProfiles || [];
+  const coaches = coachesData?.coaches || [];
+  const achievements = achievementsData?.categoryAchievements || [];
+  const dbCategory = categoryData?.categories?.[0];
 
   const categoryImages: Record<string, string> = {
     sub8: sub8Image,
@@ -41,6 +75,7 @@ export default function CategoryDetail() {
     mayores: mayoresImage,
   };
 
+  // Fallback info if database is empty
   const categoryInfo: Record<string, any> = {
     sub8: {
       name: "Sub 8",
@@ -116,7 +151,17 @@ export default function CategoryDetail() {
     },
   };
 
-  const info = categoryInfo[categoryId] || categoryInfo.sub8;
+  const fallbackInfo = categoryInfo[categoryId] || categoryInfo.sub8;
+
+  // Use database info if available, otherwise fallback
+  const info = dbCategory ? {
+    name: dbCategory.name,
+    ageRange: `${dbCategory.ageMin} - ${dbCategory.ageMax || '+'} años`,
+    description: dbCategory.description || fallbackInfo.description,
+    schedule: dbCategory.trainingSchedule || fallbackInfo.schedule,
+    objectives: dbCategory.objectives ? dbCategory.objectives.split('\n') : fallbackInfo.objectives,
+  } : fallbackInfo;
+
   const heroImage = categoryImages[categoryId] || sub8Image;
 
   return (
@@ -219,8 +264,8 @@ export default function CategoryDetail() {
                   <CardContent className="p-6 text-center">
                     <div className="w-24 h-24 rounded-full bg-muted mx-auto mb-4 overflow-hidden">
                       <img
-                        src={player.user.profileImageUrl || playerPlaceholder}
-                        alt={`${player.user.firstName} ${player.user.lastName}`}
+                        src={playerPlaceholder}
+                        alt="Jugador"
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -228,7 +273,7 @@ export default function CategoryDetail() {
                       #{player.jerseyNumber || "00"}
                     </div>
                     <h3 className="font-bold mb-1">
-                      {player.user.firstName} {player.user.lastName}
+                      Jugador {player.jerseyNumber}
                     </h3>
                     <p className="text-sm text-muted-foreground capitalize mb-2">
                       {player.position || "Jugador"}
