@@ -19,6 +19,7 @@ import Login from "@/pages/Login";
 // Private Pages
 import PlayerDashboard from "@/pages/PlayerDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
+import AdminFinance from "@/pages/AdminFinance";
 
 function Router() {
   const { isLoading, user } = db.useAuth();
@@ -46,6 +47,7 @@ function Router() {
       {/* Private Routes - Require Authentication */}
       <Route path="/dashboard" component={user ? PlayerDashboard : Login} />
       <Route path="/admin" component={user ? AdminDashboard : Login} />
+      <Route path="/admin/finance" component={user ? AdminFinance : Login} />
 
       {/* 404 */}
       <Route component={NotFound} />
