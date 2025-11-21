@@ -1,18 +1,58 @@
-import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Users, DollarSign, Calendar, FileText, Trophy, Newspaper } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Users, DollarSign, Calendar, FileText, Trophy, Newspaper, LogOut } from "lucide-react";
 import { Link } from "wouter";
+import { db } from "@/lib/instant";
 
 export default function AdminDashboard() {
   const { toast } = useToast();
-  const { user, isAuthenticated, isLoading, isAdmin } = useAuth();
+  const { user, isLoading, error } = db.useAuth();
+
+  // Check if user is admin (simple check: email contains 'admin')
+  const isAdmin = user?.email?.includes('admin') || false;
+
+  // Query stats
+  const { data: playersData } = db.useQuery({ playerProfiles: {} });
+  const { data: paymentsData } = db.useQuery({ payments: {} });
+  const { data: matchesData } = db.useQuery({
+    matches: {
+      $: {
+        where: {
+          date: { $gt: Date.now() - 30 * 24 * 60 * 60 * 1000 }, // Last 30 days
+        },
+      },
+    },
+  });
+  const { data: documentsData } = db.useQuery({
+    documents: {
+      $: {
+        where: {
+          status: "pending",
+        },
+      },
+    },
+  });
+
+  const totalPlayers = playersData?.playerProfiles?.length || 0;
+  const pendingDocuments = documentsData?.documents?.length || 0;
+  const recentMatches = matchesData?.matches || [];
+  const matchesThisMonth = recentMatches.length;
+  const wins = recentMatches.filter((m) => m.result === "win").length;
+
+  // Calculate monthly income
+  const monthlyIncome = paymentsData?.payments
+    ?.filter((p) => {
+      const paymentDate = new Date(p.paymentDate).getTime();
+      const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+      return paymentDate > thirtyDaysAgo;
+    })
+    .reduce((sum, p) => sum + parseFloat(p.amount.toString()), 0) || 0;
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isLoading && !user) {
       toast({
         title: "No autorizado",
         description: "Iniciando sesión...",
@@ -22,10 +62,10 @@ export default function AdminDashboard() {
         window.location.href = "/login";
       }, 500);
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [user, isLoading, toast]);
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated && !isAdmin) {
+    if (!isLoading && user && !isAdmin) {
       toast({
         title: "Acceso Denegado",
         description: "No tienes permisos de administrador",
@@ -35,9 +75,24 @@ export default function AdminDashboard() {
         window.location.href = "/";
       }, 1000);
     }
-  }, [isAuthenticated, isLoading, isAdmin, toast]);
+  }, [user, isLoading, isAdmin, toast]);
 
-  if (isLoading || !isAuthenticated || !user || !isAdmin) {
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error de autenticación",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  const handleSignOut = async () => {
+    await db.auth.signOut();
+    window.location.href = "/";
+  };
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -46,6 +101,10 @@ export default function AdminDashboard() {
         </div>
       </div>
     );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
   }
 
   const adminSections = [
@@ -116,20 +175,18 @@ export default function AdminDashboard() {
                 </Button>
               </Link>
               <Avatar>
-                <AvatarImage src={user.profileImageUrl || undefined} />
                 <AvatarFallback>
-                  {user.firstName?.[0]}{user.lastName?.[0]}
+                  {user.email?.[0]?.toUpperCase() || "A"}
                 </AvatarFallback>
               </Avatar>
               <div>
-                <div className="font-semibold">{user.firstName} {user.lastName}</div>
+                <div className="font-semibold">{user.email}</div>
                 <div className="text-sm text-muted-foreground">Administrador</div>
               </div>
-              <a href="/api/logout">
-                <Button variant="outline" size="sm" data-testid="button-logout">
-                  Cerrar Sesión
-                </Button>
-              </a>
+              <Button variant="outline" size="sm" onClick={handleSignOut} data-testid="button-logout">
+                <LogOut className="h-4 w-4 mr-2" />
+                Cerrar Sesión
+              </Button>
             </div>
           </div>
         </div>
@@ -140,7 +197,7 @@ export default function AdminDashboard() {
         {/* Welcome Section */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl">Bienvenido, {user.firstName}</CardTitle>
+            <CardTitle className="text-2xl">Bienvenido, Administrador</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
@@ -149,6 +206,55 @@ export default function AdminDashboard() {
             </p>
           </CardContent>
         </Card>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Jugadores</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold" data-testid="stat-total-players">{totalPlayers}</div>
+              <p className="text-xs text-muted-foreground">Activos en el sistema</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Ingresos del Mes</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold" data-testid="stat-monthly-income">
+                ${monthlyIncome.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground">Últimos 30 días</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Partidos este Mes</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold" data-testid="stat-matches">{matchesThisMonth}</div>
+              <p className="text-xs text-muted-foreground">{wins} victorias</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Documentos Pendientes</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold" data-testid="stat-pending-docs">{pendingDocuments}</div>
+              <p className="text-xs text-muted-foreground">Requieren revisión</p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Admin Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -167,53 +273,6 @@ export default function AdminDashboard() {
               </Card>
             </Link>
           ))}
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Jugadores</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="stat-total-players">150</div>
-              <p className="text-xs text-muted-foreground">+12 este mes</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Ingresos del Mes</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="stat-monthly-income">$42.5M</div>
-              <p className="text-xs text-muted-foreground">+8% vs mes anterior</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Partidos este Mes</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="stat-matches">8</div>
-              <p className="text-xs text-muted-foreground">5 victorias</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Documentos Pendientes</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="stat-pending-docs">12</div>
-              <p className="text-xs text-muted-foreground">Requieren revisión</p>
-            </CardContent>
-          </Card>
         </div>
       </main>
     </div>
