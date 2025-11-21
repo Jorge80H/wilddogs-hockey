@@ -20,6 +20,7 @@ import Login from "@/pages/Login";
 import PlayerDashboard from "@/pages/PlayerDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import AdminFinance from "@/pages/AdminFinance";
+import AdminDocuments from "@/pages/AdminDocuments";
 
 function Router() {
   const { isLoading, user } = db.useAuth();
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/dashboard" component={user ? PlayerDashboard : Login} />
       <Route path="/admin" component={user ? AdminDashboard : Login} />
       <Route path="/admin/finance" component={user ? AdminFinance : Login} />
+      <Route path="/admin/documents" component={user ? AdminDocuments : Login} />
 
       {/* 404 */}
       <Route component={NotFound} />
