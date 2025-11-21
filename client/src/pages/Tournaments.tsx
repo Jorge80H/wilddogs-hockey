@@ -3,32 +3,52 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useQuery } from "@tanstack/react-query";
 import { Calendar, MapPin, Trophy } from "lucide-react";
-import type { Match, Standing } from "@shared/schema";
+import { db } from "@/lib/instant";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
 export default function Tournaments() {
-  const { data: upcomingMatches = [], isLoading: upcomingLoading } = useQuery<Match[]>({
-    queryKey: ["/api/matches/upcoming"],
+  const now = Date.now();
+
+  // Query upcoming matches
+  const { data: upcomingData, isLoading: upcomingLoading } = db.useQuery({
+    matches: {
+      $: {
+        where: {
+          date: { $gt: now },
+        },
+      },
+    },
   });
 
-  const { data: pastMatches = [], isLoading: pastLoading } = useQuery<Match[]>({
-    queryKey: ["/api/matches/past"],
+  // Query past matches
+  const { data: pastData, isLoading: pastLoading } = db.useQuery({
+    matches: {
+      $: {
+        where: {
+          date: { $lt: now },
+        },
+      },
+    },
   });
 
-  const { data: standings = [], isLoading: standingsLoading } = useQuery<Standing[]>({
-    queryKey: ["/api/standings"],
+  // Query standings
+  const { data: standingsData, isLoading: standingsLoading } = db.useQuery({
+    standings: {},
   });
 
-  const getResultBadgeVariant = (result: string | null) => {
+  const upcomingMatches = upcomingData?.matches || [];
+  const pastMatches = pastData?.matches || [];
+  const standings = standingsData?.standings?.sort((a, b) => a.position - b.position) || [];
+
+  const getResultBadgeVariant = (result: string | null | undefined) => {
     if (result === "win") return "default";
     if (result === "loss") return "destructive";
     return "secondary";
   };
 
-  const getResultText = (result: string | null) => {
+  const getResultText = (result: string | null | undefined) => {
     if (result === "win") return "Victoria";
     if (result === "loss") return "Derrota";
     return "Empate";
@@ -98,7 +118,9 @@ export default function Tournaments() {
                             )}
                           </div>
                           <div className="flex items-center gap-3">
-                            <Badge variant="secondary" className="capitalize">{match.categoryId || "General"}</Badge>
+                            <Badge variant="secondary" className="capitalize">
+                              {match.categoryId?.replace('sub', 'Sub ') || "General"}
+                            </Badge>
                           </div>
                         </div>
                       </CardContent>
@@ -146,7 +168,7 @@ export default function Tournaments() {
                             <div className="text-2xl font-bold mb-2">
                               Wild Dogs vs {match.opponent}
                             </div>
-                            {match.homeScore !== null && match.awayScore !== null && (
+                            {match.homeScore !== null && match.homeScore !== undefined && match.awayScore !== null && match.awayScore !== undefined && (
                               <div className="text-3xl font-black font-mono text-primary">
                                 {match.homeScore} - {match.awayScore}
                               </div>
@@ -159,7 +181,9 @@ export default function Tournaments() {
                             )}
                           </div>
                           <div className="flex items-center gap-3">
-                            <Badge variant="secondary" className="capitalize">{match.categoryId || "General"}</Badge>
+                            <Badge variant="secondary" className="capitalize">
+                              {match.categoryId?.replace('sub', 'Sub ') || "General"}
+                            </Badge>
                           </div>
                         </div>
                       </CardContent>
