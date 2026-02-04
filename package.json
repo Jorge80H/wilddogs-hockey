@@ -69,7 +69,6 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
-    "@instantdb/cli": "^0.1.0",
     "@replit/vite-plugin-cartographer": "^0.3.1",
     "@replit/vite-plugin-dev-banner": "^0.1.1",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
