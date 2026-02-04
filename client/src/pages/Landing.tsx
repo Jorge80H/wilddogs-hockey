@@ -47,7 +47,7 @@ export default function Landing() {
             El Poder de la Manada, El Poder de la Energía
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/login" data-testid="button-hero-join">
+            <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" data-testid="button-hero-join">
               <Button
                 size="lg"
                 className="text-lg px-8 py-6 bg-primary/90 backdrop-blur-sm border border-primary-border hover-elevate active-elevate-2"

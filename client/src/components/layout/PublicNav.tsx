@@ -32,11 +32,10 @@ export function PublicNav() {
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} data-testid={`link-${link.label.toLowerCase()}`}>
                 <div
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors hover-elevate active-elevate-2 ${
-                    location === link.href
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors hover-elevate active-elevate-2 ${location === link.href
                       ? "text-primary bg-primary/10"
                       : "text-foreground"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </div>
@@ -51,7 +50,7 @@ export function PublicNav() {
                 Iniciar Sesión
               </Button>
             </a>
-            <a href="/login" data-testid="button-join">
+            <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" data-testid="button-join">
               <Button size="sm">
                 Únete al Club
               </Button>
@@ -75,11 +74,10 @@ export function PublicNav() {
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <div
-                  className={`block px-4 py-2 rounded-md text-sm font-medium hover-elevate active-elevate-2 ${
-                    location === link.href
+                  className={`block px-4 py-2 rounded-md text-sm font-medium hover-elevate active-elevate-2 ${location === link.href
                       ? "text-primary bg-primary/10"
                       : "text-foreground"
-                  }`}
+                    }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
@@ -92,7 +90,7 @@ export function PublicNav() {
                   Iniciar Sesión
                 </Button>
               </a>
-              <a href="/login" className="block" data-testid="button-mobile-join">
+              <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
                 <Button className="w-full">
                   Únete al Club
                 </Button>
