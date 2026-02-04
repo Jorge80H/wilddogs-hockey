@@ -10,17 +10,150 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
 export default function Tournaments() {
-  const { data: upcomingMatches = [], isLoading: upcomingLoading } = useQuery<Match[]>({
-    queryKey: ["/api/matches/upcoming"],
-  });
+  // Hardcoded data from user - LIGAS FEDEHOCKEY 2026-I
+  const upcomingMatches: Match[] = [];
 
-  const { data: pastMatches = [], isLoading: pastLoading } = useQuery<Match[]>({
-    queryKey: ["/api/matches/past"],
-  });
+  const pastMatches: Match[] = [
+    // Sub 16
+    {
+      id: "m1",
+      tournamentId: "t1",
+      categoryId: "Sub 16",
+      date: new Date("2026-02-01T16:30:00"),
+      opponent: "Lightning",
+      location: "RS",
+      homeScore: 4,
+      awayScore: 0,
+      result: "win",
+      notes: "Away game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: "m2",
+      tournamentId: "t1",
+      categoryId: "Sub 16",
+      date: new Date("2026-02-01T13:45:00"),
+      opponent: "Katios",
+      location: "RS",
+      homeScore: 2,
+      awayScore: 1,
+      result: "win",
+      notes: "Home game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    // Sub 10
+    {
+      id: "m3",
+      tournamentId: "t1",
+      categoryId: "Sub 10",
+      date: new Date("2026-02-01T13:00:00"),
+      opponent: "Rabbits",
+      location: "RS",
+      homeScore: 0,
+      awayScore: 2,
+      result: "loss",
+      notes: "Away game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: "m4",
+      tournamentId: "t1",
+      categoryId: "Sub 10",
+      date: new Date("2026-02-01T10:45:00"),
+      opponent: "Katios",
+      location: "RS",
+      homeScore: 1,
+      awayScore: 2,
+      result: "loss",
+      notes: "Away game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    // Sub 8
+    {
+      id: "m5",
+      tournamentId: "t1",
+      categoryId: "Sub 8",
+      date: new Date("2026-01-31T17:00:00"),
+      opponent: "Katios",
+      location: "RS",
+      homeScore: 1,
+      awayScore: 5,
+      result: "loss",
+      notes: "Away game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: "m6",
+      tournamentId: "t1",
+      categoryId: "Sub 8",
+      date: new Date("2026-01-31T14:45:00"),
+      opponent: "Rabbits",
+      location: "RS",
+      homeScore: 2,
+      awayScore: 2,
+      result: "draw",
+      notes: "Away game",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ];
 
-  const { data: standings = [], isLoading: standingsLoading } = useQuery<Standing[]>({
-    queryKey: ["/api/standings"],
-  });
+  const standings: Standing[] = [
+    {
+      id: "s1",
+      tournamentId: "t1",
+      teamName: "Optima Wild Dogs (Sub 16)",
+      position: 1,
+      played: 2,
+      won: 2,
+      drawn: 0,
+      lost: 0,
+      goalsFor: 6,
+      goalsAgainst: 1,
+      goalDifference: 5,
+      points: 6,
+      updatedAt: new Date(),
+    },
+    {
+      id: "s2",
+      tournamentId: "t1",
+      teamName: "Optima Wild Dogs (Sub 10)",
+      position: 4, // Estimated
+      played: 2,
+      won: 0,
+      drawn: 0,
+      lost: 2,
+      goalsFor: 1,
+      goalsAgainst: 4,
+      goalDifference: -3,
+      points: 0,
+      updatedAt: new Date(),
+    },
+    {
+      id: "s3",
+      tournamentId: "t1",
+      teamName: "Optima Wild Dogs (Sub 8)",
+      position: 3, // Estimated
+      played: 2,
+      won: 0,
+      drawn: 1,
+      lost: 1,
+      goalsFor: 3,
+      goalsAgainst: 7,
+      goalDifference: -4,
+      points: 1,
+      updatedAt: new Date(),
+    },
+  ];
+
+  const upcomingLoading = false;
+  const pastLoading = false;
+  const standingsLoading = false;
 
   const getResultBadgeVariant = (result: string | null) => {
     if (result === "win") return "default";
@@ -210,9 +343,8 @@ export default function Tournaments() {
                           {standings.map((team) => (
                             <tr
                               key={team.id}
-                              className={`border-b hover-elevate active-elevate-2 ${
-                                team.teamName === "Wild Dogs" ? "bg-primary/5" : ""
-                              }`}
+                              className={`border-b hover-elevate active-elevate-2 ${team.teamName === "Wild Dogs" ? "bg-primary/5" : ""
+                                }`}
                               data-testid={`standing-row-${team.id}`}
                             >
                               <td className="py-3 pl-4 pr-2 font-bold">{team.position}</td>
