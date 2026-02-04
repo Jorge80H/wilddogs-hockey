@@ -8,6 +8,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
+            <div className="mb-4">
+              <img src="/assets/logo.png" alt="Wild Dogs Hockey Club" className="h-24 w-auto" />
+            </div>
             <h3 className="text-lg font-bold text-primary mb-4">Wild Dogs Hockey Club</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Club de Hockey en Línea profesional en Bogotá, Colombia. Formación deportiva de excelencia para todas las edades.

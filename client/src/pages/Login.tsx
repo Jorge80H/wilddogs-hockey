@@ -37,7 +37,32 @@ export default function Login() {
   const handleVerifyCode = async (code: string) => {
     setIsLoading(true);
     try {
-      await db.auth.signInWithMagicCode({ email, code });
+      // Sign in with magic code
+      const result = await db.auth.signInWithMagicCode({ email, code });
+
+      // After successful login, ensure user record exists in InstantDB
+      // Check if user already exists
+      const { data: existingUsers } = await db.queryOnce({
+        users: {
+          $: {
+            where: { email: email },
+          },
+        },
+      });
+
+      // If user doesn't exist, create their record
+      if (!existingUsers?.users || existingUsers.users.length === 0) {
+        await db.transact([
+          db.tx.users[result.user.id].update({
+            email: email,
+            role: 'player', // default role
+            status: 'pending', // needs admin approval
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          }),
+        ]);
+      }
+
       toast({
         title: '¡Bienvenido!',
         description: 'Has iniciado sesión correctamente.',
@@ -45,12 +70,13 @@ export default function Login() {
 
       // Redirigir al dashboard después de 1 segundo
       setTimeout(() => {
-        setLocation('/dashboard');
+        setLocation('/');
       }, 1000);
     } catch (error: any) {
+      console.error('Login error:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Código inválido',
+        description: error.message || 'Código inválido o error al crear usuario',
         variant: 'destructive',
       });
       setIsLoading(false);

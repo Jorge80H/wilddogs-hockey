@@ -1,10 +1,12 @@
 [build]
-  command = "npm run build:client"
-  publish = "dist"
+  command = "npm run build"
+  publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_INSTANT_APP_ID = "27acc1e8-fce9-4800-a9cd-c769cea6844f"
 
+# SPA routing - serve index.html for all routes
 [[redirects]]
   from = "/*"
   to = "/index.html"

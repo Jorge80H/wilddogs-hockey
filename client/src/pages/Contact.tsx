@@ -7,17 +7,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { insertContactSubmissionSchema } from "@shared/schema";
-import type { InsertContactSubmission } from "@shared/schema";
+import { db } from "@/lib/instant";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { z } from "zod";
+import { useState } from "react";
 
-const contactFormSchema = insertContactSubmissionSchema.extend({
+const contactFormSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
   email: z.string().email("Email inválido"),
+  phone: z.string().optional(),
   subject: z.string().min(3, "El asunto debe tener al menos 3 caracteres"),
   message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
 });
@@ -26,6 +25,8 @@ type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -42,28 +43,37 @@ export default function Contact() {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: async (data: InsertContactSubmission) => {
-      return await apiRequest("POST", "/api/contact", data);
-    },
-    onSuccess: () => {
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Submit contact form to InstantDB
+      await db.transact([
+        db.tx.contactSubmissions[db.id()].update({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          subject: data.subject,
+          message: data.message,
+          isRead: false,
+          createdAt: Date.now(),
+        }),
+      ]);
+
       toast({
         title: "Mensaje Enviado",
         description: "Gracias por contactarnos. Te responderemos pronto.",
       });
       reset();
-    },
-    onError: () => {
+    } catch (error) {
+      console.error('Contact form error:', error);
       toast({
         title: "Error",
         description: "Hubo un problema al enviar tu mensaje. Intenta nuevamente.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: ContactFormData) => {
-    mutation.mutate(data);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -168,10 +178,10 @@ export default function Contact() {
                       type="submit"
                       size="lg"
                       className="w-full"
-                      disabled={mutation.isPending}
+                      disabled={isSubmitting}
                       data-testid="button-submit-contact"
                     >
-                      {mutation.isPending ? "Enviando..." : "Enviar Mensaje"}
+                      {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                     </Button>
                   </form>
                 </CardContent>

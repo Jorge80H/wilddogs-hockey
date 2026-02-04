@@ -4,15 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trophy, Users, Calendar, Target } from "lucide-react";
 import { Link } from "wouter";
-import { useQuery } from "@tanstack/react-query";
-import type { NewsPost } from "@shared/schema";
+import { db } from "@/lib/instant";
 import heroImage from "@assets/generated_images/Hockey_hero_action_shot_61944fec.png";
 import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
 
 export default function Landing() {
-  const { data: news = [], isLoading: newsLoading } = useQuery<NewsPost[]>({
-    queryKey: ["/api/news"],
+  // Query news posts from InstantDB
+  const { data, isLoading: newsLoading } = db.useQuery({
+    newsPosts: {
+      $: {
+        where: { status: 'published' },
+        order: { publishedAt: 'desc' },
+        limit: 3,
+      },
+    },
   });
+
+  const news = data?.newsPosts || [];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -138,7 +146,7 @@ export default function Landing() {
             </div>
           ) : news.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {news.slice(0, 3).map((post) => (
+              {news.map((post: any) => (
                 <Card key={post.id} className="overflow-hidden hover-elevate active-elevate-2" data-testid={`news-card-${post.id}`}>
                   {post.imageUrl && (
                     <div className="h-48 overflow-hidden">

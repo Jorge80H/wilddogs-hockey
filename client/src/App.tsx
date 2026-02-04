@@ -3,7 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { db } from "@/lib/instant";
+import { useAuth } from "@/hooks/useAuth";
 import NotFound from "@/pages/not-found";
 
 // Public Pages
@@ -21,7 +21,8 @@ import PlayerDashboard from "@/pages/PlayerDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 
 function Router() {
-  const { isLoading, user } = db.useAuth();
+  // Use the centralized useAuth hook that queries InstantDB
+  const { isLoading, user, isAdmin, isAuthenticated } = useAuth();
 
   if (isLoading) {
     return (
@@ -31,10 +32,16 @@ function Router() {
     );
   }
 
+  // Determine which dashboard to show based on role
+  const getDashboard = () => {
+    if (!isAuthenticated) return Landing;
+    return isAdmin ? AdminDashboard : PlayerDashboard;
+  };
+
   return (
     <Switch>
       {/* Public Routes - Always accessible */}
-      <Route path="/" component={user ? (user.email?.includes('admin') ? AdminDashboard : PlayerDashboard) : Landing} />
+      <Route path="/" component={getDashboard()} />
       <Route path="/nosotros" component={About} />
       <Route path="/servicios" component={Services} />
       <Route path="/categorias" component={Categories} />
@@ -44,8 +51,8 @@ function Router() {
       <Route path="/login" component={Login} />
 
       {/* Private Routes - Require Authentication */}
-      <Route path="/dashboard" component={user ? PlayerDashboard : Login} />
-      <Route path="/admin" component={user ? AdminDashboard : Login} />
+      <Route path="/dashboard" component={isAuthenticated ? PlayerDashboard : Login} />
+      <Route path="/admin" component={isAdmin ? AdminDashboard : Login} />
 
       {/* 404 */}
       <Route component={NotFound} />
