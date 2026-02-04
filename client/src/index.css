@@ -4,20 +4,24 @@
 
 /* LIGHT MODE - Wild Dogs Brand Colors */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(0, 0, 0, .10);
+  --badge-outline: rgba(0, 0, 0, .05);
 
   /* Automatic computation of border around primary / danger buttons */
-  --opaque-button-border-intensity: -8; /* In terms of percentages */
+  --opaque-button-border-intensity: -8;
+  /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-1: rgba(0, 0, 0, .03);
+  --elevate-2: rgba(0, 0, 0, .08);
 
   /* Wild Dogs Brand Colors */
-  --wild-dogs-blue: 199 85% 42%; /* #1B7DB8 */
-  --wild-dogs-orange: 30 92% 55%; /* #F89420 */
-  --wild-dogs-cyan: 188 100% 42%; /* #00B8D4 */
+  --wild-dogs-blue: 199 85% 42%;
+  /* #1B7DB8 */
+  --wild-dogs-orange: 30 92% 55%;
+  /* #F89420 */
+  --wild-dogs-cyan: 188 100% 42%;
+  /* #00B8D4 */
   --wild-dogs-black: 0 0% 0%;
 
   --background: 0 0% 98%;
@@ -54,13 +58,11 @@
 
   --popover-border: 199 15% 88%;
 
-  --primary: 199 85% 42%;
+  --primary: 30 92% 55%;
+  --primary-foreground: 0 0% 10%;
 
-  --primary-foreground: 0 0% 98%;
-
-  --secondary: 30 92% 55%;
-
-  --secondary-foreground: 0 0% 10%;
+  --secondary: 199 85% 42%;
+  --secondary-foreground: 0 0% 98%;
 
   --muted: 199 10% 91%;
 
@@ -75,9 +77,9 @@
   --destructive-foreground: 0 0% 98%;
 
   --input: 199 12% 75%;
-  --ring: 199 85% 42%;
-  --chart-1: 199 85% 42%;
-  --chart-2: 30 92% 55%;
+  --ring: 30 92% 55%;
+  --chart-1: 30 92% 55%;
+  --chart-2: 199 85% 42%;
   --chart-3: 188 100% 42%;
   --chart-4: 199 70% 60%;
   --chart-5: 30 80% 65%;
@@ -85,7 +87,8 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --radius: .5rem; /* 8px */
+  --radius: .5rem;
+  /* 8px */
   --shadow-2xs: 0px 1px 2px 0px hsl(220 15% 15% / 0.05);
   --shadow-xs: 0px 1px 3px 0px hsl(220 15% 15% / 0.08);
   --shadow-sm: 0px 2px 4px 0px hsl(220 15% 15% / 0.06), 0px 1px 2px -1px hsl(220 15% 15% / 0.08);
@@ -129,14 +132,15 @@
 }
 
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(255, 255, 255, .10);
+  --badge-outline: rgba(255, 255, 255, .05);
 
-  --opaque-button-border-intensity: 9;  /* In terms of percentages */
+  --opaque-button-border-intensity: 9;
+  /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
+  --elevate-1: rgba(255, 255, 255, .04);
+  --elevate-2: rgba(255, 255, 255, .09);
 
   --background: 0 0% 8%;
 
@@ -172,13 +176,13 @@
 
   --popover-border: 199 12% 20%;
 
-  --primary: 199 85% 42%;
+  --primary: 30 92% 55%;
 
-  --primary-foreground: 0 0% 98%;
+  --primary-foreground: 0 0% 10%;
 
-  --secondary: 30 92% 55%;
+  --secondary: 199 85% 42%;
 
-  --secondary-foreground: 0 0% 10%;
+  --secondary-foreground: 0 0% 95%;
 
   --muted: 199 8% 18%;
 
@@ -193,9 +197,9 @@
   --destructive-foreground: 0 0% 98%;
 
   --input: 199 12% 30%;
-  --ring: 199 85% 42%;
-  --chart-1: 199 85% 55%;
-  --chart-2: 30 92% 65%;
+  --ring: 30 92% 55%;
+  --chart-1: 30 92% 65%;
+  --chart-2: 199 85% 55%;
   --chart-3: 188 100% 52%;
   --chart-4: 199 70% 65%;
   --chart-5: 30 80% 70%;
