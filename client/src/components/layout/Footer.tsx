@@ -126,6 +126,9 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Wild Dogs Hockey Club. Todos los derechos reservados.
           </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Desarrollado por: <a href="https://empleadosdigitales.com.co" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Empleados Digitales</a>
+          </p>
         </div>
       </div>
     </footer>
