@@ -60,6 +60,27 @@ export default function Contact() {
         }),
       ]);
 
+      // Send to n8n Webhook
+      try {
+        const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+        if (webhookUrl) {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              ...data,
+              submittedAt: new Date().toISOString(),
+              source: 'Wild Dogs Website'
+            }),
+          });
+        }
+      } catch (webhookError) {
+        // Log error but don't fail the form submission since data is saved in DB
+        console.error('Webhook sending failed:', webhookError);
+      }
+
       toast({
         title: "Mensaje Enviado",
         description: "Gracias por contactarnos. Te responderemos pronto.",
