@@ -69,10 +69,10 @@ export default function About() {
               <h2 className="text-4xl font-bold mb-6">Nuestra Historia</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  <strong className="text-primary">Wild Dogs Hockey Club</strong> es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
+                  <strong className="text-primary">Optima Wild Dogs Hockey Club</strong> es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
                 </p>
                 <p>
-                  <strong className="text-accent">El Poder de la Manada, El Poder de la Energía.</strong> Wild Dogs refleja unión y fuerza colectiva. Como en la naturaleza, trabajamos juntos para alcanzar metas, combinando talentos únicos en un equipo sólido y ganador.
+                  <strong className="text-accent">El Poder de la Manada, El Poder de la Energía.</strong> Optima Wild Dogs refleja unión y fuerza colectiva. Como en la naturaleza, trabajamos juntos para alcanzar metas, combinando talentos únicos en un equipo sólido y ganador.
                 </p>
                 <p>
                   En nuestra <strong>visión integral</strong> combinamos entrenamiento en equipo, desarrollo de habilidades personalizado, preparación física personalizada, teoría de juego tanto en roller como ice hockey, y priorizamos el acompañamiento mental de nuestros deportistas.
@@ -115,7 +115,7 @@ export default function About() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Ser reconocidos como el club líder en formación de hockey en Colombia, siendo referente en desarrollo deportivo integral. Aspiramos a que nuestros jugadores representen a Colombia en competencias nacionales e internacionales, y sean ejemplo de excelencia deportiva y humana, llevando el espíritu Wild Dogs a cada reto que enfrenten.
+                  Ser reconocidos como el club líder en formación de hockey en Colombia, siendo referente en desarrollo deportivo integral. Aspiramos a que nuestros jugadores representen a Colombia en competencias nacionales e internacionales, y sean ejemplo de excelencia deportiva y humana, llevando el espíritu Optima Wild Dogs a cada reto que enfrenten.
                 </p>
               </CardContent>
             </Card>
@@ -199,7 +199,7 @@ export default function About() {
               <CardContent className="p-8">
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    <strong className="text-primary">Nuestra Sede - Hockey.One Academy:</strong> La sede de Hockey.One Academy es el hogar oficial de los Wild Dogs, equipada para brindar un entorno ideal para el desarrollo deportivo.
+                    <strong className="text-primary">Nuestra Sede - Hockey.One Academy:</strong> La sede de Hockey.One Academy es el hogar oficial de los Optima Wild Dogs, equipada para brindar un entorno ideal para el desarrollo deportivo.
                   </p>
                   <p>
                     Todos los deportistas que forman parte del equipo cuentan con <strong>acceso ilimitado</strong> a las instalaciones de Hockey.One Academy.

@@ -90,7 +90,7 @@ export default function Login() {
           <div className="flex justify-center mb-4">
             <div className="text-6xl">🏒</div>
           </div>
-          <CardTitle className="text-2xl text-center">Wild Dogs Hockey</CardTitle>
+          <CardTitle className="text-2xl text-center">Optima Wild Dogs Hockey</CardTitle>
           <CardDescription className="text-center">
             Inicia sesión para acceder a tu cuenta
           </CardDescription>

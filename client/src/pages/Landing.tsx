@@ -41,7 +41,7 @@ export default function Landing() {
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tight uppercase drop-shadow-lg">
-            Wild Dogs
+            Optima Wild Dogs
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
             El Poder de la Manada, El Poder de la Energía
@@ -114,7 +114,7 @@ export default function Landing() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Nuestra Misión</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-12">
-              Wild Dogs Hockey Club es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
+              Optima Wild Dogs Hockey Club es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
             </p>
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function Landing() {
       {/* Quick Access Grid */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Descubre Wild Dogs</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Descubre Optima Wild Dogs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <Link href="/categorias">
               <Card className="p-8 hover-elevate active-elevate-2 h-full" data-testid="card-categories">
@@ -248,7 +248,7 @@ export default function Landing() {
       {/* Gallery Preview */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Momentos Wild Dogs</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Momentos Optima Wild Dogs</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="aspect-square overflow-hidden rounded-md">
               <img

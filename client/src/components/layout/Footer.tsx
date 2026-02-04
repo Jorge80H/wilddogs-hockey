@@ -9,9 +9,9 @@ export function Footer() {
           {/* About */}
           <div>
             <div className="mb-4">
-              <img src="/assets/logo.png" alt="Wild Dogs Hockey Club" className="h-24 w-auto" />
+              <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-24 w-auto" />
             </div>
-            <h3 className="text-lg font-bold text-primary mb-4">Wild Dogs Hockey Club</h3>
+            <h3 className="text-lg font-bold text-primary mb-4">Optima Wild Dogs Hockey Club</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Club de Hockey en Línea profesional en Bogotá, Colombia. Formación deportiva de excelencia para todas las edades.
             </p>
@@ -89,17 +89,7 @@ export function Footer() {
             <h3 className="text-sm font-semibold mb-4">Síguenos</h3>
             <div className="flex gap-3">
               <a
-                href="https://facebook.com/wilddogshockey"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-md bg-muted hover-elevate active-elevate-2"
-                data-testid="link-facebook"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="https://instagram.com/wilddogshockey"
+                href="https://www.instagram.com/optimawilddogs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-md bg-muted hover-elevate active-elevate-2"
@@ -108,23 +98,13 @@ export function Footer() {
               >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a
-                href="https://twitter.com/wilddogshockey"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-md bg-muted hover-elevate active-elevate-2"
-                data-testid="link-twitter"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
             </div>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Wild Dogs Hockey Club. Todos los derechos reservados.
+            © {new Date().getFullYear()} Optima Wild Dogs Hockey Club. Todos los derechos reservados.
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Desarrollado por: <a href="https://empleadosdigitales.com.co" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Empleados Digitales</a>

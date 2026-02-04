@@ -23,7 +23,7 @@ export function PublicNav() {
           {/* Logo */}
           <Link href="/" data-testid="link-home">
             <div className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-3 py-2 -ml-3">
-              <img src="/assets/logo.png" alt="Wild Dogs Hockey Club" className="h-16 w-auto" />
+              <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-16 w-auto" />
             </div>
           </Link>
 
@@ -33,8 +33,8 @@ export function PublicNav() {
               <Link key={link.href} href={link.href} data-testid={`link-${link.label.toLowerCase()}`}>
                 <div
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors hover-elevate active-elevate-2 ${location === link.href
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground"
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground"
                     }`}
                 >
                   {link.label}
@@ -75,8 +75,8 @@ export function PublicNav() {
               <Link key={link.href} href={link.href}>
                 <div
                   className={`block px-4 py-2 rounded-md text-sm font-medium hover-elevate active-elevate-2 ${location === link.href
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground"
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground"
                     }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
