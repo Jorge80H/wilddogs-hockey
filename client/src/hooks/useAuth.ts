@@ -43,12 +43,12 @@ export function useAuth() {
   const { data, isLoading: dataLoading } = db.useQuery(
     instantUser
       ? {
-          users: {
-            $: {
-              where: { id: instantUser.id },
-            },
+        users: {
+          $: {
+            where: { id: instantUser.id },
           },
-        }
+        },
+      }
       : null
   );
 
@@ -56,7 +56,8 @@ export function useAuth() {
   const user = data?.users?.[0] as User | undefined;
 
   // Combine loading states
-  const isLoading = authLoading || dataLoading;
+  // Only check dataLoading if we have an instantUser, otherwise ignore it
+  const isLoading = authLoading || (!!instantUser && dataLoading);
 
   return {
     user: user || null,
