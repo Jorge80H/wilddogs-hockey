@@ -251,7 +251,7 @@ export default function Contact() {
                 <CardContent>
                   <div className="aspect-square rounded-md overflow-hidden bg-muted">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127283.45144826838!2d-74.15395644999999!3d4.624335349999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bfd2da6cb29%3A0x239d635520a33914!2zQm9nb3TDoSwgQ29sb21iaWE!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                      src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Carrera%2022%20No.%20164%20-%2083+(Wild%20Dogs%20Hockey%20Club)&t=&z=15&ie=UTF8&iwloc=B&output=embed"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -259,6 +259,7 @@ export default function Contact() {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                       title="Wild Dogs Location"
+                      className="grayscale hover:grayscale-0 transition-all duration-300"
                     />
                   </div>
                 </CardContent>
