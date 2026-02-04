@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/instant";
+import { id } from "@instantdb/react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { z } from "zod";
 import { useState } from "react";
@@ -48,7 +49,7 @@ export default function Contact() {
     try {
       // Submit contact form to InstantDB
       await db.transact([
-        db.tx.contactSubmissions[db.id()].update({
+        db.tx.contactSubmissions[id()].update({
           name: data.name,
           email: data.email,
           phone: data.phone || null,
@@ -140,7 +141,7 @@ export default function Contact() {
                         id="phone"
                         data-testid="input-phone"
                         {...register("phone")}
-                        placeholder="+57 300 123 4567"
+                        placeholder="320 2373500"
                       />
                       {errors.phone && (
                         <p className="text-sm text-destructive">{errors.phone.message}</p>
@@ -200,7 +201,7 @@ export default function Contact() {
                     <div>
                       <div className="font-semibold mb-1">Dirección</div>
                       <p className="text-sm text-muted-foreground">
-                        Calle 123 #45-67<br />
+                        Carrera 22 No. 164 - 83<br />
                         Bogotá, Colombia
                       </p>
                     </div>
@@ -210,10 +211,10 @@ export default function Contact() {
                     <div>
                       <div className="font-semibold mb-1">Teléfono</div>
                       <a
-                        href="tel:+573001234567"
+                        href="tel:+573202373500"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
-                        +57 300 123 4567
+                        320 2373500
                       </a>
                     </div>
                   </div>
