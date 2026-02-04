@@ -104,51 +104,26 @@ export default function Tournaments() {
   ];
 
   const standings: Standing[] = [
-    {
-      id: "s1",
-      tournamentId: "t1",
-      teamName: "Optima Wild Dogs (Sub 16)",
-      position: 1,
-      played: 2,
-      won: 2,
-      drawn: 0,
-      lost: 0,
-      goalsFor: 6,
-      goalsAgainst: 1,
-      goalDifference: 5,
-      points: 6,
-      updatedAt: new Date(),
-    },
-    {
-      id: "s2",
-      tournamentId: "t1",
-      teamName: "Optima Wild Dogs (Sub 10)",
-      position: 4, // Estimated
-      played: 2,
-      won: 0,
-      drawn: 0,
-      lost: 2,
-      goalsFor: 1,
-      goalsAgainst: 4,
-      goalDifference: -3,
-      points: 0,
-      updatedAt: new Date(),
-    },
-    {
-      id: "s3",
-      tournamentId: "t1",
-      teamName: "Optima Wild Dogs (Sub 8)",
-      position: 3, // Estimated
-      played: 2,
-      won: 0,
-      drawn: 1,
-      lost: 1,
-      goalsFor: 3,
-      goalsAgainst: 7,
-      goalDifference: -4,
-      points: 1,
-      updatedAt: new Date(),
-    },
+    // Sub 16
+    { id: "s16-1", tournamentId: "t1", teamName: "Optima Wild Dogs (Sub 16)", position: 1, played: 2, won: 2, drawn: 0, lost: 0, goalsFor: 6, goalsAgainst: 1, goalDifference: 5, points: 6, updatedAt: new Date() },
+    { id: "s16-2", tournamentId: "t1", teamName: "Katios (Sub 16)", position: 2, played: 2, won: 1, drawn: 0, lost: 1, goalsFor: 3, goalsAgainst: 2, goalDifference: 1, points: 3, updatedAt: new Date() },
+    { id: "s16-3", tournamentId: "t1", teamName: "Andinos (Sub 16)", position: 3, played: 2, won: 0, drawn: 1, lost: 1, goalsFor: 1, goalsAgainst: 3, goalDifference: -2, points: 1, updatedAt: new Date() },
+    { id: "s16-4", tournamentId: "t1", teamName: "Lightning (Sub 16)", position: 4, played: 2, won: 0, drawn: 1, lost: 1, goalsFor: 1, goalsAgainst: 5, goalDifference: -4, points: 1, updatedAt: new Date() },
+
+    // Sub 10
+    { id: "s10-1", tournamentId: "t1", teamName: "H2S Lions (Sub 10)", position: 1, played: 2, won: 2, drawn: 0, lost: 0, goalsFor: 14, goalsAgainst: 1, goalDifference: 13, points: 6, updatedAt: new Date() },
+    { id: "s10-2", tournamentId: "t1", teamName: "Rabbits (Sub 10)", position: 2, played: 2, won: 2, drawn: 0, lost: 0, goalsFor: 6, goalsAgainst: 2, goalDifference: 4, points: 6, updatedAt: new Date() },
+    { id: "s10-3", tournamentId: "t1", teamName: "VLight (Sub 10)", position: 3, played: 2, won: 1, drawn: 0, lost: 1, goalsFor: 5, goalsAgainst: 6, goalDifference: -1, points: 3, updatedAt: new Date() },
+    { id: "s10-4", tournamentId: "t1", teamName: "Katios (Sub 10)", position: 4, played: 2, won: 1, drawn: 0, lost: 1, goalsFor: 3, goalsAgainst: 6, goalDifference: -3, points: 3, updatedAt: new Date() },
+    { id: "s10-5", tournamentId: "t1", teamName: "Optima Wild Dogs (Sub 10)", position: 5, played: 2, won: 0, drawn: 0, lost: 2, goalsFor: 1, goalsAgainst: 4, goalDifference: -3, points: 0, updatedAt: new Date() },
+    { id: "s10-6", tournamentId: "t1", teamName: "Aguilas (Sub 10)", position: 6, played: 2, won: 0, drawn: 0, lost: 2, goalsFor: 3, goalsAgainst: 13, goalDifference: -10, points: 0, updatedAt: new Date() },
+
+    // Sub 8
+    { id: "s8-1", tournamentId: "t1", teamName: "VLight (Sub 8)", position: 1, played: 2, won: 2, drawn: 0, lost: 0, goalsFor: 18, goalsAgainst: 2, goalDifference: 16, points: 6, updatedAt: new Date() },
+    { id: "s8-2", tournamentId: "t1", teamName: "Katios (Sub 8)", position: 2, played: 2, won: 2, drawn: 0, lost: 0, goalsFor: 18, goalsAgainst: 6, goalDifference: 12, points: 6, updatedAt: new Date() },
+    { id: "s8-3", tournamentId: "t1", teamName: "Optima Wild Dogs (Sub 8)", position: 3, played: 2, won: 0, drawn: 1, lost: 1, goalsFor: 3, goalsAgainst: 7, goalDifference: -4, points: 1, updatedAt: new Date() },
+    { id: "s8-4", tournamentId: "t1", teamName: "Rabbits (Sub 8)", position: 4, played: 2, won: 0, drawn: 1, lost: 1, goalsFor: 3, goalsAgainst: 11, goalDifference: -8, points: 1, updatedAt: new Date() },
+    { id: "s8-5", tournamentId: "t1", teamName: "Aguilas (Sub 8)", position: 5, played: 2, won: 0, drawn: 0, lost: 2, goalsFor: 6, goalsAgainst: 22, goalDifference: -16, points: 0, updatedAt: new Date() },
   ];
 
   const upcomingLoading = false;
