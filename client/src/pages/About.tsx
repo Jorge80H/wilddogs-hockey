@@ -3,6 +3,20 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Heart, Target, Users } from "lucide-react";
 import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
+import { motion } from "framer-motion";
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 }
+  }
+};
 
 export default function About() {
   const values = [
@@ -35,13 +49,7 @@ export default function About() {
     { name: "María Fernanda López", role: "Coordinadora Categorías Menores", experience: "Especialista en formación deportiva infantil" },
   ];
 
-  const achievements = [
-    { year: 2023, title: "Campeones Liga Nacional Sub 18" },
-    { year: 2023, title: "Subcampeones Torneo Bogotá Mayores" },
-    { year: 2022, title: "Campeones Copa Colombia Sub 16" },
-    { year: 2022, title: "Mejor Club Formativo del Año" },
-    { year: 2021, title: "Campeones Regionales Sub 14" },
-  ];
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -50,14 +58,19 @@ export default function About() {
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase drop-shadow-2xl">
               Nosotros
             </h1>
-            <p className="text-xl md:text-2xl opacity-90">
+            <p className="text-xl md:text-2xl drop-shadow-md opacity-90 font-light">
               Conoce la historia y los valores que nos hacen el mejor club de hockey en línea de Bogotá
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -65,31 +78,43 @@ export default function About() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div>
-              <h2 className="text-4xl font-bold mb-6">Nuestra Historia</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-4xl font-black mb-6 tracking-tight">Nuestra Historia</h2>
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-lg">
                 <p>
-                  <strong className="text-primary">Optima Wild Dogs Hockey Club</strong> es un nuevo club en Colombia, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
+                  <strong className="text-primary font-bold">Optima Wild Dogs Hockey Club</strong> es el renacer del hockey en línea, una manada unida por la pasión, el trabajo duro y la excelencia en todos los ámbitos de la vida. Nos diferenciamos por ofrecer una experiencia completa e integral orientada al desarrollo de cada deportista.
                 </p>
                 <p>
-                  <strong className="text-accent">El Poder de la Manada, El Poder de la Energía.</strong> Optima Wild Dogs refleja unión y fuerza colectiva. Como en la naturaleza, trabajamos juntos para alcanzar metas, combinando talentos únicos en un equipo sólido y ganador.
+                  <strong className="text-foreground font-bold">El Poder de la Manada, El Poder de la Energía.</strong> Optima Wild Dogs refleja unión y fuerza colectiva. Como en la naturaleza, trabajamos juntos para alcanzar metas, combinando talentos únicos en un equipo sólido y ganador.
                 </p>
                 <p>
-                  En nuestra <strong>visión integral</strong> combinamos entrenamiento en equipo, desarrollo de habilidades personalizado, preparación física personalizada, teoría de juego tanto en roller como ice hockey, y priorizamos el acompañamiento mental de nuestros deportistas.
+                  En nuestra <strong>visión integral</strong> combinamos entrenamiento táctico, desarrollo de habilidades, preparación física personalizada, teoría de juego tanto en roller como ice hockey, y priorizamos el acompañamiento mental.
                 </p>
-                <p className="italic border-l-4 border-primary pl-4 text-foreground">
+                <p className="italic border-l-4 border-primary pl-6 py-2 text-foreground bg-primary/5 rounded-r-xl">
                   "Creemos que el trabajo duro siempre da frutos. Por eso, estamos construyendo un programa profesional, centrado en el desarrollo integral, donde el deporte trascienda en la vida de cada deportista y lo prepare para enfrentar cualquier reto dentro y fuera de la pista."
-                  <span className="block mt-2 text-sm text-primary">— Juan Vinueza, Director deportivo</span>
+                  <span className="block mt-3 text-sm font-bold text-primary">— Juan Vinueza, Director deportivo</span>
                 </p>
               </div>
-            </div>
-            <div className="rounded-lg overflow-hidden">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="rounded-2xl overflow-hidden shadow-2xl relative group"
+            >
+              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-500" />
               <img
                 src={celebrationImage}
                 alt="Wild Dogs Team Celebration"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -97,125 +122,164 @@ export default function About() {
       {/* Mission & Vision */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-3xl">Misión</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Formar deportistas integrales a través del hockey, promoviendo valores de trabajo en equipo, disciplina y excelencia deportiva. Brindar a nuestros jugadores las herramientas técnicas, tácticas y mentales necesarias para competir al más alto nivel, desarrollando habilidades que trascienden el deporte y los preparan para enfrentar cualquier reto en la vida.
-                </p>
-              </CardContent>
-            </Card>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+          >
+            <motion.div variants={fadeIn}>
+              <Card className="h-full border-border/40 hover:border-primary/50 bg-card/40 backdrop-blur-sm hover:shadow-xl transition-all duration-500">
+                <CardHeader>
+                  <CardTitle className="text-3xl font-black">Misión</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed text-lg">
+                    Formar deportistas integrales a través del hockey, promoviendo valores de trabajo en equipo, disciplina y excelencia deportiva. Brindar a nuestros jugadores las herramientas técnicas, tácticas y mentales necesarias para competir al más alto nivel, desarrollando habilidades que trascienden el deporte y los preparan para enfrentar cualquier reto en la vida.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-3xl">Visión</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Ser reconocidos como el club líder en formación de hockey en Colombia, siendo referente en desarrollo deportivo integral. Aspiramos a que nuestros jugadores representen a Colombia en competencias nacionales e internacionales, y sean ejemplo de excelencia deportiva y humana, llevando el espíritu Optima Wild Dogs a cada reto que enfrenten.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+            <motion.div variants={fadeIn}>
+              <Card className="h-full border-border/40 hover:border-primary/50 bg-card/40 backdrop-blur-sm hover:shadow-xl transition-all duration-500">
+                <CardHeader>
+                  <CardTitle className="text-3xl font-black">Visión</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed text-lg">
+                    Ser reconocidos como el club líder en formación de hockey en Colombia, siendo referente en desarrollo deportivo integral. Aspiramos a que nuestros jugadores representen a Colombia en competencias nacionales e internacionales, y sean ejemplo de excelencia deportiva y humana, llevando el espíritu Optima Wild Dogs a cada reto que enfrenten.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Values */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Nuestros Valores</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-16 text-center tracking-tight"
+          >
+            Nuestros Valores
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+          >
             {values.map((value, index) => (
-              <Card key={index} className="text-center" data-testid={`value-card-${index}`}>
-                <CardContent className="pt-8 pb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                    <value.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{value.title}</h3>
-                  <p className="text-sm text-muted-foreground">{value.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={fadeIn}>
+                <Card className="text-center h-full group border-border/40 hover:border-primary/50 transition-all duration-300" data-testid={`value-card-${index}`}>
+                  <CardContent className="pt-10 pb-8 px-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/20 transition-all duration-500" />
+                    <div className="relative z-10">
+                      <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                        <value.icon className="h-10 w-10 text-primary" />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">{value.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Leadership */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Junta Directiva</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-16 text-center tracking-tight"
+          >
+            Junta Directiva
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+          >
             {leadership.map((leader, index) => (
-              <Card key={index} data-testid={`leader-card-${index}`}>
-                <CardContent className="pt-6">
-                  <div className="w-24 h-24 rounded-full bg-muted mx-auto mb-4" />
-                  <h3 className="text-lg font-bold text-center mb-1">{leader.name}</h3>
-                  <p className="text-sm text-primary text-center mb-2">{leader.role}</p>
-                  <p className="text-xs text-muted-foreground text-center">{leader.experience}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Achievements */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Logros y Reconocimientos</h2>
-          <div className="max-w-3xl mx-auto">
-            <div className="space-y-4">
-              {achievements.map((achievement, index) => (
-                <Card key={index} className="hover-elevate active-elevate-2" data-testid={`achievement-${index}`}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Trophy className="h-8 w-8 text-primary" />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-mono text-muted-foreground mb-1">{achievement.year}</div>
-                        <div className="text-lg font-semibold">{achievement.title}</div>
-                      </div>
+              <motion.div key={index} variants={fadeIn}>
+                <Card className="h-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-background" data-testid={`leader-card-${index}`}>
+                  <CardContent className="pt-8 pb-6 px-4">
+                    <div className="w-32 h-32 rounded-full bg-muted/50 mx-auto mb-6 flex items-center justify-center border-4 border-background shadow-inner">
+                      <Users className="h-12 w-12 text-muted-foreground/30" />
                     </div>
+                    <h3 className="text-xl font-black text-center mb-1">{leader.name}</h3>
+                    <p className="text-sm font-semibold text-primary uppercase tracking-wide text-center mb-3">{leader.role}</p>
+                    <p className="text-sm text-muted-foreground text-center leading-relaxed px-2">{leader.experience}</p>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* Facilities */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Nuestras Instalaciones</h2>
-          <div className="max-w-4xl mx-auto">
-            <Card>
-              <CardContent className="p-8">
-                <div className="space-y-4 text-muted-foreground leading-relaxed">
-                  <p>
-                    <strong className="text-primary">Nuestra Sede - Hockey.One Academy:</strong> La sede de Hockey.One Academy es el hogar oficial de los Optima Wild Dogs, equipada para brindar un entorno ideal para el desarrollo deportivo.
-                  </p>
-                  <p>
-                    Todos los deportistas que forman parte del equipo cuentan con <strong>acceso ilimitado</strong> a las instalaciones de Hockey.One Academy.
-                  </p>
-                  <p>
-                    <strong>Ubicación:</strong> Carrera 22 # 164-83, Bogotá
-                  </p>
-                  <p>
-                    <strong>Contacto:</strong><br />
-                    Teléfono: +57 314 310 0208<br />
-                    Web: www.hockeyone.co
-                  </p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight"
+          >
+            Nuestras Instalaciones
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto"
+          >
+            <Card className="overflow-hidden border-border/50 shadow-lg">
+              <CardContent className="p-0">
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  <div className="p-10 flex flex-col justify-center">
+                    <h3 className="text-2xl font-black mb-4">Hockey.One Academy</h3>
+                    <div className="space-y-6 text-muted-foreground leading-relaxed">
+                      <p>
+                        Nuestra sede es el hogar oficial de Optima Wild Dogs, equipada con una gran pista para brindar un entorno premium para el desarrollo deportivo.
+                      </p>
+                      <p>
+                        Todos los deportistas que forman parte del equipo cuentan con <strong>acceso ilimitado</strong> a las instalaciones de Hockey.One para practicar cuando quieran.
+                      </p>
+                      <div className="pt-4 border-t border-border/40">
+                        <p className="mb-2"><strong className="text-foreground">Ubicación:</strong> Carrera 22 # 164-83, Bogotá</p>
+                        <p><strong className="text-foreground">Teléfono:</strong> +57 314 310 0208</p>
+                        <p><strong className="text-foreground">Web:</strong> www.hockeyone.co</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-muted h-64 md:h-auto overflow-hidden relative">
+                    <img
+                      src={celebrationImage}
+                      alt="Instalaciones Hockey One"
+                      className="w-full h-full object-cover mix-blend-luminosity opacity-40 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </section>
 

@@ -4,7 +4,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { Trophy, Clock, Target } from "lucide-react";
-import type { PlayerProfile, User, Coach, CategoryAchievement } from "@shared/schema";
+import type { PlayerProfile, User, Coach } from "@shared/schema";
+import { motion } from "framer-motion";
 import playerPlaceholder from "@assets/generated_images/Player_portrait_placeholder_d8c2b3f0.png";
 import coachPlaceholder from "@assets/generated_images/Coach_portrait_placeholder_9533f352.png";
 import sub8Image from "@assets/generated_images/Sub_8_category_action_a72d36d1.png";
@@ -16,6 +17,19 @@ import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef
 
 type PlayerWithUser = PlayerProfile & { user: User };
 
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
 export default function CategoryDetail() {
   const params = useParams();
   const categoryId = params.id as string;
@@ -26,10 +40,6 @@ export default function CategoryDetail() {
 
   const { data: coaches = [], isLoading: coachesLoading } = useQuery<Coach[]>({
     queryKey: ["/api/categories", categoryId, "coaches"],
-  });
-
-  const { data: achievements = [], isLoading: achievementsLoading } = useQuery<CategoryAchievement[]>({
-    queryKey: ["/api/categories", categoryId, "achievements"],
   });
 
   const categoryImages: Record<string, string> = {
@@ -126,72 +136,111 @@ export default function CategoryDetail() {
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={heroImage} alt={info.name} className="w-full h-full object-cover" />
+          <motion.img
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 10, ease: "linear" }}
+            src={heroImage}
+            alt={info.name}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         </div>
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-4 tracking-tight uppercase drop-shadow-lg">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-6xl md:text-8xl font-black text-white mb-4 tracking-tight uppercase drop-shadow-2xl"
+          >
             {info.name}
-          </h1>
-          <p className="text-2xl text-white/90 drop-shadow-md">{info.ageRange}</p>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-2xl text-white/90 drop-shadow-md font-light tracking-wide"
+          >
+            {info.ageRange}
+          </motion.p>
         </div>
       </section>
 
       {/* Category Info */}
-      <section className="py-20">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -z-10 -mt-32 -mr-32" />
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <Card>
-                <CardHeader>
-                  <Clock className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle>Horarios</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{info.schedule}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Target className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle>Descripción</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{info.description}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Trophy className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle>Nivel</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    {categoryId === "sub8" || categoryId === "sub12"
-                      ? "Formativo"
-                      : categoryId === "mayores"
-                      ? "Elite"
-                      : "Competitivo"}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+            >
+              <motion.div variants={fadeIn}>
+                <Card className="h-full border-border/40 bg-card/40 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300">
+                  <CardHeader>
+                    <Clock className="h-10 w-10 text-primary mb-3" />
+                    <CardTitle className="text-2xl">Horarios</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-lg">{info.schedule}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+              <motion.div variants={fadeIn}>
+                <Card className="h-full border-border/40 bg-card/40 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300">
+                  <CardHeader>
+                    <Target className="h-10 w-10 text-primary mb-3" />
+                    <CardTitle className="text-2xl">Descripción</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">{info.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+              <motion.div variants={fadeIn}>
+                <Card className="h-full border-border/40 bg-card/40 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300">
+                  <CardHeader>
+                    <Trophy className="h-10 w-10 text-primary mb-3" />
+                    <CardTitle className="text-2xl">Nivel</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-lg font-semibold">
+                      {categoryId === "sub8" || categoryId === "sub12"
+                        ? "Formativo"
+                        : categoryId === "mayores"
+                          ? "Elite"
+                          : "Competitivo"}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
-            <Card className="mb-12">
-              <CardHeader>
-                <CardTitle className="text-2xl">Objetivos Formativos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {info.objectives.map((objective: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span>{objective}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="mb-12 border-border/40 bg-card/40 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-3xl font-black">Objetivos Formativos</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {info.objectives.map((objective: string, index: number) => (
+                      <li key={index} className="flex items-center gap-3 bg-muted/30 p-4 rounded-xl">
+                        <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                        <span className="font-medium text-foreground/90">{objective}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -199,54 +248,72 @@ export default function CategoryDetail() {
       {/* Player Roster */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Roster de Jugadores</h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight"
+          >
+            Roster de Jugadores
+          </motion.h2>
           {playersLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[1, 2, 3, 4].map((i) => (
-                <Card key={i}>
+                <Card key={i} className="border-0 shadow-none bg-transparent">
                   <CardContent className="p-6">
-                    <div className="w-24 h-24 rounded-full bg-muted animate-pulse mx-auto mb-4" />
-                    <div className="h-4 bg-muted rounded animate-pulse mb-2" />
-                    <div className="h-3 bg-muted rounded animate-pulse w-2/3 mx-auto" />
+                    <div className="w-28 h-28 rounded-full bg-muted animate-pulse mx-auto mb-4" />
+                    <div className="h-4 bg-muted rounded animate-pulse mb-2 w-3/4 mx-auto" />
+                    <div className="h-3 bg-muted rounded animate-pulse w-1/2 mx-auto" />
                   </CardContent>
                 </Card>
               ))}
             </div>
           ) : players.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+            >
               {players.map((player) => (
-                <Card key={player.id} className="hover-elevate active-elevate-2" data-testid={`player-card-${player.id}`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-24 h-24 rounded-full bg-muted mx-auto mb-4 overflow-hidden">
-                      <img
-                        src={player.user.profileImageUrl || playerPlaceholder}
-                        alt={`${player.user.firstName} ${player.user.lastName}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="text-3xl font-black text-primary mb-2">
-                      #{player.jerseyNumber || "00"}
-                    </div>
-                    <h3 className="font-bold mb-1">
-                      {player.user.firstName} {player.user.lastName}
-                    </h3>
-                    <p className="text-sm text-muted-foreground capitalize mb-2">
-                      {player.position || "Jugador"}
-                    </p>
-                    {(player.goals || player.assists || player.gamesPlayed) ? (
-                      <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t">
-                        <div>PJ: {player.gamesPlayed || 0}</div>
-                        <div>G: {player.goals || 0} | A: {player.assists || 0}</div>
+                <motion.div key={player.id} variants={fadeIn}>
+                  <Card className="group h-full border-0 shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-background overflow-hidden relative" data-testid={`player-card-${player.id}`}>
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                    <CardContent className="p-6 text-center relative z-10">
+                      <div className="w-28 h-28 rounded-full bg-muted mx-auto mb-4 overflow-hidden border-4 border-background shadow-inner ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-300 relative">
+                        <img
+                          src={player.user.profileImageUrl || playerPlaceholder}
+                          alt={`${player.user.firstName} ${player.user.lastName}`}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        />
                       </div>
-                    ) : null}
-                  </CardContent>
-                </Card>
+                      <div className="text-4xl font-black text-primary/10 absolute top-4 right-4 tracking-tighter group-hover:text-primary/20 transition-colors">
+                        #{player.jerseyNumber || "00"}
+                      </div>
+                      <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">
+                        {player.user.firstName} {player.user.lastName}
+                      </h3>
+                      <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                        {player.position || "Jugador"}
+                      </p>
+                      {(player.goals || player.assists || player.gamesPlayed) ? (
+                        <div className="text-xs text-muted-foreground space-y-1 pt-3 border-t border-border/50 flex justify-center gap-4">
+                          <div className="flex flex-col"><span className="font-bold text-foreground">{player.gamesPlayed || 0}</span>PJ</div>
+                          <div className="flex flex-col"><span className="font-bold text-foreground">{player.goals || 0}</span>G</div>
+                          <div className="flex flex-col"><span className="font-bold text-foreground">{player.assists || 0}</span>A</div>
+                        </div>
+                      ) : null}
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <Card className="p-12">
+            <Card className="p-16 max-w-2xl mx-auto border-dashed border-2 bg-transparent">
               <div className="text-center text-muted-foreground">
-                <p>No hay jugadores registrados en esta categoría aún.</p>
+                <Trophy className="mx-auto h-12 w-12 text-muted mb-4" />
+                <p className="text-lg">Próximamente estaremos revelando nuestro roster oficial.</p>
               </div>
             </Card>
           )}
@@ -256,80 +323,65 @@ export default function CategoryDetail() {
       {/* Coaching Staff */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Cuerpo Técnico</h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight"
+          >
+            Cuerpo Técnico
+          </motion.h2>
           {coachesLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[1, 2].map((i) => (
-                <Card key={i}>
+                <Card key={i} className="border-0 shadow-none bg-transparent">
                   <CardContent className="p-6">
                     <div className="w-32 h-32 rounded-full bg-muted animate-pulse mx-auto mb-4" />
-                    <div className="h-4 bg-muted rounded animate-pulse mb-2" />
-                    <div className="h-3 bg-muted rounded animate-pulse" />
+                    <div className="h-4 bg-muted rounded animate-pulse mb-2 w-3/4 mx-auto" />
+                    <div className="h-3 bg-muted rounded animate-pulse w-1/2 mx-auto" />
                   </CardContent>
                 </Card>
               ))}
             </div>
           ) : coaches.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto"
+            >
               {coaches.map((coach) => (
-                <Card key={coach.id} data-testid={`coach-card-${coach.id}`}>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-32 h-32 rounded-full bg-muted mx-auto mb-4 overflow-hidden">
-                      <img
-                        src={coach.photoUrl || coachPlaceholder}
-                        alt={coach.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h3 className="font-bold mb-1">{coach.name}</h3>
-                    <p className="text-sm text-primary mb-2">{coach.role}</p>
-                    {coach.experience && (
-                      <p className="text-xs text-muted-foreground">{coach.experience}</p>
-                    )}
-                  </CardContent>
-                </Card>
+                <motion.div key={coach.id} variants={fadeIn}>
+                  <Card className="h-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-background" data-testid={`coach-card-${coach.id}`}>
+                    <CardContent className="pt-8 pb-6 px-4 text-center">
+                      <div className="w-32 h-32 rounded-full bg-muted/50 mx-auto mb-6 flex items-center justify-center border-4 border-background shadow-inner overflow-hidden">
+                        <img
+                          src={coach.photoUrl || coachPlaceholder}
+                          alt={coach.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-xl font-black text-center mb-1">{coach.name}</h3>
+                      <p className="text-sm font-semibold text-primary uppercase tracking-wide text-center mb-3">{coach.role}</p>
+                      {coach.experience && (
+                        <p className="text-sm text-muted-foreground text-center leading-relaxed px-2">{coach.experience}</p>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <Card className="p-12 max-w-2xl mx-auto">
+            <Card className="p-16 max-w-2xl mx-auto border-dashed border-2 bg-transparent">
               <div className="text-center text-muted-foreground">
-                <p>Información del cuerpo técnico próximamente.</p>
+                <Target className="mx-auto h-12 w-12 text-muted mb-4" />
+                <p className="text-lg">Información del cuerpo técnico próximamente.</p>
               </div>
             </Card>
           )}
         </div>
       </section>
-
-      {/* Achievements */}
-      {achievements.length > 0 && (
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold mb-12 text-center">Logros de la Categoría</h2>
-            <div className="max-w-3xl mx-auto space-y-4">
-              {achievements.map((achievement) => (
-                <Card key={achievement.id} className="hover-elevate active-elevate-2" data-testid={`achievement-${achievement.id}`}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Trophy className="h-8 w-8 text-primary" />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-mono text-muted-foreground mb-1">{achievement.year}</div>
-                        <div className="text-lg font-semibold">{achievement.title}</div>
-                        {achievement.description && (
-                          <p className="text-sm text-muted-foreground mt-1">{achievement.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <Footer />
     </div>

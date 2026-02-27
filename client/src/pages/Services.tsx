@@ -1,8 +1,31 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign } from "lucide-react";
+import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100
+    }
+  }
+};
 
 export default function Services() {
   const services = [
@@ -59,45 +82,21 @@ export default function Services() {
     { category: "Preparación Física (Todas)", days: "Sábados", time: "9:00 AM - 11:00 AM" },
   ];
 
-  const plans = [
-    {
-      name: "Plan Básico",
-      price: "$180.000",
-      period: "mensual",
-      features: [
-        "2 entrenamientos por semana",
-        "Acceso a instalaciones",
-        "Seguro deportivo",
-        "Camiseta del club",
-      ],
-    },
-    {
-      name: "Plan Competitivo",
-      price: "$280.000",
-      period: "mensual",
-      features: [
-        "3 entrenamientos por semana",
-        "Preparación física incluida",
-        "Participación en torneos",
-        "Uniforme completo",
-        "Seguro deportivo",
-      ],
-      popular: true,
-    },
-    {
-      name: "Plan Elite",
-      price: "$380.000",
-      period: "mensual",
-      features: [
-        "Entrenamientos ilimitados",
-        "Preparación física personalizada",
-        "Todos los torneos incluidos",
-        "Kit completo de equipamiento",
-        "Análisis de video",
-        "Nutrición deportiva",
-      ],
-    },
-  ];
+  const membershipPlan = {
+    name: "Afiliación Oficial",
+    price: "$430.000",
+    period: "mensual",
+    features: [
+      "Entrenamientos de primer nivel por categoría",
+      "Preparación física especializada",
+      "Formación deportiva y táctica integral",
+      "Acceso ilimitado a las instalaciones",
+      "Seguro deportivo de cubrimiento total",
+      "Camiseta oficial del club (Dotación inicial)",
+      "Participación habilitada para torneos federados",
+      "Acompañamiento mental y nutricional básico"
+    ],
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -120,30 +119,47 @@ export default function Services() {
       {/* Services */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center">Lo Que Ofrecemos</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">Lo Que Ofrecemos</h2>
+            <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+          >
             {services.map((service, index) => (
-              <Card key={index} data-testid={`service-card-${index}`}>
-                <CardHeader>
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <service.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-2xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{service.description}</p>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={itemVariants}>
+                <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm hover-elevate transition-all duration-300" data-testid={`service-card-${index}`}>
+                  <CardHeader>
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 transform -rotate-6 group-hover:rotate-0 transition-transform">
+                      <service.icon className="h-8 w-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-2xl">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
+                    <ul className="space-y-3">
+                      {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm">
+                          <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
+                          <span className="text-foreground/80">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -175,57 +191,66 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Pricing Plans */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <DollarSign className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-4xl font-bold mb-4">Planes de Membresía</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Elige el plan que mejor se adapte a tus objetivos deportivos. Todos incluyen seguro deportivo y acceso a instalaciones.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card
-                key={index}
-                className={plan.popular ? "border-primary border-2" : ""}
-                data-testid={`plan-card-${index}`}
-              >
-                {plan.popular && (
-                  <div className="bg-primary text-primary-foreground text-center py-2 text-sm font-semibold">
-                    MÁS POPULAR
+      {/* Pricing Plan */}
+      <section className="py-24 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto"
+          >
+            <Card className="border-primary/20 shadow-2xl bg-background/60 backdrop-blur-xl overflow-hidden relative">
+              <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+              <div className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-10">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
+                      <DollarSign className="h-4 w-4" />
+                      Membresía Única
+                    </div>
+                    <CardTitle className="text-4xl md:text-5xl font-black">{membershipPlan.name}</CardTitle>
+                    <p className="text-muted-foreground mt-4 text-lg">
+                      La ruta perfecta para comenzar o potenciar tu nivel competitivo en el mejor club de la ciudad.
+                    </p>
                   </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-black">{plan.price}</span>
-                    <span className="text-muted-foreground ml-2">/ {plan.period}</span>
+                  <div className="shrink-0 flex flex-col items-start md:items-end">
+                    <span className="text-6xl font-black tabular-nums tracking-tighter text-foreground">
+                      {membershipPlan.price.split('.')[0]}<span className="text-4xl">.{membershipPlan.price.split('.')[1]}</span>
+                    </span>
+                    <span className="text-muted-foreground font-medium uppercase tracking-wider text-sm mt-1">/ {membershipPlan.period}</span>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="/login">
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-10">
+                  {membershipPlan.features.map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <CheckCircle2 className="h-4 w-4 text-primary" />
+                      </div>
+                      <span className="font-medium text-foreground/90">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <CardFooter className="p-0">
+                  <a href="/login" className="w-full">
                     <Button
-                      className="w-full"
-                      variant={plan.popular ? "default" : "outline"}
-                      data-testid={`button-select-plan-${index}`}
+                      size="lg"
+                      className="w-full text-lg w-full h-16 rounded-xl hover-elevate transition-all shadow-lg hover:shadow-primary/25"
+                      data-testid="button-select-plan"
                     >
-                      Seleccionar Plan
+                      Inscríbete Ahora y Únete a la Manada
                     </Button>
                   </a>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </CardFooter>
+              </div>
+            </Card>
+          </motion.div>
         </div>
       </section>
 

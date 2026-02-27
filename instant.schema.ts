@@ -264,6 +264,44 @@ const graph = i.graph(
       isRead: i.boolean(),
       createdAt: i.number(),
     }),
+
+    // --------------------------------------------
+    // FEDEHOCKEY - MATCHES & STANDINGS
+    // (Auto-synced from Fedehockey via n8n)
+    // --------------------------------------------
+    matches: i.entity({
+      // Fedehockey game ID (used as lookup key for upsert)
+      gameId: i.string().optional(),
+      date: i.number(), // timestamp ms
+      opponent: i.string(),
+      location: i.string().optional(),
+      homeScore: i.number().optional(),
+      awayScore: i.number().optional(),
+      // result: 'win' | 'loss' | 'draw' | null (if not played yet)
+      result: i.string().optional(),
+      // e.g. "División Mayores" or game notes
+      notes: i.string().optional(),
+      isHome: i.boolean().optional(),
+      // status: 'Not Started' | 'Final' | etc
+      status: i.string().optional(),
+      createdAt: i.number(),
+      updatedAt: i.number(),
+    }),
+
+    standings: i.entity({
+      teamName: i.string(),
+      division: i.string().optional(),
+      position: i.number(),
+      played: i.number(),
+      won: i.number(),
+      drawn: i.number(),
+      lost: i.number(),
+      goalsFor: i.number(),
+      goalsAgainst: i.number(),
+      goalDifference: i.number(),
+      points: i.number(),
+      updatedAt: i.number(),
+    }),
   },
 
   // ============================================

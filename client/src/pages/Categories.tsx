@@ -10,6 +10,20 @@ import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f
 import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
+import { motion } from "framer-motion";
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
 
 export default function Categories() {
   const categories = [
@@ -68,73 +82,97 @@ export default function Categories() {
       <PublicNav />
 
       {/* Hero */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase">
+      <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:16px_16px]" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase drop-shadow-2xl">
               Categorías
             </h1>
-            <p className="text-xl md:text-2xl opacity-90">
+            <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
               Seis categorías competitivas desde Sub 8 hasta Mayores
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Categories Grid */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {categories.map((category) => (
-              <Card
-                key={category.id}
-                className="overflow-hidden hover-elevate active-elevate-2"
-                data-testid={`category-card-${category.id}`}
-              >
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={category.imageUrl}
-                    alt={category.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="text-2xl font-black text-primary mb-1">{category.name}</h3>
-                      <p className="text-sm text-muted-foreground">{category.ageRange}</p>
+              <motion.div key={category.id} variants={fadeIn} className="h-full">
+                <Card
+                  className="overflow-hidden hover-elevate active-elevate-2 group border-border/40 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col"
+                  data-testid={`category-card-${category.id}`}
+                >
+                  <div className="h-48 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                    <img
+                      src={category.imageUrl}
+                      alt={category.name}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                    />
+                  </div>
+                  <CardContent className="p-6 flex-grow flex flex-col">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="text-2xl font-black text-primary mb-1 group-hover:translate-x-1 transition-transform">{category.name}</h3>
+                        <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{category.ageRange}</p>
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-muted-foreground mb-4 line-clamp-3">{category.description}</p>
-                  <div className="mb-4 p-3 bg-muted/50 rounded-md">
-                    <p className="text-sm font-semibold mb-1">Objetivos:</p>
-                    <p className="text-sm text-muted-foreground">{category.objectives}</p>
-                  </div>
-                  <Link href={`/categorias/${category.id}`}>
-                    <Button className="w-full" variant="outline" data-testid={`button-view-${category.id}`}>
-                      Ver Detalles
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                    <p className="text-muted-foreground mb-4 line-clamp-3 leading-relaxed flex-grow">{category.description}</p>
+                    <div className="mb-6 p-4 bg-muted/40 rounded-lg border border-border/50">
+                      <p className="text-xs font-black uppercase text-primary/80 mb-2 tracking-wider">Objetivos</p>
+                      <p className="text-sm text-foreground/80">{category.objectives}</p>
+                    </div>
+                    <Link href={`/categorias/${category.id}`}>
+                      <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300" variant="outline" data-testid={`button-view-${category.id}`}>
+                        Ver Detalles
+                        <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-muted/30 -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-primary/5 rounded-[100%] blur-[80px] -z-10" />
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Encuentra Tu Categoría</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            ¿No estás seguro en qué categoría inscribirte? Contáctanos y te ayudaremos a encontrar el grupo perfecto según tu edad y nivel.
-          </p>
-          <Link href="/contacto">
-            <Button size="lg" data-testid="button-contact-category">
-              Contáctanos
-            </Button>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mx-auto"
+          >
+            <h2 className="text-4xl font-black mb-6 tracking-tight">Encuentra Tu Categoría</h2>
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              ¿No estás seguro en qué categoría inscribirte? Contáctanos y te ayudaremos a encontrar el grupo perfecto según tu edad y nivel.
+            </p>
+            <Link href="/contacto">
+              <Button size="lg" className="text-lg px-8 py-6 shadow-lg hover:shadow-primary/25 transition-all duration-300 group" data-testid="button-contact-category">
+                Contáctanos
+                <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
