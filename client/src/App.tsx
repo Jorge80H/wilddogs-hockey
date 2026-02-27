@@ -15,6 +15,7 @@ import CategoryDetail from "@/pages/CategoryDetail";
 import Tournaments from "@/pages/Tournaments";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
+import LeadLanding from "@/pages/LeadLanding";
 
 // Private Pages
 import PlayerDashboard from "@/pages/PlayerDashboard";
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/torneos" component={Tournaments} />
       <Route path="/contacto" component={Contact} />
       <Route path="/login" component={Login} />
+      <Route path="/unete" component={LeadLanding} />
 
       {/* Private Routes - Require Authentication */}
       <Route path="/dashboard" component={isAuthenticated ? PlayerDashboard : Login} />
