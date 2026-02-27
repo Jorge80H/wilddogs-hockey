@@ -1,17 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Wild Dogs Hockey Club - Bogotá, Colombia</title>
-    <meta name="description" content="Club de Hockey en Línea Wild Dogs en Bogotá, Colombia. Formación deportiva profesional para todas las edades desde Sub 8 hasta Mayores. Únete a nuestro equipo." />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/assets/logo.png" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <!-- Primary SEO -->
+  <title>Optima Wild Dogs Hockey Club | Bogotá, Colombia</title>
+  <meta name="description"
+    content="Club de Hockey en Línea Optima Wild Dogs en Bogotá, Colombia. Formación deportiva profesional para todas las edades desde Sub 8 hasta Mayores. Únete a la manada." />
+  <meta name="keywords"
+    content="hockey en línea, hockey Bogotá, club de hockey Colombia, Optima Wild Dogs, patinaje deportivo, hockey infantil, hockey juvenil" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Optima Wild Dogs Hockey Club" />
+  <meta name="theme-color" content="#ea580c" />
+  <link rel="canonical" href="https://optimawilddogs.com/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://optimawilddogs.com/" />
+  <meta property="og:site_name" content="Optima Wild Dogs Hockey Club" />
+  <meta property="og:title" content="Optima Wild Dogs Hockey Club | Bogotá, Colombia" />
+  <meta property="og:description"
+    content="Club de Hockey en Línea Optima Wild Dogs en Bogotá, Colombia. Formación deportiva profesional para todas las edades. Únete a la manada." />
+  <meta property="og:image" content="https://optimawilddogs.com/logo-wild-dogs.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Optima Wild Dogs Hockey Club - Bogotá" />
+  <meta property="og:locale" content="es_CO" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@optimawilddogs" />
+  <meta name="twitter:title" content="Optima Wild Dogs Hockey Club | Bogotá, Colombia" />
+  <meta name="twitter:description"
+    content="Club de Hockey en Línea en Bogotá, Colombia. Formación deportiva profesional para todas las edades." />
+  <meta name="twitter:image" content="https://optimawilddogs.com/logo-wild-dogs.jpg" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="apple-touch-icon" href="/logo-wild-dogs.jpg" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Structured Data - Schema.org SportsClub -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsClub",
+      "name": "Optima Wild Dogs Hockey Club",
+      "description": "Club de Hockey en Línea profesional en Bogotá, Colombia. Formación deportiva de excelencia para todas las edades desde Sub 8 hasta Mayores.",
+      "url": "https://optimawilddogs.com",
+      "logo": "https://optimawilddogs.com/logo-wild-dogs.jpg",
+      "image": "https://optimawilddogs.com/logo-wild-dogs.jpg",
+      "telephone": "+573202373500",
+      "email": "info@optimawilddogs.com",
+      "sport": "Hockey en Línea",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Carrera 22 No. 164 - 83",
+        "addressLocality": "Bogotá",
+        "addressCountry": "CO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "4.7110",
+        "longitude": "-74.0721"
+      },
+      "sameAs": [
+        "https://www.instagram.com/optimawilddogs/"
+      ]
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

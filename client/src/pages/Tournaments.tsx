@@ -8,6 +8,8 @@ import { Calendar, MapPin, Trophy } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
+
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -23,6 +25,12 @@ const staggerContainer = {
 };
 
 export default function Tournaments() {
+  useSEO({
+    title: "Torneos y Resultados",
+    description: "Calendario, resultados y tabla de posiciones de Optima Wild Dogs Hockey Club. Sigue todos los partidos del club en Bogotá, Colombia.",
+    url: "/torneos",
+  });
+
   const { isLoading, error, data } = db.useQuery({
     matches: {},
     standings: {}

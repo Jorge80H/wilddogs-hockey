@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,6 +30,12 @@ const itemVariants = {
 };
 
 export default function Services() {
+  useSEO({
+    title: "Servicios y Membresías",
+    description: "Escuela de formación deportiva, preparación física especializada, torneos y membresía oficial en Optima Wild Dogs Hockey Club. Afiliación desde $430.000/mes.",
+    url: "/servicios",
+  });
+
   const services = [
     {
       icon: GraduationCap,

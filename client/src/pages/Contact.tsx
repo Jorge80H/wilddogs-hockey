@@ -14,6 +14,8 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { z } from "zod";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
+
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -39,6 +41,12 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
+  useSEO({
+    title: "Contacto",
+    description: "Únete a la manada. Contáctanos en Optima Wild Dogs Hockey Club, Bogotá Colombia. Inscripciones abiertas para todas las edades.",
+    url: "/contacto",
+  });
+
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -286,10 +294,10 @@ export default function Contact() {
                     <div>
                       <div className="font-bold mb-1 group-hover:text-primary transition-colors">Email</div>
                       <a
-                        href="mailto:info@wilddogshockey.com"
+                        href="mailto:info@optimawilddogs.com"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors block break-all"
                       >
-                        info@wilddogshockey.com
+                        info@optimawilddogs.com
                       </a>
                     </div>
                   </div>

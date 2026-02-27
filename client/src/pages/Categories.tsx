@@ -11,6 +11,8 @@ import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
+
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -26,6 +28,12 @@ const staggerContainer = {
 };
 
 export default function Categories() {
+  useSEO({
+    title: "Categorías",
+    description: "Seis categorías de hockey en línea: Sub 8, Sub 12, Sub 14, Sub 16, Sub 18 y Mayores. Optima Wild Dogs Hockey Club en Bogotá, Colombia.",
+    url: "/categorias",
+  });
+
   const categories = [
     {
       id: "sub8",

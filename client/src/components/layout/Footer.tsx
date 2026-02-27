@@ -75,10 +75,10 @@ export function Footer() {
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 <a
-                  href="mailto:info@wilddogshockey.com"
+                  href="mailto:info@optimawilddogs.com"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
-                  info@wilddogshockey.com
+                  info@optimawilddogs.com
                 </a>
               </li>
             </ul>

@@ -1,0 +1,28 @@
+{
+    "name": "Optima Wild Dogs Hockey Club",
+    "short_name": "Wild Dogs",
+    "description": "Club de Hockey en Línea en Bogotá, Colombia. Formación deportiva de excelencia para todas las edades.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#09090b",
+    "theme_color": "#ea580c",
+    "orientation": "portrait-primary",
+    "lang": "es",
+    "icons": [
+        {
+            "src": "/logo-wild-dogs.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "/logo-wild-dogs.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ],
+    "categories": [
+        "sports",
+        "fitness"
+    ],
+    "screenshots": []
+}

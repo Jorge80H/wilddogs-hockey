@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Heart, Target, Users } from "lucide-react";
 import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
+
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -19,6 +21,12 @@ const staggerContainer = {
 };
 
 export default function About() {
+  useSEO({
+    title: "Nosotros",
+    description: "Conoce la historia, misión y valores de Optima Wild Dogs Hockey Club. El renacer del hockey en línea en Bogotá, Colombia. El poder de la manada.",
+    url: "/nosotros",
+  });
+
   const values = [
     {
       icon: Trophy,
