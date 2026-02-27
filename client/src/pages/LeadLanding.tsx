@@ -287,7 +287,7 @@ export default function LeadLanding() {
 
                 {/* Nav minimal */}
                 <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-5">
-                    <img src="/logo-wild-dogs.jpg" alt="Wild Dogs" className="h-10 w-10 rounded-full object-cover ring-2 ring-orange-500/40" />
+                    <img src="/assets/logo.png" alt="Wild Dogs" className="h-10 w-10 rounded-full object-cover ring-2 ring-orange-500/40" />
                     <a
                         href="https://optimawilddogs.com"
                         className="text-xs text-zinc-400 hover:text-white transition-colors uppercase tracking-widest"
@@ -588,7 +588,7 @@ export default function LeadLanding() {
             <footer className="border-t border-white/5 py-10">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                        <img src="/logo-wild-dogs.jpg" alt="Wild Dogs" className="h-8 w-8 rounded-full object-cover" />
+                        <img src="/assets/logo.png" alt="Wild Dogs" className="h-8 w-8 rounded-full object-cover" />
                         <span className="text-zinc-500 text-sm">Optima Wild Dogs Hockey Club · Bogotá, Colombia</span>
                     </div>
                     <div className="flex items-center gap-6 text-zinc-600 text-xs">
