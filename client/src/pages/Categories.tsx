@@ -11,6 +11,7 @@ import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
 import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
+import sub10Image from "@assets/generated_images/Sub_10_category_action_e5f6g7h8.png";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -31,7 +32,7 @@ const staggerContainer = {
 export default function Categories() {
   useSEO({
     title: "Categorías",
-    description: "Siete categorías de hockey en línea: Sub 8, Sub 12, Sub 14, Sub 16, Sub 18, Femenino y Mayores. Wild Dogs Hockey Club en Bogotá, Colombia.",
+    description: "Ocho categorías de hockey en línea: Sub 8, Sub 10, Sub 12, Sub 14, Sub 16, Sub 18, Femenino y Mayores. Wild Dogs Hockey Club en Bogotá, Colombia.",
     url: "/categorias",
   });
 
@@ -43,6 +44,14 @@ export default function Categories() {
       description: "Introducción al hockey en línea con énfasis en diversión y desarrollo de habilidades básicas motoras.",
       imageUrl: sub8Image,
       objectives: "Aprender fundamentos del patinaje y manejo básico del stick.",
+    },
+    {
+      id: "sub10",
+      name: "Sub 10",
+      ageRange: "Menores de 10 años",
+      description: "Desarrollo de habilidades individuales y comprensión inicial de las reglas y dinámicas de equipo.",
+      imageUrl: sub10Image,
+      objectives: "Mejorar la agilidad en patines y familiarización con el juego en conjunto.",
     },
     {
       id: "sub12",
@@ -112,7 +121,7 @@ export default function Categories() {
               Categorías
             </h1>
             <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
-              Siete categorías competitivas desde Sub 8 hasta Mayores
+              Ocho categorías competitivas desde Sub 8 hasta Mayores
             </p>
           </motion.div>
         </div>

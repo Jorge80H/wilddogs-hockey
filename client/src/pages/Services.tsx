@@ -84,10 +84,11 @@ export default function Services() {
   ];
 
   const schedules = [
-    { category: "Sub 8 y Sub 12", days: "Martes y Jueves", time: "4:00 PM - 5:30 PM" },
-    { category: "Sub 14 y Sub 16", days: "Lunes, Miércoles y Viernes", time: "5:30 PM - 7:00 PM" },
-    { category: "Sub 18 y Mayores", days: "Lunes, Miércoles y Viernes", time: "7:00 PM - 9:00 PM" },
-    { category: "Preparación Física (Todas)", days: "Sábados", time: "9:00 AM - 11:00 AM" },
+    { category: "Sub 8, Sub 10, Sub 12", detail: "Lunes (17:00–19:00) y Viernes (16:30–18:30)", location: "Cancha Federación" },
+    { category: "Sub 14", detail: "Lunes (17:00–19:00) y Sábado (07:00–09:00)", location: "Cancha Federación" },
+    { category: "Sub 16", detail: "Lunes (19:30–21:30) / Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC", location: "Cancha Federación / BHC" },
+    { category: "Femenino", detail: "Lun (19:30–21:30), Mié (18:00 H1), Sáb (07:00–09:00) Fed · Dom (08:00–09:00) BHC", location: "Federación / Hockey One / BHC" },
+    { category: "Sub 18 y Mayores", detail: "Lunes (21:00–22:30) y Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC", location: "Cancha Federación / BHC" },
   ];
 
   const membershipPlan = {
@@ -184,12 +185,17 @@ export default function Services() {
             </div>
             <div className="space-y-4">
               {schedules.map((schedule, index) => (
-                <Card key={index} data-testid={`schedule-${index}`}>
+                <Card key={index} data-testid={`schedule-${index}`} className="hover-elevate transition-all border-border/50">
                   <CardContent className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                      <div className="font-bold text-lg">{schedule.category}</div>
-                      <div className="text-muted-foreground">{schedule.days}</div>
-                      <div className="font-mono text-primary md:text-right">{schedule.time}</div>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="font-bold text-lg md:w-1/4 text-primary">{schedule.category}</div>
+                      <div className="text-muted-foreground text-sm font-medium md:w-1/2 flex items-center justify-start gap-2">
+                        <Clock className="w-4 h-4 shrink-0 opacity-70" />
+                        {schedule.detail}
+                      </div>
+                      <div className="font-semibold text-foreground md:w-1/4 md:text-right text-sm">
+                        {schedule.location}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

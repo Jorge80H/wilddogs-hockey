@@ -15,6 +15,7 @@ import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
 import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
+import sub10Image from "@assets/generated_images/Sub_10_category_action_e5f6g7h8.png";
 
 type PlayerWithUser = PlayerProfile & { user: User };
 
@@ -45,6 +46,7 @@ export default function CategoryDetail() {
 
   const categoryImages: Record<string, string> = {
     sub8: sub8Image,
+    sub10: sub10Image,
     sub12: sub12Image,
     sub14: sub14Image,
     sub16: sub16Image,
@@ -58,7 +60,10 @@ export default function CategoryDetail() {
       name: "Sub 8",
       ageRange: "Menores de 8 años",
       description: "Introducción al hockey en línea con énfasis en diversión y desarrollo de habilidades básicas motoras.",
-      schedule: "Lunes (17:00–19:00) Cancha Federación · Viernes (16:30–18:30) Cancha Federación",
+      schedule: [
+        "Lunes (17:00–19:00) · Cancha Federación",
+        "Viernes (16:30–18:30) · Cancha Federación"
+      ],
       objectives: [
         "Desarrollar habilidades motoras básicas",
         "Aprender fundamentos del patinaje",
@@ -66,11 +71,29 @@ export default function CategoryDetail() {
         "Fomentar el amor por el deporte",
       ],
     },
+    sub10: {
+      name: "Sub 10",
+      ageRange: "Menores de 10 años",
+      description: "Desarrollo de habilidades individuales y comprensión inicial de las reglas y dinámicas de equipo.",
+      schedule: [
+        "Lunes (17:00–19:00) · Cancha Federación",
+        "Viernes (16:30–18:30) · Cancha Federación"
+      ],
+      objectives: [
+        "Mejorar la agilidad en patines",
+        "Familiarización con el juego en conjunto",
+        "Técnica de pase y recepción",
+        "Comprender reglas básicas del hockey en línea",
+      ],
+    },
     sub12: {
       name: "Sub 12",
       ageRange: "Menores de 12 años",
       description: "Desarrollo técnico progresivo con introducción a conceptos tácticos básicos del juego.",
-      schedule: "Lunes (17:00–19:00) Cancha Federación · Viernes (16:30–18:30) Cancha Federación",
+      schedule: [
+        "Lunes (17:00–19:00) · Cancha Federación",
+        "Viernes (16:30–18:30) · Cancha Federación"
+      ],
       objectives: [
         "Perfeccionar técnica individual",
         "Comprender posiciones de juego",
@@ -82,7 +105,10 @@ export default function CategoryDetail() {
       name: "Sub 14",
       ageRange: "Menores de 14 años",
       description: "Formación competitiva con énfasis en táctica colectiva y desarrollo físico.",
-      schedule: "Lunes (17:00–19:00) Cancha Federación · Sábado (07:00–09:00) Cancha Federación",
+      schedule: [
+        "Lunes (17:00–19:00) · Cancha Federación",
+        "Sábado (07:00–09:00) · Cancha Federación"
+      ],
       objectives: [
         "Dominar sistemas tácticos",
         "Mejorar condición física específica",
@@ -94,7 +120,11 @@ export default function CategoryDetail() {
       name: "Sub 16",
       ageRange: "Menores de 16 años",
       description: "Alto nivel competitivo con preparación para categorías mayores.",
-      schedule: "Lunes (19:30–21:30) Cancha Federación · Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC",
+      schedule: [
+        "Lunes (19:30–21:30) · Cancha Federación",
+        "Sábado (07:00–09:00) · Cancha Federación",
+        "Domingo (08:00–09:00) · Cancha BHC"
+      ],
       objectives: [
         "Excelencia técnico-táctica",
         "Preparación mental competitiva",
@@ -106,7 +136,11 @@ export default function CategoryDetail() {
       name: "Sub 18",
       ageRange: "Menores de 18 años",
       description: "Categoría pre-profesional con enfoque en alto rendimiento.",
-      schedule: "Lunes (21:00–22:30) Cancha Federación · Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC",
+      schedule: [
+        "Lunes (21:00–22:30) · Cancha Federación",
+        "Jueves (19:00–20:30) · Cancha Federación",
+        "Domingo (07:00–08:00) · Cancha BHC"
+      ],
       objectives: [
         "Perfeccionamiento integral",
         "Transición a nivel senior",
@@ -118,7 +152,11 @@ export default function CategoryDetail() {
       name: "Mayores",
       ageRange: "18 años en adelante",
       description: "Competencia adulta de alto nivel en torneos locales y nacionales.",
-      schedule: "Lunes (21:00–22:30) Cancha Federación · Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC",
+      schedule: [
+        "Lunes (21:00–22:30) · Cancha Federación",
+        "Jueves (19:00–20:30) · Cancha Federación",
+        "Domingo (07:00–08:00) · Cancha BHC"
+      ],
       objectives: [
         "Competencia profesional",
         "Representación del club a máximo nivel",
@@ -130,7 +168,12 @@ export default function CategoryDetail() {
       name: "Femenino",
       ageRange: "Todas las edades",
       description: "Categoría femenina de alto rendimiento con competencia en torneos locales, nacionales e internacionales.",
-      schedule: "Lunes (19:30–21:30) Cancha Federación · Miércoles (18:00) Hockey One · Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC",
+      schedule: [
+        "Lunes (19:30–21:30) · Cancha Federación",
+        "Miércoles (18:00) · Hockey One",
+        "Sábado (07:00–09:00) · Cancha Federación",
+        "Domingo (08:00–09:00) · Cancha BHC"
+      ],
       objectives: [
         "Desarrollo integral de la jugadora femenina",
         "Competencia a nivel local y nacional",
@@ -199,7 +242,18 @@ export default function CategoryDetail() {
                     <CardTitle className="text-2xl">Horarios</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground text-lg">{info.schedule}</p>
+                    {Array.isArray(info.schedule) ? (
+                      <ul className="space-y-3">
+                        {info.schedule.map((slot: string, i: number) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                            <span className="text-muted-foreground leading-tight">{slot}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-muted-foreground text-lg">{info.schedule}</p>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -222,7 +276,7 @@ export default function CategoryDetail() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground text-lg font-semibold">
-                      {categoryId === "sub8" || categoryId === "sub12"
+                      {categoryId === "sub8" || categoryId === "sub10" || categoryId === "sub12"
                         ? "Formativo"
                         : categoryId === "mayores" || categoryId === "femenino"
                           ? "Elite"
