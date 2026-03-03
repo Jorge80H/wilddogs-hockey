@@ -14,6 +14,7 @@ import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f
 import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
+import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
 
 type PlayerWithUser = PlayerProfile & { user: User };
 
@@ -49,6 +50,7 @@ export default function CategoryDetail() {
     sub16: sub16Image,
     sub18: sub18Image,
     mayores: mayoresImage,
+    femenino: femeninoImage,
   };
 
   const categoryInfo: Record<string, any> = {
@@ -56,7 +58,7 @@ export default function CategoryDetail() {
       name: "Sub 8",
       ageRange: "Menores de 8 años",
       description: "Introducción al hockey en línea con énfasis en diversión y desarrollo de habilidades básicas motoras.",
-      schedule: "Martes y Jueves, 4:00 PM - 5:30 PM",
+      schedule: "Lunes (17:00–19:00) Cancha Federación · Viernes (16:30–18:30) Cancha Federación",
       objectives: [
         "Desarrollar habilidades motoras básicas",
         "Aprender fundamentos del patinaje",
@@ -68,7 +70,7 @@ export default function CategoryDetail() {
       name: "Sub 12",
       ageRange: "Menores de 12 años",
       description: "Desarrollo técnico progresivo con introducción a conceptos tácticos básicos del juego.",
-      schedule: "Martes y Jueves, 4:00 PM - 5:30 PM",
+      schedule: "Lunes (17:00–19:00) Cancha Federación · Viernes (16:30–18:30) Cancha Federación",
       objectives: [
         "Perfeccionar técnica individual",
         "Comprender posiciones de juego",
@@ -80,7 +82,7 @@ export default function CategoryDetail() {
       name: "Sub 14",
       ageRange: "Menores de 14 años",
       description: "Formación competitiva con énfasis en táctica colectiva y desarrollo físico.",
-      schedule: "Lunes, Miércoles y Viernes, 5:30 PM - 7:00 PM",
+      schedule: "Lunes (17:00–19:00) Cancha Federación · Sábado (07:00–09:00) Cancha Federación",
       objectives: [
         "Dominar sistemas tácticos",
         "Mejorar condición física específica",
@@ -92,7 +94,7 @@ export default function CategoryDetail() {
       name: "Sub 16",
       ageRange: "Menores de 16 años",
       description: "Alto nivel competitivo con preparación para categorías mayores.",
-      schedule: "Lunes, Miércoles y Viernes, 5:30 PM - 7:00 PM",
+      schedule: "Lunes (19:30–21:30) Cancha Federación · Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC",
       objectives: [
         "Excelencia técnico-táctica",
         "Preparación mental competitiva",
@@ -104,7 +106,7 @@ export default function CategoryDetail() {
       name: "Sub 18",
       ageRange: "Menores de 18 años",
       description: "Categoría pre-profesional con enfoque en alto rendimiento.",
-      schedule: "Lunes, Miércoles y Viernes, 7:00 PM - 9:00 PM",
+      schedule: "Lunes (21:00–22:30) Cancha Federación · Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC",
       objectives: [
         "Perfeccionamiento integral",
         "Transición a nivel senior",
@@ -116,12 +118,24 @@ export default function CategoryDetail() {
       name: "Mayores",
       ageRange: "18 años en adelante",
       description: "Competencia adulta de alto nivel en torneos locales y nacionales.",
-      schedule: "Lunes, Miércoles y Viernes, 7:00 PM - 9:00 PM",
+      schedule: "Lunes (21:00–22:30) Cancha Federación · Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC",
       objectives: [
         "Competencia profesional",
         "Representación del club a máximo nivel",
         "Torneos nacionales",
         "Excelencia deportiva",
+      ],
+    },
+    femenino: {
+      name: "Femenino",
+      ageRange: "Todas las edades",
+      description: "Categoría femenina de alto rendimiento con competencia en torneos locales, nacionales e internacionales.",
+      schedule: "Lunes (19:30–21:30) Cancha Federación · Miércoles (18:00) Hockey One · Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC",
+      objectives: [
+        "Desarrollo integral de la jugadora femenina",
+        "Competencia a nivel local y nacional",
+        "Representación del club en torneos femeninos",
+        "Proyección deportiva internacional",
       ],
     },
   };
@@ -210,7 +224,7 @@ export default function CategoryDetail() {
                     <p className="text-muted-foreground text-lg font-semibold">
                       {categoryId === "sub8" || categoryId === "sub12"
                         ? "Formativo"
-                        : categoryId === "mayores"
+                        : categoryId === "mayores" || categoryId === "femenino"
                           ? "Elite"
                           : "Competitivo"}
                     </p>

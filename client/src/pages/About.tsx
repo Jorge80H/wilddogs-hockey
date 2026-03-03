@@ -51,10 +51,9 @@ export default function About() {
   ];
 
   const leadership = [
-    { name: "Carlos Rodríguez", role: "Presidente", experience: "15 años en hockey profesional" },
-    { name: "Ana María García", role: "Directora Técnica", experience: "Entrenadora certificada nivel III" },
-    { name: "Luis Fernando Torres", role: "Director Administrativo", experience: "MBA en Gestión Deportiva" },
-    { name: "María Fernanda López", role: "Coordinadora Categorías Menores", experience: "Especialista en formación deportiva infantil" },
+    { name: "Alejandro Lucio", role: "Presidente", experience: "Presidente y Representante Legal" },
+    { name: "Por definir", role: "Tesorero", experience: "Responsable del manejo de bienes y fondos" },
+    { name: "Por definir", role: "Secretario", experience: "Responsable de la gestión administrativa" },
   ];
 
 
@@ -220,7 +219,7 @@ export default function About() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
           >
             {leadership.map((leader, index) => (
               <motion.div key={index} variants={fadeIn}>

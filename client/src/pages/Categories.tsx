@@ -10,6 +10,7 @@ import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f
 import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
 import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
 import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
+import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -30,7 +31,7 @@ const staggerContainer = {
 export default function Categories() {
   useSEO({
     title: "Categorías",
-    description: "Seis categorías de hockey en línea: Sub 8, Sub 12, Sub 14, Sub 16, Sub 18 y Mayores. Optima Wild Dogs Hockey Club en Bogotá, Colombia.",
+    description: "Siete categorías de hockey en línea: Sub 8, Sub 12, Sub 14, Sub 16, Sub 18, Femenino y Mayores. Wild Dogs Hockey Club en Bogotá, Colombia.",
     url: "/categorias",
   });
 
@@ -76,6 +77,14 @@ export default function Categories() {
       objectives: "Perfeccionamiento integral y transición a nivel senior.",
     },
     {
+      id: "femenino",
+      name: "Femenino",
+      ageRange: "Todas las edades",
+      description: "Categoría femenina de alto rendimiento con competencia en torneos locales, nacionales e internacionales.",
+      imageUrl: femeninoImage,
+      objectives: "Desarrollo integral de la jugadora femenina y representación del club a máximo nivel.",
+    },
+    {
       id: "mayores",
       name: "Mayores",
       ageRange: "18 años en adelante",
@@ -103,7 +112,7 @@ export default function Categories() {
               Categorías
             </h1>
             <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
-              Seis categorías competitivas desde Sub 8 hasta Mayores
+              Siete categorías competitivas desde Sub 8 hasta Mayores
             </p>
           </motion.div>
         </div>
