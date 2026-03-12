@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useSEO } from "@/hooks/useSEO";
-import heroImage from "@assets/generated_images/Hockey_hero_action_shot_61944fec.png";
-import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
+import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
+import celebrationImage from "@assets/client_images/IMG_8260.webp";
 
 
 const fadeIn = {

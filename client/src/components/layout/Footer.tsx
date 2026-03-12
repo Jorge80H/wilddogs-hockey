@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 import { Link } from "wouter";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export function Footer() {
   return (
@@ -87,7 +88,7 @@ export function Footer() {
           {/* Social Media */}
           <div>
             <h3 className="text-sm font-semibold mb-4">Síguenos</h3>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-8">
               <a
                 href="https://www.instagram.com/optimawilddogs/"
                 target="_blank"
@@ -98,6 +99,9 @@ export function Footer() {
               >
                 <Instagram className="h-5 w-5" />
               </a>
+            </div>
+            <div className="mt-8 flex justify-start">
+              <img src={logoOptima} alt="Optima Logo" className="h-16 md:h-20 w-auto object-contain opacity-90" />
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Heart, Target, Users } from "lucide-react";
-import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
+import celebrationImage from "@assets/client_images/IMG_8260.webp";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -16,9 +16,11 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 }
   }
 };
+
+import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function About() {
   useSEO({
@@ -63,8 +65,16 @@ export default function About() {
       <PublicNav />
 
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 md:py-32 bg-primary text-primary-foreground overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none mix-blend-multiply"
+          style={{ 
+            backgroundImage: `url(${textureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +85,7 @@ export default function About() {
               Nosotros
             </h1>
             <p className="text-xl md:text-2xl drop-shadow-md opacity-90 font-light">
-              Conoce la historia y los valores que nos hacen el mejor club de hockey en línea de Bogotá
+              Conoce la historia, la energía y los valores que nos impulsan a ser el mejor club de hockey en línea de Bogotá
             </p>
           </motion.div>
         </div>

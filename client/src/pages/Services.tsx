@@ -2,7 +2,7 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2 } from "lucide-react";
+import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -23,11 +23,13 @@ const itemVariants = {
     y: 0,
     opacity: 1,
     transition: {
-      type: "spring",
-      stiffness: 100
+      duration: 0.5
     }
   }
 };
+
+import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function Services() {
   useSEO({
@@ -83,12 +85,16 @@ export default function Services() {
     },
   ];
 
+  const HOCKEY_ONE_MAP = "https://www.google.com/maps/place/Hockey.One+Academy/@4.7466044,-74.0455953,141m";
+  const FEDE_MAP = "https://www.google.com/maps/place/Coliseo+de+Hockey+en+Linea/@4.7754122,-74.0406326,165m";
+  const GUAYMARAL_MAP = "https://www.google.com/maps/place/Pista+De+Hockey+Guaymaral/@4.808551,-74.0353605,130m";
+
   const schedules = [
-    { category: "Sub 8, Sub 10, Sub 12", detail: "Lunes (17:00–19:00) y Viernes (16:30–18:30)", location: "Cancha Federación" },
-    { category: "Sub 14", detail: "Lunes (17:00–19:00) y Sábado (07:00–09:00)", location: "Cancha Federación" },
-    { category: "Sub 16", detail: "Lunes (19:30–21:30) / Sábado (07:00–09:00) Cancha Federación · Domingo (08:00–09:00) Cancha BHC", location: "Cancha Federación / BHC" },
-    { category: "Femenino", detail: "Lun (19:30–21:30), Mié (18:00 H1), Sáb (07:00–09:00) Fed · Dom (08:00–09:00) BHC", location: "Federación / Hockey One / BHC" },
-    { category: "Sub 18 y Mayores", detail: "Lunes (21:00–22:30) y Jueves (19:00–20:30) Cancha Federación · Domingo (07:00–08:00) Cancha BHC", location: "Cancha Federación / BHC" },
+    { category: "Sub 8, Sub 10, Sub 12", detail: "Lunes (17:00–19:00) y Viernes (16:30–18:30)", location: "Hockey One (Federación)", mapUrl: FEDE_MAP },
+    { category: "Sub 14", detail: "Lunes (17:00–19:00) y Sábado (07:00–09:00)", location: "Hockey One (Federación)", mapUrl: FEDE_MAP },
+    { category: "Sub 16", detail: "Lunes (19:30–21:30) / Sábado (07:00–09:00) Fed · Domingo (08:00–09:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Femenino", detail: "Lun (19:30–21:30), Mié (18:00 H1), Sáb (07:00–09:00) Fed · Dom (08:00–09:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Sub 18 y Mayores", detail: "Lunes (21:00–22:30) y Jueves (19:00–20:30) Fed · Domingo (07:00–08:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
   ];
 
   const membershipPlan = {
@@ -112,16 +118,29 @@ export default function Services() {
       <PublicNav />
 
       {/* Hero */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+      <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none mix-blend-multiply"
+          style={{ 
+            backgroundImage: `url(${textureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto text-center"
+          >
             <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase">
               Servicios
             </h1>
             <p className="text-xl md:text-2xl opacity-90">
-              Programas de entrenamiento profesional para todas las edades y niveles
+              Programas de entrenamiento llenos de energía y nivel profesional para todas las edades y niveles
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -193,13 +212,86 @@ export default function Services() {
                         <Clock className="w-4 h-4 shrink-0 opacity-70" />
                         {schedule.detail}
                       </div>
-                      <div className="font-semibold text-foreground md:w-1/4 md:text-right text-sm">
+                      <div className="font-semibold text-foreground md:w-1/4 md:text-right text-sm flex items-center md:justify-end gap-1">
+                        <MapPin className="w-3.5 h-3.5 shrink-0 text-primary opacity-70" />
                         {schedule.location}
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Canchas */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h2 className="text-4xl font-bold mb-4">Nuestras Canchas</h2>
+            <p className="text-muted-foreground">
+              Entrenamos en las mejores instalaciones de hockey en línea de Bogotá
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Hockey One - Sede */}
+            <div>
+              <h3 className="text-xl font-bold mb-1">Hockey One Academy</h3>
+              <p className="text-sm text-muted-foreground mb-3">Cra. 22 #164-83, Bogotá • Sede principal del club</p>
+              <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
+                <iframe
+                  src="https://maps.google.com/maps?width=100%25&height=400&hl=en&q=4.7466044,-74.0455953+(Hockey+One+Wild+Dogs)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Hockey One Academy - Wild Dogs"
+                  className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
+                />
+              </div>
+            </div>
+            {/* Fedepatin */}
+            <div>
+              <h3 className="text-xl font-bold mb-1">Coliseo Hockey en Línea</h3>
+              <p className="text-sm text-muted-foreground mb-3">Bogotá • Cancha de entrenamiento Fedepatín</p>
+              <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
+                <iframe
+                  src="https://maps.google.com/maps?width=100%25&height=400&hl=en&q=4.7754122,-74.0406326+(Coliseo+Hockey+Fedepatin)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Coliseo de Hockey en Línea - Fedepatín"
+                  className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
+                />
+              </div>
+            </div>
+            {/* Guaymaral */}
+            <div>
+              <h3 className="text-xl font-bold mb-1">Pista Hockey Guaymaral</h3>
+              <p className="text-sm text-muted-foreground mb-3">Autopista Norte, Bogotá • Cancha de competencia</p>
+              <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
+                <iframe
+                  src="https://maps.google.com/maps?width=100%25&height=400&hl=en&q=4.808551,-74.0353605+(Pista+Hockey+Guaymaral)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Pista de Hockey Guaymaral"
+                  className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
+                />
+              </div>
             </div>
           </div>
         </div>

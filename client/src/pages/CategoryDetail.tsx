@@ -6,16 +6,16 @@ import { useQuery } from "@tanstack/react-query";
 import { Trophy, Clock, Target } from "lucide-react";
 import type { PlayerProfile, User, Coach } from "@shared/schema";
 import { motion } from "framer-motion";
-import playerPlaceholder from "@assets/generated_images/Player_portrait_placeholder_d8c2b3f0.png";
-import coachPlaceholder from "@assets/generated_images/Coach_portrait_placeholder_9533f352.png";
-import sub8Image from "@assets/generated_images/Sub_8_category_action_a72d36d1.png";
-import sub12Image from "@assets/generated_images/Sub_12_category_action_b13c69c9.png";
-import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f.png";
-import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
-import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
-import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
-import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
-import sub10Image from "@assets/generated_images/Sub_10_category_action_e5f6g7h8.png";
+import playerPlaceholder from "@assets/client_images/Arquero.webp";
+import coachPlaceholder from "@assets/client_images/Arquero.webp";
+import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
+import sub12Image from "@assets/client_images/Sub12_Grupo.webp";
+import sub14Image from "@assets/client_images/sub14_Grupo.webp";
+import sub16Image from "@assets/client_images/IMG_8291_1.webp";
+import sub18Image from "@assets/client_images/Sub18_grupo.webp";
+import mayoresImage from "@assets/client_images/IMG_7937.webp";
+import femeninoImage from "@assets/client_images/IMG_5907.webp";
+import sub10Image from "@assets/client_images/Sub10_grupo.webp";
 
 type PlayerWithUser = PlayerProfile & { user: User };
 

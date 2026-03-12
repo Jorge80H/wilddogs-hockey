@@ -4,12 +4,12 @@ import { db } from "@/lib/instant";
 import { id } from "@instantdb/react";
 import { useSEO } from "@/hooks/useSEO";
 import { useToast } from "@/hooks/use-toast";
-import heroImage from "@assets/generated_images/Hockey_hero_action_shot_61944fec.png";
-import celebrationImage from "@assets/generated_images/Team_celebration_photo_ef5bea2c.png";
-import sub8Image from "@assets/generated_images/Sub_8_category_action_a72d36d1.png";
-import sub12Image from "@assets/generated_images/Sub_12_category_action_b13c69c9.png";
-import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f.png";
-import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
+import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
+import celebrationImage from "@assets/client_images/IMG_8260.webp";
+import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
+import sub12Image from "@assets/client_images/Sub12_Grupo.webp";
+import sub14Image from "@assets/client_images/sub14_Grupo.webp";
+import sub16Image from "@assets/client_images/IMG_8291_1.webp";
 
 // ─── LEAD FORM MODAL ─────────────────────────────────────────────────────────
 function LeadModal({ onClose }: { onClose: () => void }) {

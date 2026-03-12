@@ -4,14 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ChevronRight } from "lucide-react";
-import sub8Image from "@assets/generated_images/Sub_8_category_action_a72d36d1.png";
-import sub12Image from "@assets/generated_images/Sub_12_category_action_b13c69c9.png";
-import sub14Image from "@assets/generated_images/Sub_14_category_action_8361893f.png";
-import sub16Image from "@assets/generated_images/Sub_16_category_action_736df6df.png";
-import sub18Image from "@assets/generated_images/Sub_18_category_action_dd3bdc31.png";
-import mayoresImage from "@assets/generated_images/Mayores_category_action_e9aef5c0.png";
-import femeninoImage from "@assets/generated_images/Femenino_category_action_f0a1b2c3.png";
-import sub10Image from "@assets/generated_images/Sub_10_category_action_e5f6g7h8.png";
+import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
+import sub12Image from "@assets/client_images/Sub12_Grupo.webp";
+import sub14Image from "@assets/client_images/sub14_Grupo.webp";
+import sub16Image from "@assets/client_images/IMG_8291_1.webp";
+import sub18Image from "@assets/client_images/Sub18_grupo.webp";
+import mayoresImage from "@assets/client_images/IMG_7937.webp";
+import femeninoImage from "@assets/client_images/IMG_5907.webp";
+import sub10Image from "@assets/client_images/Sub10_grupo.webp";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -25,9 +25,11 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
   }
 };
+
+import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function Categories() {
   useSEO({
@@ -109,6 +111,14 @@ export default function Categories() {
 
       {/* Hero */}
       <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none mix-blend-multiply"
+          style={{ 
+            backgroundImage: `url(${textureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:16px_16px]" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -121,7 +131,7 @@ export default function Categories() {
               Categorías
             </h1>
             <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
-              Ocho categorías competitivas desde Sub 8 hasta Mayores
+              Ocho categorías competitivas desbordando energía desde Sub 8 hasta Mayores
             </p>
           </motion.div>
         </div>

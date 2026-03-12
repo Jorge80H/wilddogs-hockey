@@ -40,6 +40,9 @@ const contactFormSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
+import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
+
 export default function Contact() {
   useSEO({
     title: "Contacto",
@@ -126,6 +129,14 @@ export default function Contact() {
 
       {/* Hero */}
       <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none mix-blend-multiply"
+          style={{ 
+            backgroundImage: `url(${textureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:16px_16px]" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -138,7 +149,7 @@ export default function Contact() {
               Contacto
             </h1>
             <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
-              ¿Tienes preguntas? Estamos aquí para ayudarte
+              ¿Tienes preguntas? Conecta con nuestra energía, estamos aquí para ayudarte
             </p>
           </motion.div>
         </div>
@@ -325,14 +336,14 @@ export default function Contact() {
                   <div className="aspect-video w-full relative group">
                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
                     <iframe
-                      src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Carrera%2022%20No.%20164%20-%2083+(Wild%20Dogs%20Hockey%20Club)&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                      src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=4.7466044,-74.0455953+(Hockey+One+Wild+Dogs)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Wild Dogs Location"
+                      title="Hockey One - Wild Dogs Hockey Club"
                       className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700 object-cover"
                     />
                   </div>

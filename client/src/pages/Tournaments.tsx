@@ -20,9 +20,11 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
   }
 };
+
+import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
+import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function Tournaments() {
   useSEO({
@@ -73,6 +75,14 @@ export default function Tournaments() {
 
       {/* Hero */}
       <section className="py-20 md:py-32 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none mix-blend-multiply"
+          style={{ 
+            backgroundImage: `url(${textureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:16px_16px]" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -85,7 +95,7 @@ export default function Tournaments() {
               Torneos
             </h1>
             <p className="text-xl md:text-2xl opacity-90 font-light drop-shadow-md">
-              Resultados, calendario y tablas de posiciones
+              La energía en la pista: resultados, calendario y tablas de posiciones
             </p>
           </motion.div>
         </div>
