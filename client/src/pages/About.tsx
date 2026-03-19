@@ -130,6 +130,10 @@ export default function About() {
                 src={celebrationImage}
                 alt="Wild Dogs Team Celebration"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="800"
               />
             </motion.div>
           </div>
@@ -291,6 +295,10 @@ export default function About() {
                       src={celebrationImage}
                       alt="Instalaciones Hockey One"
                       className="w-full h-full object-cover mix-blend-luminosity opacity-40 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
+                      loading="lazy"
+                      decoding="async"
+                      width="1200"
+                      height="800"
                     />
                   </div>
                 </div>

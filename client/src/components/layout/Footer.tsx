@@ -10,7 +10,10 @@ export function Footer() {
           {/* About */}
           <div>
             <div className="mb-4">
-              <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-24 w-auto" />
+              <picture>
+                <source srcSet="/assets/logo.webp" type="image/webp" />
+                <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-24 w-auto" width="96" height="96" />
+              </picture>
             </div>
             <h3 className="text-lg font-bold text-primary mb-4">Optima Wild Dogs Hockey Club</h3>
             <p className="text-sm text-muted-foreground mb-4">

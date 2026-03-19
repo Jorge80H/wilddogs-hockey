@@ -158,6 +158,10 @@ export default function Categories() {
                       src={category.imageUrl}
                       alt={category.name}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                      width="800"
+                      height="480"
                     />
                   </div>
                   <CardContent className="p-6 flex-grow flex flex-col">

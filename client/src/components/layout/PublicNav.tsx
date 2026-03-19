@@ -23,7 +23,10 @@ export function PublicNav() {
           {/* Logo */}
           <Link href="/" data-testid="link-home">
             <div className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-3 py-2 -ml-3">
-              <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-16 w-auto" />
+              <picture>
+                <source srcSet="/assets/logo.webp" type="image/webp" />
+                <img src="/assets/logo.png" alt="Optima Wild Dogs Hockey Club" className="h-16 w-auto" width="64" height="64" />
+              </picture>
             </div>
           </Link>
 

@@ -350,10 +350,14 @@ export default function CategoryDetail() {
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                     <CardContent className="p-6 text-center relative z-10">
                       <div className="w-28 h-28 rounded-full bg-muted mx-auto mb-4 overflow-hidden border-4 border-background shadow-inner ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-300 relative">
-                        <img
+                         <img
                           src={player.user.profileImageUrl || playerPlaceholder}
                           alt={`${player.user.firstName} ${player.user.lastName}`}
                           className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                          decoding="async"
+                          width="112"
+                          height="112"
                         />
                       </div>
                       <div className="text-4xl font-black text-primary/10 absolute top-4 right-4 tracking-tighter group-hover:text-primary/20 transition-colors">
@@ -428,6 +432,10 @@ export default function CategoryDetail() {
                           src={coach.photoUrl || coachPlaceholder}
                           alt={coach.name}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width="128"
+                          height="128"
                         />
                       </div>
                       <h3 className="text-xl font-black text-center mb-1">{coach.name}</h3>

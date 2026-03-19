@@ -65,6 +65,10 @@ export default function Landing() {
             src={heroImage}
             alt="Wild Dogs Hockey Action"
             className="w-full h-full object-cover"
+            fetchPriority="high"
+            decoding="async"
+            width="1920"
+            height="1080"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         </div>
@@ -295,6 +299,8 @@ export default function Landing() {
                           src={post.imageUrl || heroImage}
                           alt={post.title}
                           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                       <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{post.title}</h3>
@@ -371,6 +377,10 @@ export default function Landing() {
             src={celebrationImage}
             alt="Wild Dogs Action Background"
             className="w-full h-full object-cover opacity-20 mix-blend-overlay"
+            loading="lazy"
+            decoding="async"
+            width="1920"
+            height="1080"
           />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
