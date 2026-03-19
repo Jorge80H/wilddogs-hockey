@@ -97,14 +97,14 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" data-testid="button-hero-join">
+            <Link href="/Unete" data-testid="button-hero-join">
               <Button
                 size="lg"
                 className="text-lg px-8 py-6 h-auto bg-primary text-primary-foreground hover:bg-primary/90 border-0 shadow-[0_0_40px_-10px_rgba(234,88,12,0.5)] hover:shadow-[0_0_60px_-15px_rgba(234,88,12,0.8)] transition-all duration-300 rounded-full"
               >
                 Únete a la Manada
               </Button>
-            </a>
+            </Link>
             <Link href="/categorias" data-testid="link-hero-categories">
               <Button
                 size="lg"
@@ -396,7 +396,7 @@ export default function Landing() {
             <p className="text-xl md:text-2xl font-light mb-10 max-w-3xl mx-auto text-primary-foreground/90 leading-relaxed drop-shadow">
               Desarrollo integral, entrenamiento personalizado y convicción pura para alcanzar tu máximo potencial dentro y fuera de la pista.
             </p>
-            <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer">
+            <Link href="/Unete">
               <Button
                 size="lg"
                 variant="outline"
@@ -404,7 +404,7 @@ export default function Landing() {
               >
                 Inscripciones Abiertas
               </Button>
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>
