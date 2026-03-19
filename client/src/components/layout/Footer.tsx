@@ -104,7 +104,7 @@ export function Footer() {
               </a>
             </div>
             <div className="mt-8 flex justify-start">
-              <img src={logoOptima} alt="Optima Logo" className="h-16 md:h-20 w-auto object-contain opacity-90" />
+              <img src={logoOptima} alt="Optima Logo" className="h-16 md:h-20 w-auto object-contain opacity-90" width="80" height="80" loading="lazy" />
             </div>
           </div>
         </div>
