@@ -381,11 +381,15 @@ function MatchesSection({ upcomingMatches, pastMatches, isLoading, wdDisplayName
                         <div className="text-2xl font-black mb-3 tracking-tight group-hover:text-primary transition-colors">
                           {wdDisplayName} vs {match.opponent}
                         </div>
-                        {match.homeScore !== null && match.awayScore !== null && (
-                          <div className="text-4xl font-black font-mono text-primary/80 group-hover:text-primary transition-colors tracking-tighter">
-                            {match.homeScore} <span className="text-muted-foreground/30 text-2xl mx-1">-</span> {match.awayScore}
-                          </div>
-                        )}
+                        {match.homeScore !== null && match.awayScore !== null && (() => {
+                          const wdScore = match.isHome ? match.homeScore : match.awayScore;
+                          const opScore = match.isHome ? match.awayScore : match.homeScore;
+                          return (
+                            <div className="text-4xl font-black font-mono text-primary/80 group-hover:text-primary transition-colors tracking-tighter">
+                              {wdScore} <span className="text-muted-foreground/30 text-2xl mx-1">-</span> {opScore}
+                            </div>
+                          );
+                        })()}
                         {match.location && (
                           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-3 bg-muted/30 w-fit px-3 py-1 rounded-md">
                             <MapPin className="h-3.5 w-3.5" />
@@ -730,11 +734,15 @@ function PastMatchesList({ matches, isLoading, wdDisplayName }: { matches: any[]
                   <div className="text-2xl font-black mb-3 tracking-tight group-hover:text-primary transition-colors">
                     {wdDisplayName} vs {match.opponent}
                   </div>
-                  {match.homeScore !== null && match.awayScore !== null && (
-                    <div className="text-4xl font-black font-mono text-primary/80 group-hover:text-primary transition-colors tracking-tighter">
-                      {match.homeScore} <span className="text-muted-foreground/30 text-2xl mx-1">-</span> {match.awayScore}
-                    </div>
-                  )}
+                  {match.homeScore !== null && match.awayScore !== null && (() => {
+                    const wdScore = match.isHome ? match.homeScore : match.awayScore;
+                    const opScore = match.isHome ? match.awayScore : match.homeScore;
+                    return (
+                      <div className="text-4xl font-black font-mono text-primary/80 group-hover:text-primary transition-colors tracking-tighter">
+                        {wdScore} <span className="text-muted-foreground/30 text-2xl mx-1">-</span> {opScore}
+                      </div>
+                    );
+                  })()}
                   {match.location && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mt-3 bg-muted/30 w-fit px-3 py-1 rounded-md">
                       <MapPin className="h-3.5 w-3.5" />
