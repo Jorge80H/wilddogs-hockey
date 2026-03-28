@@ -35,17 +35,14 @@ export default function Landing() {
 
   // Query news posts from InstantDB
   const { data, isLoading: newsLoading } = db.useQuery({
-    newsPosts: {
-      $: {
-        where: { status: 'published' },
-        order: { publishedAt: 'desc' },
-        limit: 3,
-      },
-    },
-    matches: {} // We fetch all to filter the latest past matches locally
+    newsPosts: {},
+    matches: {},
   });
 
-  const news = data?.newsPosts || [];
+  const news = (data?.newsPosts || [])
+    .filter((p: any) => p.status === 'published')
+    .sort((a: any, b: any) => (b.publishedAt || b.createdAt || 0) - (a.publishedAt || a.createdAt || 0))
+    .slice(0, 3);
 
   // Extract latest 3 matches that aren't "Not Started" and are in the past
   const pastMatches = (data?.matches || [])

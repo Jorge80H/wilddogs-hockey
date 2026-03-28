@@ -74,9 +74,9 @@ export default {
   newsPosts: {
     allow: {
       view: "true",
-      create: "false",
-      update: "false",
-      delete: "false",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
   },
 
@@ -212,9 +212,9 @@ export default {
   trainingMaterials: {
     allow: {
       view: "true",
-      create: "true",
-      update: "true",
-      delete: "false",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
   },
 };
