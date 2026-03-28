@@ -344,7 +344,7 @@ export default function LeadLanding() {
                             className="group relative bg-orange-500 hover:bg-orange-400 text-white font-black text-xl px-10 py-5 rounded-2xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(249,115,22,0.7)] hover:shadow-[0_0_80px_-10px_rgba(249,115,22,1)] hover:scale-105 active:scale-95"
                         >
                             <span className="relative z-10">
-                                Quiero una plaza para mi hijo/a
+                                ¡Quiero asegurar su cupo!
                             </span>
                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>

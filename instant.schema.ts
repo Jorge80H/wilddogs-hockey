@@ -163,33 +163,6 @@ const graph = i.graph(
       updatedAt: i.number(),
     }),
 
-    matches: i.entity({
-      date: i.number(), // timestamp
-      opponent: i.string(),
-      location: i.string().optional(),
-      homeScore: i.number().optional(),
-      awayScore: i.number().optional(),
-      // result: 'win' | 'loss' | 'draw'
-      result: i.string().optional(),
-      notes: i.string().optional(),
-      createdAt: i.number(),
-      updatedAt: i.number(),
-    }),
-
-    standings: i.entity({
-      teamName: i.string(),
-      position: i.number(),
-      played: i.number(),
-      won: i.number(),
-      drawn: i.number(),
-      lost: i.number(),
-      goalsFor: i.number(),
-      goalsAgainst: i.number(),
-      goalDifference: i.number(),
-      points: i.number(),
-      updatedAt: i.number(),
-    }),
-
     // --------------------------------------------
     // PAYMENT SYSTEM
     // --------------------------------------------
@@ -263,6 +236,41 @@ const graph = i.graph(
       message: i.string(),
       isRead: i.boolean(),
       createdAt: i.number(),
+    }),
+
+    // --------------------------------------------
+    // PLAYER FEEDBACK (Coach evaluations)
+    // --------------------------------------------
+    playerFeedback: i.entity({
+      matchDate: i.number().optional(),      // timestamp del partido evaluado
+      // type: 'post-match' | 'quarterly' | 'general'
+      type: i.string(),
+      technicalScore: i.number().optional(),  // 1-10
+      tacticalScore: i.number().optional(),
+      physicalScore: i.number().optional(),
+      attitudeScore: i.number().optional(),
+      comments: i.string(),
+      strengths: i.string().optional(),
+      areasToImprove: i.string().optional(),
+      createdAt: i.number(),
+    }),
+
+    // --------------------------------------------
+    // TRAINING MATERIALS (Videos, documents, drills)
+    // --------------------------------------------
+    trainingMaterials: i.entity({
+      title: i.string(),
+      description: i.string().optional(),
+      // type: 'video' | 'document' | 'drill' | 'tactic'
+      type: i.string(),
+      contentUrl: i.string(),         // YouTube/Vimeo URL or doc link
+      thumbnailUrl: i.string().optional(),
+      duration: i.string().optional(), // "15 min"
+      // difficulty: 'beginner' | 'intermediate' | 'advanced'
+      difficulty: i.string().optional(),
+      isPublic: i.boolean(),          // visible para todos o solo su categoría
+      createdAt: i.number(),
+      updatedAt: i.number(),
     }),
 
     // --------------------------------------------
@@ -571,6 +579,70 @@ const graph = i.graph(
         on: "users",
         has: "many",
         label: "createdPayments",
+      },
+    },
+
+    // --------------------------------------------
+    // FEEDBACK RELATIONSHIPS
+    // --------------------------------------------
+
+    // playerFeedback -> playerProfiles (many-to-one)
+    feedbackPlayer: {
+      forward: {
+        on: "playerFeedback",
+        has: "one",
+        label: "player",
+      },
+      reverse: {
+        on: "playerProfiles",
+        has: "many",
+        label: "feedback",
+      },
+    },
+
+    // playerFeedback -> coaches (many-to-one, who wrote it)
+    feedbackCoach: {
+      forward: {
+        on: "playerFeedback",
+        has: "one",
+        label: "coach",
+      },
+      reverse: {
+        on: "coaches",
+        has: "many",
+        label: "givenFeedback",
+      },
+    },
+
+    // --------------------------------------------
+    // TRAINING MATERIAL RELATIONSHIPS
+    // --------------------------------------------
+
+    // trainingMaterials -> categories (many-to-one)
+    materialCategory: {
+      forward: {
+        on: "trainingMaterials",
+        has: "one",
+        label: "category",
+      },
+      reverse: {
+        on: "categories",
+        has: "many",
+        label: "trainingMaterials",
+      },
+    },
+
+    // trainingMaterials -> coaches (many-to-one, who uploaded it)
+    materialAuthor: {
+      forward: {
+        on: "trainingMaterials",
+        has: "one",
+        label: "author",
+      },
+      reverse: {
+        on: "coaches",
+        has: "many",
+        label: "uploadedMaterials",
       },
     },
   }

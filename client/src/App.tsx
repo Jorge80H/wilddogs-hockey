@@ -21,6 +21,7 @@ const Login          = lazy(() => import("@/pages/Login"));
 const LeadLanding    = lazy(() => import("@/pages/LeadLanding"));
 const PlayerDashboard = lazy(() => import("@/pages/PlayerDashboard"));
 const AdminDashboard  = lazy(() => import("@/pages/AdminDashboard"));
+const CoachDashboard  = lazy(() => import("@/pages/CoachDashboard"));
 
 // Spinner mínimo para el Suspense fallback
 const PageLoader = () => (
@@ -33,7 +34,7 @@ const PageLoader = () => (
 
 function Router() {
   // Use the centralized useAuth hook that queries InstantDB
-  const { isLoading, user, isAdmin, isAuthenticated } = useAuth();
+  const { isLoading, user, isAdmin, isCoach, isAuthenticated } = useAuth();
 
   if (isLoading) {
     return (
@@ -46,7 +47,9 @@ function Router() {
   // Determine which dashboard to show based on role
   const getDashboard = () => {
     if (!isAuthenticated) return Landing;
-    return isAdmin ? AdminDashboard : PlayerDashboard;
+    if (isAdmin) return AdminDashboard;
+    if (isCoach) return CoachDashboard;
+    return PlayerDashboard;
   };
 
   return (
@@ -66,6 +69,7 @@ function Router() {
         {/* Private Routes - Require Authentication */}
         <Route path="/dashboard" component={isAuthenticated ? PlayerDashboard : Login} />
         <Route path="/admin" component={isAdmin ? AdminDashboard : Login} />
+        <Route path="/coach" component={isCoach ? CoachDashboard : Login} />
 
         {/* 404 */}
         <Route component={NotFound} />

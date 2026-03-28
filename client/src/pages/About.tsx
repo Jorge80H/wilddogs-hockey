@@ -292,7 +292,7 @@ export default function About() {
                   </div>
                   <div className="bg-muted h-64 md:h-auto overflow-hidden relative">
                     <img
-                      src={celebrationImage}
+                      src="/assets/client_images/IMG_8291_1.webp"
                       alt="Instalaciones Hockey One"
                       className="w-full h-full object-cover mix-blend-luminosity opacity-40 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
                       loading="lazy"

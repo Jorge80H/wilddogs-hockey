@@ -129,7 +129,7 @@ function MiniCalendar({ matchDates, selectedDate, onSelectDate }: MiniCalendarPr
 // ─────────────────────────────────────────────
 // TABLA DE POSICIONES
 // ─────────────────────────────────────────────
-function StandingsTable({ standings }: { standings: any[] }) {
+function StandingsTable({ standings, getCategory }: { standings: any[], getCategory?: (s: any) => string }) {
   if (standings.length === 0) {
     return (
       <motion.div variants={fadeIn} initial="hidden" animate="visible">
@@ -146,7 +146,7 @@ function StandingsTable({ standings }: { standings: any[] }) {
   // Agrupar por división; deduplicar por teamName (por cambios de UUID entre versiones del workflow)
   const byDivision: Record<string, Record<string, any>> = {};
   for (const s of standings) {
-    const div = String(s.division || "General");
+    const div = getCategory ? getCategory(s) : String(s.division || "General");
     if (!byDivision[div]) byDivision[div] = {};
     const teamKey = String(s.teamName || "").toLowerCase().trim();
     if (!byDivision[div][teamKey] || (s.updatedAt || 0) > (byDivision[div][teamKey].updatedAt || 0)) {
@@ -160,7 +160,7 @@ function StandingsTable({ standings }: { standings: any[] }) {
   return (
     <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-8">
       {Object.entries(byDivision)
-        .sort(([a], [b]) => a.localeCompare(b))
+        .sort(([a], [b]) => sortCategories(a, b))
         .map(([category, teamsMap]) => {
           const teamList = Object.values(teamsMap).sort((a, b) => {
             if (a.points !== b.points) return b.points - a.points;
@@ -285,7 +285,7 @@ function UpcomingWithCalendar({ matches, isLoading, wdDisplayName }: { matches: 
                           )}
                         </div>
                         <Badge variant="secondary" className="capitalize px-4 py-1.5">
-                          {match.notes?.split(" - ")[0] || "General"}
+                          {matchCat(match)}
                         </Badge>
                       </div>
                     </CardContent>
@@ -377,7 +377,7 @@ function PastMatchesList({ matches, isLoading, wdDisplayName }: { matches: any[]
                     )}
                   </div>
                   <Badge variant="outline" className="capitalize px-4 py-1.5 border-primary/20 bg-primary/5">
-                    {match.notes?.split(" - ")[0] || "General"}
+                    {matchCat(match)}
                   </Badge>
                 </div>
               </CardContent>
@@ -386,6 +386,74 @@ function PastMatchesList({ matches, isLoading, wdDisplayName }: { matches: any[]
         );
       })}
     </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// FILTER UI & LOGIC
+// ─────────────────────────────────────────────
+const getCategoryWeight = (cat: string) => {
+  const lower = cat.toLowerCase();
+  if (lower.includes("sub") || lower.includes("u-") || lower.includes("u ")) {
+    const num = parseInt(lower.replace(/\D/g, ''), 10);
+    return isNaN(num) ? 50 : num; // e.g. Sub 8 -> 8, Sub 10 -> 10, Sub 16 -> 16
+  }
+  if (lower.includes("mayores") || lower.includes("pro") || lower.includes("elite")) return 90;
+  if (lower.includes("girl") || lower.includes("niña")) return 100;
+  if (lower.includes("women") || lower.includes("damas") || lower.includes("mujer")) return 110;
+  return 60;
+};
+
+const sortCategories = (a: string, b: string) => {
+  return getCategoryWeight(a) - getCategoryWeight(b) || a.localeCompare(b);
+};
+
+export const matchCat = (m: any) => {
+  const notesStr = m.notes || m.division || "";
+  if (!notesStr) return "General";
+  
+  if (isFedepatin(m)) {
+    const parts = notesStr.split(" - ");
+    const lastPart = parts[parts.length - 1].trim();
+    if (!lastPart.toLowerCase().includes("sub") && !lastPart.toLowerCase().includes("juvenil")) {
+      const dashParts = notesStr.split("-");
+      const dashedLast = dashParts[dashParts.length - 1].trim();
+      if (dashedLast.length > 20) return "General";
+      return dashedLast || "General";
+    }
+    return lastPart || "General";
+  }
+  
+  // Para Fedehockey
+  const p = notesStr.split(" - ")[0].trim();
+  if (p.length > 20) return "General";
+  return p || "General";
+};
+
+export const standCat = (s: any) => matchCat(s);
+
+function CategoryFilter({ categories, selected, onChange }: { categories: string[], selected: string, onChange: (c: string) => void }) {
+  if (categories.length <= 1) return null;
+  return (
+    <div className="flex flex-wrap gap-2 mb-6">
+      <Badge
+        variant={selected === "all" ? "default" : "outline"}
+        className="cursor-pointer px-4 py-1.5 hover:bg-primary/90 hover:text-primary-foreground transition-colors"
+        onClick={() => onChange("all")}
+      >
+        Todas las categorías
+      </Badge>
+      {categories.map(c => (
+        <Badge
+          key={c}
+          variant={selected === c ? "default" : "outline"}
+          className="cursor-pointer px-4 py-1.5 hover:bg-primary/90 hover:text-primary-foreground transition-colors"
+          onClick={() => onChange(c)}
+        >
+          {c}
+        </Badge>
+      ))}
+    </div>
   );
 }
 
@@ -400,31 +468,100 @@ export default function Tournaments() {
   });
 
   const { isLoading, error, data } = db.useQuery({ matches: {}, standings: {} });
+  const [fhCat, setFhCat] = useState<string>("all");
+  const [fpCat, setFpCat] = useState<string>("all");
+
   const now = Date.now();
-  const matchesData: any[] = data?.matches || [];
+  const rawMatches: any[] = data?.matches || [];
   const standingsData: any[] = data?.standings || [];
+
+  // Deduplicación de partidos (soluciona el bug de n8n que insertaba con timezone +5 y luego el correcto)
+  // Agrupamos por (oponente, notas/categoria, local/visitante, y día calendario).
+  // Retenemos el de creación más reciente (el correcto/último run de n8n).
+  const matchesData = useMemo(() => {
+    const deduped = new Map<string, any>();
+    const sorted = [...rawMatches].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    
+    for (const m of sorted) {
+      if (!m.date || !m.opponent) continue;
+      const dateStr = new Date(m.date).toLocaleDateString("en-CA", { timeZone: "America/Bogota" });
+      const homeAway = m.isHome ? "home" : "away";
+      const key = `${m.opponent?.trim().toLowerCase()}-${m.notes?.trim().toLowerCase()}-${homeAway}-${dateStr}`;
+      
+      if (!deduped.has(key)) {
+        deduped.set(key, m);
+      }
+    }
+    return Array.from(deduped.values());
+  }, [rawMatches]);
 
   // ── Fedehockey ──────────────────────────────
   const fhMatches = matchesData.filter(isFedehockey);
-  const fhUpcoming = fhMatches
+  const fhStandings = standingsData.filter(isFedehockey);
+  
+  const fhCategories = useMemo(() => {
+    const s = new Set<string>();
+    fhMatches.forEach(m => s.add(matchCat(m)));
+    fhStandings.forEach(st => s.add(standCat(st)));
+    return Array.from(s).sort(sortCategories);
+  }, [fhMatches, fhStandings]);
+
+  const viewFhMatches = fhCat === "all" ? fhMatches : fhMatches.filter(m => matchCat(m) === fhCat);
+  const viewFhStandings = fhCat === "all" ? fhStandings : fhStandings.filter(s => standCat(s) === fhCat);
+
+  const fhUpcoming = viewFhMatches
     .filter(m => m.status === "Not Started" && new Date(m.date).getTime() >= now)
     .sort((a, b) => a.date - b.date);
-  const fhPast = fhMatches
+  const fhPast = viewFhMatches
     .filter(m => m.status !== "Not Started" || new Date(m.date).getTime() < now)
     .filter(m => m.result)   // solo mostrar partidos con resultado registrado
     .sort((a, b) => b.date - a.date);
-  const fhStandings = standingsData.filter(isFedehockey);
 
   // ── Fedepatín ───────────────────────────────
   const fpMatches = matchesData.filter(isFedepatin);
-  const fpUpcoming = fpMatches
+  const fpStandings = standingsData.filter(isFedepatin);
+
+  // Mapa de apoyo para Standings que no tienen categoría clara
+  const fpTeamCatMap = useMemo(() => {
+    const map = new Map<string, string>();
+    fpMatches.forEach(m => {
+      const cat = matchCat(m);
+      if (cat && cat !== "General") {
+        if (m.home) map.set(m.home.toLowerCase().trim(), cat);
+        if (m.opponent) map.set(m.opponent.toLowerCase().trim(), cat);
+      }
+    });
+    return map;
+  }, [fpMatches]);
+
+  const getFpStandCat = (s: any) => {
+    let cat = standCat(s);
+    if (cat === "General" || !cat) {
+      const team = (s.teamName || "").toLowerCase().trim();
+      if (fpTeamCatMap.has(team)) {
+        return fpTeamCatMap.get(team)!;
+      }
+    }
+    return cat;
+  };
+
+  const fpCategories = useMemo(() => {
+    const s = new Set<string>();
+    fpMatches.forEach(m => s.add(matchCat(m)));
+    fpStandings.forEach(st => s.add(getFpStandCat(st)));
+    return Array.from(s).sort(sortCategories);
+  }, [fpMatches, fpStandings, fpTeamCatMap]);
+
+  const viewFpMatches = fpCat === "all" ? fpMatches : fpMatches.filter(m => matchCat(m) === fpCat);
+  const viewFpStandings = fpCat === "all" ? fpStandings : fpStandings.filter(s => getFpStandCat(s) === fpCat);
+
+  const fpUpcoming = viewFpMatches
     .filter(m => m.status === "Not Started" && new Date(m.date).getTime() >= now)
     .sort((a, b) => a.date - b.date);
-  const fpPast = fpMatches
+  const fpPast = viewFpMatches
     .filter(m => m.status !== "Not Started" || new Date(m.date).getTime() < now)
     .filter(m => m.result)
     .sort((a, b) => b.date - a.date);
-  const fpStandings = standingsData.filter(isFedepatin);
 
   if (error) {
     return <div className="p-8 text-center text-red-500">Error cargando datos: {error.message}</div>;
@@ -470,6 +607,7 @@ export default function Tournaments() {
                 <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary px-3 py-1">Liga Fedehockey Colombia</Badge>
                 <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedehockey</span>
               </div>
+              <CategoryFilter categories={fhCategories} selected={fhCat} onChange={setFhCat} />
               <Tabs defaultValue="upcoming-fh">
                 <TabsList className="grid w-full grid-cols-3 mb-8">
                   <TabsTrigger value="upcoming-fh">Próximos Partidos</TabsTrigger>
@@ -483,7 +621,7 @@ export default function Tournaments() {
                   <PastMatchesList matches={fhPast} isLoading={isLoading} wdDisplayName={WD_DISPLAY_FH} />
                 </TabsContent>
                 <TabsContent value="standings-fh">
-                  <StandingsTable standings={fhStandings} />
+                  <StandingsTable standings={viewFhStandings} getCategory={standCat} />
                 </TabsContent>
               </Tabs>
             </TabsContent>
@@ -495,6 +633,7 @@ export default function Tournaments() {
                 <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedepatín</span>
                 <Badge variant="secondary" className="text-xs">Jugamos como: Condors</Badge>
               </div>
+              <CategoryFilter categories={fpCategories} selected={fpCat} onChange={setFpCat} />
               <Tabs defaultValue="upcoming-fp">
                 <TabsList className="grid w-full grid-cols-3 mb-8">
                   <TabsTrigger value="upcoming-fp">Próximos Partidos</TabsTrigger>
@@ -508,7 +647,7 @@ export default function Tournaments() {
                   <PastMatchesList matches={fpPast} isLoading={isLoading} wdDisplayName={WD_DISPLAY_FP} />
                 </TabsContent>
                 <TabsContent value="standings-fp">
-                  <StandingsTable standings={fpStandings} />
+                  <StandingsTable standings={viewFpStandings} getCategory={getFpStandCat} />
                 </TabsContent>
               </Tabs>
             </TabsContent>

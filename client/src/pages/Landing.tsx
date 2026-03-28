@@ -83,14 +83,16 @@ export default function Landing() {
           >
             Optima <span className="text-primary tracking-tighter">Wild Dogs</span>
           </motion.h1>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-xl md:text-3xl font-light text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md"
+            className="mb-8"
           >
-            El Poder de la Manada, <strong className="font-bold text-white">El Poder de la Energía</strong>
-          </motion.p>
+            <p className="text-2xl md:text-4xl font-black text-white max-w-2xl mx-auto drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] tracking-wide">
+              El Poder de la Manada, <span className="text-primary">El Poder de la Energía</span>
+            </p>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -315,7 +317,7 @@ export default function Landing() {
           ) : (
             <div className="text-center text-muted-foreground bg-card p-12 rounded-2xl border border-dashed border-border">
               <Calendar className="h-12 w-12 text-muted mx-auto mb-4" />
-              <p>Las noticias sobre nuestra jauría aparecerán aquí muy pronto.</p>
+              <p>Las noticias sobre nuestra manada aparecerán aquí muy pronto.</p>
             </div>
           )}
         </div>

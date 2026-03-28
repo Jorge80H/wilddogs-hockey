@@ -53,7 +53,7 @@ export function PublicNav() {
                 Iniciar Sesión
               </Button>
             </a>
-            <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" data-testid="button-join">
+            <a href="https://wa.me/573202373500" target="_blank" rel="noopener noreferrer" data-testid="button-join">
               <Button size="sm">
                 Únete al Club
               </Button>
@@ -93,7 +93,7 @@ export function PublicNav() {
                   Iniciar Sesión
                 </Button>
               </a>
-              <a href="https://wa.me/573012629927" target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
+              <a href="https://wa.me/573202373500" target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
                 <Button className="w-full">
                   Únete al Club
                 </Button>

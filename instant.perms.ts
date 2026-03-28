@@ -13,7 +13,7 @@ export default {
   users: {
     allow: {
       view: "true",
-      create: "false",
+      create: "auth.id != ''",
       update: "auth.id == data.id",
       delete: "false",
     },
@@ -190,6 +190,30 @@ export default {
       view: "false",
       create: "true",
       update: "false",
+      delete: "false",
+    },
+  },
+
+  // ============================================
+  // PLAYER FEEDBACK
+  // ============================================
+  playerFeedback: {
+    allow: {
+      view: "true",
+      create: "true",
+      update: "false",
+      delete: "false",
+    },
+  },
+
+  // ============================================
+  // TRAINING MATERIALS
+  // ============================================
+  trainingMaterials: {
+    allow: {
+      view: "true",
+      create: "true",
+      update: "true",
       delete: "false",
     },
   },

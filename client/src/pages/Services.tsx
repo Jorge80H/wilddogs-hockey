@@ -363,21 +363,22 @@ export default function Services() {
       {/* Enrollment Process */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center">Proceso de Inscripción</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               {[
-                { step: "1", title: "Regístrate", desc: "Crea tu cuenta en línea" },
-                { step: "2", title: "Completa Datos", desc: "Información personal y médica" },
-                { step: "3", title: "Elige Tu Plan", desc: "Selecciona membresía" },
-                { step: "4", title: "¡Comienza!", desc: "Asiste a tu primera práctica" },
+                { step: "1", title: "Ven y Conócenos", desc: "Asiste gratis a una clase de cortesía" },
+                { step: "2", title: "Regístrate", desc: "Crea tu cuenta en la plataforma del club" },
+                { step: "3", title: "Completa Datos", desc: "Tus datos personales e historial médico" },
+                { step: "4", title: "Elige Tu Plan", desc: "Selecciona tu membresía mensual" },
+                { step: "5", title: "¡Comienza!", desc: "Asiste a tu primera práctica oficial" },
               ].map((item, index) => (
                 <div key={index} className="text-center" data-testid={`enrollment-step-${index}`}>
-                  <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-black mx-auto mb-4">
+                  <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-black mx-auto mb-4 shadow-lg border-2 border-primary-foreground/20">
                     {item.step}
                   </div>
-                  <h3 className="font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  <h3 className="font-bold mb-2 text-lg">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
