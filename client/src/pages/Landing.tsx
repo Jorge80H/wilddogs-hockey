@@ -2,13 +2,15 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Users, Calendar, Target, ChevronRight } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Trophy, Users, Calendar, Target, ChevronRight, Edit, X } from "lucide-react";
 import { Link } from "wouter";
 import { db } from "@/lib/instant";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useSEO } from "@/hooks/useSEO";
+import { useState } from "react";
 import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
 
@@ -43,6 +45,16 @@ export default function Landing() {
     .filter((p: any) => p.status === 'published')
     .sort((a: any, b: any) => (b.publishedAt || b.createdAt || 0) - (a.publishedAt || a.createdAt || 0))
     .slice(0, 3);
+
+  // News modal state
+  const [selectedPost, setSelectedPost] = useState<any>(null);
+
+  // Auth check for admin edit button
+  const { user: authUser } = db.useAuth();
+  const { data: userData } = db.useQuery(
+    authUser ? { users: { $: { where: { id: authUser.id } } } } : null
+  );
+  const isAdmin = (userData?.users?.[0] as any)?.role === "admin";
 
   // Extract latest 3 matches that aren't "Not Started" and are in the past
   const pastMatches = (data?.matches || [])
@@ -290,24 +302,27 @@ export default function Landing() {
             >
               {news.map((post: any) => (
                 <motion.div key={post.id} variants={fadeIn}>
-                  <Link href={`/torneos`}>
-                    <div className="group cursor-pointer">
-                      <div className="h-64 overflow-hidden rounded-2xl mb-6 relative shadow-lg">
-                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                        <img
-                          src={post.imageUrl || heroImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                      <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{post.title}</h3>
-                      <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-                        {post.excerpt || post.content}
-                      </p>
+                  <div className="group cursor-pointer" onClick={() => setSelectedPost(post)}>
+                    <div className="aspect-[4/3] overflow-hidden rounded-2xl mb-6 relative shadow-lg bg-slate-100">
+                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                      <img
+                        src={post.imageUrl || heroImage}
+                        alt={post.title}
+                        className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </div>
-                  </Link>
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{post.title}</h3>
+                    <p className="text-muted-foreground line-clamp-2 leading-relaxed">
+                      {post.excerpt || post.content?.substring(0, 120)}
+                    </p>
+                    {post.publishedAt && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {format(new Date(post.publishedAt), "d 'de' MMMM, yyyy", { locale: es })}
+                      </p>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -319,6 +334,54 @@ export default function Landing() {
           )}
         </div>
       </section>
+
+      {/* News Detail Modal */}
+      <Dialog open={!!selectedPost} onOpenChange={(open) => !open && setSelectedPost(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+          {selectedPost && (
+            <>
+              {selectedPost.imageUrl && (
+                <div className="w-full bg-slate-100 flex items-center justify-center">
+                  <img
+                    src={selectedPost.imageUrl}
+                    alt={selectedPost.title}
+                    className="w-full max-h-[400px] object-contain"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-black leading-tight">
+                    {selectedPost.title}
+                  </DialogTitle>
+                </DialogHeader>
+                {selectedPost.publishedAt && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {format(new Date(selectedPost.publishedAt), "d 'de' MMMM, yyyy", { locale: es })}
+                  </p>
+                )}
+                {selectedPost.excerpt && (
+                  <p className="text-primary font-medium mt-4 text-sm leading-relaxed">
+                    {selectedPost.excerpt}
+                  </p>
+                )}
+                <div className="mt-4 text-foreground leading-relaxed whitespace-pre-line">
+                  {selectedPost.content}
+                </div>
+                {isAdmin && (
+                  <div className="mt-6 pt-4 border-t">
+                    <Link href="/admin">
+                      <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50">
+                        <Edit className="mr-2 h-4 w-4" /> Editar en Panel Admin
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Quick Access Grid */}
       <section className="py-24">
