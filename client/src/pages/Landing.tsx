@@ -6,13 +6,35 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Trophy, Users, Calendar, Target, ChevronRight, Edit, X } from "lucide-react";
 import { Link } from "wouter";
 import { db } from "@/lib/instant";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useSEO } from "@/hooks/useSEO";
-import { useState } from "react";
-import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
+import { useState, useEffect } from "react";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
+
+// Roster images for background slideshow
+import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
+import sub10Image from "@assets/client_images/Sub10_grupo.webp";
+import sub12Image from "@assets/client_images/Sub12_Grupo.webp";
+import sub14Image from "@assets/client_images/sub14_Grupo.webp";
+import sub16Image from "@assets/client_images/IMG_8291_1.webp";
+import sub18Image from "@assets/client_images/Sub18_grupo.webp";
+import femeninoImage from "@assets/client_images/IMG_5907.webp";
+import mayoresImage from "@assets/client_images/IMG_7937.webp";
+
+const rosterImages = [
+  sub8Image,
+  sub10Image,
+  sub12Image,
+  sub14Image,
+  sub16Image,
+  sub18Image,
+  femeninoImage,
+  mayoresImage
+];
+
+const heroImage = sub8Image; // Fallback image for news posts without custom images
 
 
 const fadeIn = {
@@ -34,6 +56,16 @@ export default function Landing() {
     description: "Club de Hockey en Línea en Bogotá, Colombia. El poder de la manada. Formación deportiva de excelencia para todas las edades desde Sub 8 hasta Mayores.",
     url: "/",
   });
+
+  // Background images slideshow state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % rosterImages.length);
+    }, 5000); // changes every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   // Query news posts from InstantDB
   const { data, isLoading: newsLoading } = db.useQuery({
@@ -70,20 +102,27 @@ export default function Landing() {
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={heroImage}
-            alt="Wild Dogs Hockey Action"
-            className="w-full h-full object-cover"
-            fetchPriority="high"
-            decoding="async"
-            width="1920"
-            height="1080"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          <AnimatePresence mode="popLayout">
+            <motion.img
+              key={currentImageIndex}
+              src={rosterImages[currentImageIndex]}
+              alt="Wild Dogs Hockey Action"
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2 }}
+              fetchPriority="high"
+              decoding="async"
+              width="1920"
+              height="1080"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent z-10" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-20 container mx-auto px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -149,7 +188,7 @@ export default function Landing() {
             </motion.div>
             <motion.div variants={fadeIn} className="text-center group">
               <div className="text-4xl md:text-6xl font-black text-primary mb-2 flex items-center justify-center gap-1" data-testid="stat-players">
-                70<span className="text-2xl md:text-3xl text-primary/60">+</span>
+                30<span className="text-2xl md:text-3xl text-primary/60">+</span>
               </div>
               <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-widest font-semibold group-hover:text-foreground transition-colors">
                 Jugadores en la Manada
@@ -174,6 +213,9 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
+
+      {/* Promo Video Section - Hidden temporarily for corrections */}
+      {/* <PromoVideoSection /> */}
 
       {/* Mission & Vision */}
       <section className="py-24 relative overflow-hidden">

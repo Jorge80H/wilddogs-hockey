@@ -486,7 +486,8 @@ export default function Tournaments() {
       if (!m.date || !m.opponent) continue;
       const dateStr = new Date(m.date).toLocaleDateString("en-CA", { timeZone: "America/Bogota" });
       const homeAway = m.isHome ? "home" : "away";
-      const key = `${m.opponent?.trim().toLowerCase()}-${m.notes?.trim().toLowerCase()}-${homeAway}-${dateStr}`;
+      // Use gameId if available for strict deduplication, else fallback to heuristic
+      const key = m.gameId ? String(m.gameId) : `${m.opponent?.trim().toLowerCase()}-${m.notes?.trim().toLowerCase()}-${homeAway}-${dateStr}`;
       
       if (!deduped.has(key)) {
         deduped.set(key, m);
