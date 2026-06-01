@@ -414,14 +414,21 @@ export const matchCat = (m: any) => {
   
   if (isFedepatin(m)) {
     const parts = notesStr.split(" - ");
-    const lastPart = parts[parts.length - 1].trim();
-    if (!lastPart.toLowerCase().includes("sub") && !lastPart.toLowerCase().includes("juvenil")) {
-      const dashParts = notesStr.split("-");
-      const dashedLast = dashParts[dashParts.length - 1].trim();
-      if (dashedLast.length > 20) return "General";
-      return dashedLast || "General";
+    // En Fedepatín el formato es "Liga/Torneo - División - Notas Adicionales"
+    // Buscamos cualquier segmento que explícitamente mencione "sub" o "juvenil" (la categoría)
+    const divPart = parts.find(p => p.toLowerCase().includes("sub") || p.toLowerCase().includes("juvenil"));
+    if (divPart) {
+      return divPart.trim();
     }
-    return lastPart || "General";
+    // Si no se encuentra, por defecto tomamos la segunda parte (el índice 1) si no es muy larga,
+    // o la primera parte, para evitar que comentarios largos se metan como categorías.
+    if (parts.length > 1) {
+      const secondPart = parts[1].trim();
+      if (secondPart.length <= 25) return secondPart;
+    }
+    const firstPart = parts[0].trim();
+    if (firstPart.length <= 25) return firstPart;
+    return "General";
   }
   
   // Para Fedehockey
