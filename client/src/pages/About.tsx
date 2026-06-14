@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Heart, Target, Users } from "lucide-react";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
+import facilitiesImage from "@assets/client_images/IMG_8291_1.webp";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -52,10 +53,16 @@ export default function About() {
     },
   ];
 
-  const leadership = [
-    { name: "Alejandro Lucio", role: "Presidente", experience: "Presidente y Representante Legal" },
-    { name: "Por definir", role: "Tesorero", experience: "Responsable del manejo de bienes y fondos" },
-    { name: "Por definir", role: "Secretario", experience: "Responsable de la gestión administrativa" },
+  // Organigrama del club (estructura organizacional)
+  const orgPresident = {
+    name: "Alejandro Lucio",
+    role: "Presidente",
+    experience: "Presidente y Representante Legal",
+  };
+  const orgTeam = [
+    { name: "Juan Vinueza", role: "Director Deportivo", experience: "Dirección técnica y deportiva" },
+    { name: "Por definir", role: "Tesorería", experience: "Manejo de bienes y fondos del club" },
+    { name: "Por definir", role: "Secretaría", experience: "Gestión administrativa y documental" },
   ];
 
 
@@ -217,38 +224,66 @@ export default function About() {
         </div>
       </section>
 
-      {/* Leadership */}
+      {/* Organigrama */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-black mb-16 text-center tracking-tight"
+            className="text-4xl md:text-5xl font-black mb-4 text-center tracking-tight"
           >
-            Junta Directiva
+            Organigrama
           </motion.h2>
+          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
+            Estructura organizacional de Optima Wild Dogs Hockey Club
+          </p>
+
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+            className="flex flex-col items-center max-w-5xl mx-auto"
           >
-            {leadership.map((leader, index) => (
-              <motion.div key={index} variants={fadeIn}>
-                <Card className="h-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-background" data-testid={`leader-card-${index}`}>
-                  <CardContent className="pt-8 pb-6 px-4">
-                    <div className="w-32 h-32 rounded-full bg-muted/50 mx-auto mb-6 flex items-center justify-center border-4 border-background shadow-inner">
-                      <Users className="h-12 w-12 text-muted-foreground/30" />
-                    </div>
-                    <h3 className="text-xl font-black text-center mb-1">{leader.name}</h3>
-                    <p className="text-sm font-semibold text-primary uppercase tracking-wide text-center mb-3">{leader.role}</p>
-                    <p className="text-sm text-muted-foreground text-center leading-relaxed px-2">{leader.experience}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+            {/* Presidente (nivel superior) */}
+            <motion.div variants={fadeIn} className="w-full max-w-xs">
+              <Card className="border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-background ring-1 ring-primary/20" data-testid="org-president">
+                <CardContent className="pt-8 pb-6 px-4">
+                  <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-5 flex items-center justify-center border-4 border-background shadow-inner">
+                    <Users className="h-10 w-10 text-primary/60" />
+                  </div>
+                  <h3 className="text-lg font-black text-center mb-1">{orgPresident.name}</h3>
+                  <p className="text-sm font-semibold text-primary uppercase tracking-wide text-center mb-2">{orgPresident.role}</p>
+                  <p className="text-sm text-muted-foreground text-center leading-relaxed px-2">{orgPresident.experience}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Conector vertical desde el presidente */}
+            <div className="hidden md:block w-px h-10 bg-border" />
+
+            {/* Conectores horizontales hacia el equipo */}
+            <div className="relative w-full mt-6 md:mt-0">
+              <div className="hidden md:block absolute top-0 left-[16.66%] right-[16.66%] h-px bg-border" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {orgTeam.map((member, index) => (
+                  <motion.div key={index} variants={fadeIn} className="flex flex-col items-center">
+                    <div className="hidden md:block w-px h-10 bg-border" />
+                    <Card className="h-full w-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 bg-background" data-testid={`org-member-${index}`}>
+                      <CardContent className="pt-8 pb-6 px-4">
+                        <div className="w-24 h-24 rounded-full bg-muted/50 mx-auto mb-5 flex items-center justify-center border-4 border-background shadow-inner">
+                          <Users className="h-10 w-10 text-muted-foreground/30" />
+                        </div>
+                        <h3 className="text-lg font-black text-center mb-1">{member.name}</h3>
+                        <p className="text-sm font-semibold text-primary uppercase tracking-wide text-center mb-2">{member.role}</p>
+                        <p className="text-sm text-muted-foreground text-center leading-relaxed px-2">{member.experience}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -292,7 +327,7 @@ export default function About() {
                   </div>
                   <div className="bg-muted h-64 md:h-auto overflow-hidden relative">
                     <img
-                      src="/assets/client_images/IMG_8291_1.webp"
+                      src={facilitiesImage}
                       alt="Instalaciones Hockey One"
                       className="w-full h-full object-cover mix-blend-luminosity opacity-40 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
                       loading="lazy"

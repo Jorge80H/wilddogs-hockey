@@ -3,6 +3,10 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+// WhatsApp del club con mensaje prellenado para identificar leads de la web
+export const WHATSAPP_URL =
+  "https://wa.me/573143100208?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92";
+
 export function PublicNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [location] = useLocation();
@@ -53,7 +57,7 @@ export function PublicNav() {
                 Iniciar Sesión
               </Button>
             </a>
-            <a href="https://wa.me/573202373500" target="_blank" rel="noopener noreferrer" data-testid="button-join">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" data-testid="button-join">
               <Button size="sm">
                 Únete al Club
               </Button>
@@ -93,7 +97,7 @@ export function PublicNav() {
                   Iniciar Sesión
                 </Button>
               </a>
-              <a href="https://wa.me/573202373500" target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
                 <Button className="w-full">
                   Únete al Club
                 </Button>

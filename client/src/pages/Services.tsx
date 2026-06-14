@@ -2,7 +2,7 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin } from "lucide-react";
+import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 
@@ -34,7 +34,7 @@ import logoOptima from "@assets/client_images/Logo_Optima.webp";
 export default function Services() {
   useSEO({
     title: "Servicios y Membresías",
-    description: "Escuela de formación deportiva, preparación física especializada, torneos y membresía oficial en Optima Wild Dogs Hockey Club. Afiliación desde $430.000/mes.",
+    description: "Escuela de formación deportiva, preparación física especializada, torneos y membresía oficial en Optima Wild Dogs Hockey Club. Afiliación desde $475.000/mes.",
     url: "/servicios",
   });
 
@@ -49,6 +49,9 @@ export default function Services() {
         "Material didáctico incluido",
         "Evaluaciones periódicas",
       ],
+      note: "Los jugadores que inician desde cero ingresan a la Escuela de Formación que ofrece Hockey One, donde aprenden los fundamentos del patinaje y el hockey antes de integrarse a las categorías competitivas del club.",
+      noteUrl: "https://hockeyone.co",
+      noteLabel: "Conoce la escuela de Hockey One",
     },
     {
       icon: Dumbbell,
@@ -99,7 +102,7 @@ export default function Services() {
 
   const membershipPlan = {
     name: "Afiliación Oficial",
-    price: "$430.000",
+    price: "$475.000",
     period: "mensual",
     features: [
       "Entrenamientos de primer nivel por categoría",
@@ -183,6 +186,23 @@ export default function Services() {
                         </li>
                       ))}
                     </ul>
+                    {(service as any).note && (
+                      <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/15">
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                          {(service as any).note}
+                        </p>
+                        <a
+                          href={(service as any).noteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+                          data-testid="link-hockey-one-school"
+                        >
+                          {(service as any).noteLabel}
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>

@@ -210,7 +210,7 @@ export default function Contact() {
                         data-testid="input-phone"
                         className="bg-background/50 border-border/50 focus:border-primary/50 transition-colors"
                         {...register("phone")}
-                        placeholder="320 2373500"
+                        placeholder="300 000 0000"
                       />
                       {errors.phone && (
                         <p className="text-sm text-destructive font-medium">{errors.phone.message}</p>
@@ -291,10 +291,10 @@ export default function Contact() {
                     <div>
                       <div className="font-bold mb-1 group-hover:text-primary transition-colors">Teléfono</div>
                       <a
-                        href="tel:+573202373500"
+                        href="tel:+573143100208"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors block"
                       >
-                        320 2373500
+                        314 310 0208
                       </a>
                     </div>
                   </div>

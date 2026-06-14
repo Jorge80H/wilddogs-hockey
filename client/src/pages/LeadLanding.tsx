@@ -593,7 +593,7 @@ export default function LeadLanding() {
                     </div>
                     <div className="flex items-center gap-6 text-zinc-600 text-xs">
                         <a href="https://optimawilddogs.com" className="hover:text-white transition-colors">optimawilddogs.com</a>
-                        <a href="https://wa.me/573202373500" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp</a>
+                        <a href="https://wa.me/573143100208?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp</a>
                         <a href="https://www.instagram.com/optimawilddogs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
                     </div>
                 </div>
