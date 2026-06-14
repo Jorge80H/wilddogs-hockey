@@ -240,10 +240,10 @@ export default function LeadLanding() {
     }, [isModalOpen]);
 
     const categories = [
-        { name: "Sub 8", age: "5–7 años", img: sub8Image, desc: "Los primeros pasos sobre ruedas. Diversión pura." },
-        { name: "Sub 12", age: "8–11 años", img: sub12Image, desc: "Técnica progresiva y amor al juego." },
-        { name: "Sub 14", age: "12–13 años", img: sub14Image, desc: "Táctica, equipo y competencia real." },
-        { name: "Sub 16+", age: "14–17 años", img: sub16Image, desc: "Alto rendimiento y proyección nacional." },
+        { name: "Sub 8", age: "Menores de 8 años", img: sub8Image, desc: "Los primeros pasos sobre ruedas. Diversión pura." },
+        { name: "Sub 12", age: "Menores de 12 años", img: sub12Image, desc: "Técnica progresiva y amor al juego." },
+        { name: "Sub 14", age: "Menores de 14 años", img: sub14Image, desc: "Táctica, equipo y competencia real." },
+        { name: "Sub 16", age: "Menores de 16 años", img: sub16Image, desc: "Alto rendimiento y proyección nacional." },
     ];
 
     const pillars = [
@@ -375,10 +375,10 @@ export default function LeadLanding() {
                         className="grid grid-cols-2 md:grid-cols-4 gap-12"
                     >
                         {[
-                            { value: "70", suffix: "+", label: "Jugadores activos" },
+                            { value: "30", suffix: "+", label: "Jugadores en la manada" },
                             { value: "6", suffix: "", label: "Categorías" },
                             { value: "100", suffix: "%", label: "Pasión y entrega" },
-                            { value: "1", suffix: "°", label: "Club en Bogotá" },
+                            { value: "1", suffix: "+", label: "Año de historia" },
                         ].map((stat, i) => (
                             <motion.div
                                 key={i}
