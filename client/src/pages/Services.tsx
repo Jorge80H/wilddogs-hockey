@@ -38,9 +38,12 @@ import logoOptima from "@assets/client_images/Logo_Optima.webp";
 // WhatsApp del club para recibir solicitudes de afiliación
 const CLUB_WHATSAPP = "573143100208";
 
-// ─── MODAL DE AFILIACIÓN ─────────────────────────────────────────────────────
-function AffiliationModal({ price, onClose }: { price: string; onClose: () => void }) {
+// ─── MODAL DE CAPTURA (Afiliación / Clase de prueba) ─────────────────────────
+type LeadMode = "affiliation" | "trial";
+
+function LeadFormModal({ mode, price, onClose }: { mode: LeadMode; price: string; onClose: () => void }) {
   const { toast } = useToast();
+  const isTrial = mode === "trial";
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -70,21 +73,26 @@ function AffiliationModal({ price, onClose }: { price: string; onClose: () => vo
     const waWindow = window.open("", "_blank");
 
     try {
+      const subject = isTrial ? "Clase de prueba gratis" : `Afiliación Oficial - ${price}/mes`;
+      const reqLabel = isTrial ? "Solicitud de Clase de Prueba" : "Solicitud de Afiliación Oficial";
+
       await db.transact([
         db.tx.contactSubmissions[id()].update({
           name: form.name,
           email: form.email || "no-email@optimawilddogs.com",
           phone: form.phone,
-          subject: `Afiliación Oficial - ${price}/mes`,
-          message: `Solicitud de Afiliación Oficial | Interesado/a: ${form.name} | Jugador/a: ${form.playerName || "—"} | Edad: ${form.age || "—"} | Tel: ${form.phone} | Email: ${form.email || "—"}`,
+          subject,
+          message: `${reqLabel} | Interesado/a: ${form.name} | Jugador/a: ${form.playerName || "—"} | Edad: ${form.age || "—"} | Tel: ${form.phone} | Email: ${form.email || "—"}`,
           isRead: false,
           createdAt: Date.now(),
         }),
       ]);
 
+      const intro = isTrial
+        ? `Hola 🐺🏒, quiero agendar una *clase de prueba gratis* en Optima Wild Dogs.`
+        : `Hola 🐺🏒, quiero afiliarme a Optima Wild Dogs.\n\n*Plan:* Afiliación Oficial (${price}/mes)`;
       const text =
-        `Hola 🐺🏒, quiero afiliarme a Optima Wild Dogs.\n\n` +
-        `*Plan:* Afiliación Oficial (${price}/mes)\n` +
+        `${intro}\n` +
         `*Nombre:* ${form.name}\n` +
         `*Jugador/a:* ${form.playerName || "—"}\n` +
         `*Edad:* ${form.age || "—"}\n` +
@@ -99,8 +107,10 @@ function AffiliationModal({ price, onClose }: { price: string; onClose: () => vo
       }
 
       toast({
-        title: "¡Solicitud enviada!",
-        description: "Te redirigimos a WhatsApp para finalizar tu afiliación.",
+        title: isTrial ? "¡Vamos a agendar!" : "¡Solicitud enviada!",
+        description: isTrial
+          ? "Te redirigimos a WhatsApp para coordinar tu clase de prueba."
+          : "Te redirigimos a WhatsApp para finalizar tu afiliación.",
       });
       onClose();
     } catch {
@@ -150,14 +160,20 @@ function AffiliationModal({ price, onClose }: { price: string; onClose: () => vo
         <div className="p-7 sm:p-8">
           <div className="mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-              <DollarSign className="h-3.5 w-3.5" />
-              Afiliación Oficial · {price}/mes
+              {isTrial ? <GraduationCap className="h-3.5 w-3.5" /> : <DollarSign className="h-3.5 w-3.5" />}
+              {isTrial ? "Clase de prueba · Gratis" : `Afiliación Oficial · ${price}/mes`}
             </div>
             <h2 className="text-2xl sm:text-3xl font-black leading-tight">
-              Únete a la <span className="text-primary">manada</span>
+              {isTrial ? (
+                <>Agenda tu <span className="text-primary">clase de prueba</span></>
+              ) : (
+                <>Únete a la <span className="text-primary">manada</span></>
+              )}
             </h2>
             <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
-              Déjanos tus datos y al enviar te llevamos a WhatsApp para finalizar tu afiliación.
+              {isTrial
+                ? "Déjanos tus datos y al enviar coordinamos por WhatsApp el día de tu clase de prueba gratuita."
+                : "Déjanos tus datos y al enviar te llevamos a WhatsApp para finalizar tu afiliación."}
             </p>
           </div>
 
@@ -248,7 +264,7 @@ function AffiliationModal({ price, onClose }: { price: string; onClose: () => vo
               className="w-full h-14 text-lg rounded-xl mt-2"
               data-testid="button-submit-affiliation"
             >
-              {isSubmitting ? "Enviando..." : "Enviar y continuar por WhatsApp"}
+              {isSubmitting ? "Enviando..." : isTrial ? "Agendar por WhatsApp" : "Enviar y continuar por WhatsApp"}
             </Button>
             <p className="text-center text-muted-foreground/70 text-xs">
               Tus datos quedan registrados y te contactamos por WhatsApp.
@@ -267,7 +283,7 @@ export default function Services() {
     url: "/servicios",
   });
 
-  const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
+  const [formMode, setFormMode] = useState<LeadMode | null>(null);
 
   const services = [
     {
@@ -595,14 +611,26 @@ export default function Services() {
                 </div>
 
                 <CardFooter className="p-0">
-                  <Button
-                    size="lg"
-                    onClick={() => setIsAffiliationOpen(true)}
-                    className="w-full text-lg h-16 rounded-xl hover-elevate transition-all shadow-lg hover:shadow-primary/25"
-                    data-testid="button-select-plan"
-                  >
-                    Inscríbete Ahora y Únete a la Manada
-                  </Button>
+                  <div className="w-full space-y-3">
+                    <Button
+                      size="lg"
+                      onClick={() => setFormMode("affiliation")}
+                      className="w-full text-lg h-16 rounded-xl hover-elevate transition-all shadow-lg hover:shadow-primary/25"
+                      data-testid="button-select-plan"
+                    >
+                      Inscríbete Ahora y Únete a la Manada
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={() => setFormMode("trial")}
+                      className="w-full text-base h-14 rounded-xl hover-elevate"
+                      data-testid="button-trial-plan"
+                    >
+                      <GraduationCap className="mr-2 h-5 w-5" />
+                      Agenda una Clase de Prueba Gratis
+                    </Button>
+                  </div>
                 </CardFooter>
               </div>
             </Card>
@@ -643,21 +671,37 @@ export default function Services() {
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             Únete a Wild Dogs hoy y comienza tu camino hacia la excelencia deportiva
           </p>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => setIsAffiliationOpen(true)}
-            className="bg-primary-foreground text-primary hover-elevate active-elevate-2"
-            data-testid="button-cta-enroll"
-          >
-            Inscríbete Ahora
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setFormMode("affiliation")}
+              className="bg-primary-foreground text-primary hover-elevate active-elevate-2"
+              data-testid="button-cta-enroll"
+            >
+              Inscríbete Ahora
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setFormMode("trial")}
+              className="bg-transparent text-primary-foreground border-primary-foreground/40 hover:bg-primary-foreground/10 hover-elevate active-elevate-2"
+              data-testid="button-cta-trial"
+            >
+              <GraduationCap className="mr-2 h-5 w-5" />
+              Agenda una Clase de Prueba
+            </Button>
+          </div>
         </div>
       </section>
 
       <AnimatePresence>
-        {isAffiliationOpen && (
-          <AffiliationModal price={membershipPlan.price} onClose={() => setIsAffiliationOpen(false)} />
+        {formMode && (
+          <LeadFormModal
+            mode={formMode}
+            price={membershipPlan.price}
+            onClose={() => setFormMode(null)}
+          />
         )}
       </AnimatePresence>
 
