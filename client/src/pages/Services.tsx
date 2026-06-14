@@ -2,9 +2,13 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
+import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin, ExternalLink, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
+import { useState, useEffect } from "react";
+import { db } from "@/lib/instant";
+import { id } from "@instantdb/react";
+import { useToast } from "@/hooks/use-toast";
 
 
 const containerVariants = {
@@ -31,12 +35,239 @@ const itemVariants = {
 import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
 import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
+// WhatsApp del club para recibir solicitudes de afiliación
+const CLUB_WHATSAPP = "573143100208";
+
+// ─── MODAL DE AFILIACIÓN ─────────────────────────────────────────────────────
+function AffiliationModal({ price, onClose }: { price: string; onClose: () => void }) {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    playerName: "",
+    age: "",
+    phone: "",
+    email: "",
+  });
+
+  // Bloquea el scroll del fondo mientras el modal está abierto
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.phone) return;
+    setIsSubmitting(true);
+
+    // Abrimos la ventana de WhatsApp dentro del gesto del usuario para evitar
+    // que el navegador la bloquee (el guardado en DB es asíncrono).
+    const waWindow = window.open("", "_blank");
+
+    try {
+      await db.transact([
+        db.tx.contactSubmissions[id()].update({
+          name: form.name,
+          email: form.email || "no-email@optimawilddogs.com",
+          phone: form.phone,
+          subject: `Afiliación Oficial - ${price}/mes`,
+          message: `Solicitud de Afiliación Oficial | Interesado/a: ${form.name} | Jugador/a: ${form.playerName || "—"} | Edad: ${form.age || "—"} | Tel: ${form.phone} | Email: ${form.email || "—"}`,
+          isRead: false,
+          createdAt: Date.now(),
+        }),
+      ]);
+
+      const text =
+        `Hola 🐺🏒, quiero afiliarme a Optima Wild Dogs.\n\n` +
+        `*Plan:* Afiliación Oficial (${price}/mes)\n` +
+        `*Nombre:* ${form.name}\n` +
+        `*Jugador/a:* ${form.playerName || "—"}\n` +
+        `*Edad:* ${form.age || "—"}\n` +
+        `*Email:* ${form.email || "—"}\n\n` +
+        `Vengo de la página web del club.`;
+      const waUrl = `https://wa.me/${CLUB_WHATSAPP}?text=${encodeURIComponent(text)}`;
+
+      if (waWindow) {
+        waWindow.location.href = waUrl;
+      } else {
+        window.location.href = waUrl;
+      }
+
+      toast({
+        title: "¡Solicitud enviada!",
+        description: "Te redirigimos a WhatsApp para finalizar tu afiliación.",
+      });
+      onClose();
+    } catch {
+      if (waWindow) waWindow.close();
+      toast({
+        title: "Error",
+        description: "No se pudo enviar la solicitud. Intenta de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const inputClass =
+    "w-full bg-background border border-border focus:border-primary rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground/60 text-sm outline-none transition-colors";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center px-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      <motion.div
+        initial={{ y: 60, opacity: 0, scale: 0.97 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 60, opacity: 0, scale: 0.97 }}
+        transition={{ type: "spring", damping: 28, stiffness: 300 }}
+        className="relative z-10 w-full max-w-lg bg-card border border-border rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl max-h-[92vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="h-1.5 w-full bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
+
+        <button
+          onClick={onClose}
+          aria-label="Cerrar"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center transition-colors"
+          data-testid="button-close-affiliation"
+        >
+          <X className="h-5 w-5 text-muted-foreground" />
+        </button>
+
+        <div className="p-7 sm:p-8">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+              <DollarSign className="h-3.5 w-3.5" />
+              Afiliación Oficial · {price}/mes
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black leading-tight">
+              Únete a la <span className="text-primary">manada</span>
+            </h2>
+            <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
+              Déjanos tus datos y al enviar te llevamos a WhatsApp para finalizar tu afiliación.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                Tu nombre *
+              </label>
+              <input
+                name="name"
+                required
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Nombre y apellido"
+                className={inputClass}
+                data-testid="input-affiliation-name"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Nombre del jugador/a
+                </label>
+                <input
+                  name="playerName"
+                  value={form.playerName}
+                  onChange={handleChange}
+                  placeholder="Nombre"
+                  className={inputClass}
+                  data-testid="input-affiliation-player"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Edad
+                </label>
+                <select
+                  name="age"
+                  value={form.age}
+                  onChange={handleChange}
+                  className={inputClass}
+                  data-testid="select-affiliation-age"
+                >
+                  <option value="">Selecciona</option>
+                  {Array.from({ length: 40 }, (_, i) => i + 4).map((age) => (
+                    <option key={age} value={age}>{age} años</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                WhatsApp / Teléfono *
+              </label>
+              <input
+                name="phone"
+                required
+                inputMode="tel"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="300 000 0000"
+                className={inputClass}
+                data-testid="input-affiliation-phone"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="correo@ejemplo.com"
+                className={inputClass}
+                data-testid="input-affiliation-email"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              disabled={isSubmitting}
+              className="w-full h-14 text-lg rounded-xl mt-2"
+              data-testid="button-submit-affiliation"
+            >
+              {isSubmitting ? "Enviando..." : "Enviar y continuar por WhatsApp"}
+            </Button>
+            <p className="text-center text-muted-foreground/70 text-xs">
+              Tus datos quedan registrados y te contactamos por WhatsApp.
+            </p>
+          </form>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function Services() {
   useSEO({
     title: "Servicios y Membresías",
     description: "Escuela de formación deportiva, preparación física especializada, torneos y membresía oficial en Optima Wild Dogs Hockey Club. Afiliación desde $475.000/mes.",
     url: "/servicios",
   });
+
+  const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
 
   const services = [
     {
@@ -364,15 +595,14 @@ export default function Services() {
                 </div>
 
                 <CardFooter className="p-0">
-                  <a href="/login" className="w-full">
-                    <Button
-                      size="lg"
-                      className="w-full text-lg w-full h-16 rounded-xl hover-elevate transition-all shadow-lg hover:shadow-primary/25"
-                      data-testid="button-select-plan"
-                    >
-                      Inscríbete Ahora y Únete a la Manada
-                    </Button>
-                  </a>
+                  <Button
+                    size="lg"
+                    onClick={() => setIsAffiliationOpen(true)}
+                    className="w-full text-lg h-16 rounded-xl hover-elevate transition-all shadow-lg hover:shadow-primary/25"
+                    data-testid="button-select-plan"
+                  >
+                    Inscríbete Ahora y Únete a la Manada
+                  </Button>
                 </CardFooter>
               </div>
             </Card>
@@ -413,17 +643,23 @@ export default function Services() {
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             Únete a Wild Dogs hoy y comienza tu camino hacia la excelencia deportiva
           </p>
-          <a href="/login" data-testid="button-cta-enroll">
-            <Button
-              size="lg"
-              variant="outline"
-              className="bg-primary-foreground text-primary hover-elevate active-elevate-2"
-            >
-              Inscríbete Ahora
-            </Button>
-          </a>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => setIsAffiliationOpen(true)}
+            className="bg-primary-foreground text-primary hover-elevate active-elevate-2"
+            data-testid="button-cta-enroll"
+          >
+            Inscríbete Ahora
+          </Button>
         </div>
       </section>
+
+      <AnimatePresence>
+        {isAffiliationOpen && (
+          <AffiliationModal price={membershipPlan.price} onClose={() => setIsAffiliationOpen(false)} />
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>
