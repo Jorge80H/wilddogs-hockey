@@ -17,11 +17,14 @@ import {
   Send,
   Video,
   FileText,
+  CheckCircle,
 } from "lucide-react";
 import { Link } from "wouter";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { tx, id as txId } from "@instantdb/react";
+import { ApprovalQueue } from "@/components/admin/ApprovalQueue";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CoachDashboard() {
   const { toast } = useToast();
@@ -54,6 +57,9 @@ export default function CoachDashboard() {
   const { data: categoriesData } = db.useQuery({
     categories: {},
   });
+
+  const { coachProfile } = useAuth();
+  const coachCategory = coachProfile?.category?.[0]?.id || coachProfile?.category || undefined;
 
   // Feedback form state
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
@@ -218,7 +224,7 @@ export default function CoachDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="players" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="players">
               <Users className="mr-1 h-4 w-4" /> Jugadores
             </TabsTrigger>
@@ -227,6 +233,9 @@ export default function CoachDashboard() {
             </TabsTrigger>
             <TabsTrigger value="materials">
               <BookOpen className="mr-1 h-4 w-4" /> Formación
+            </TabsTrigger>
+            <TabsTrigger value="approvals">
+              <CheckCircle className="mr-1 h-4 w-4" /> Aprobaciones
             </TabsTrigger>
           </TabsList>
 
@@ -391,6 +400,13 @@ export default function CoachDashboard() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Approvals Tab */}
+          <TabsContent value="approvals">
+            {coachCategory
+              ? <ApprovalQueue category={coachCategory} reviewerId={user?.id || ""} />
+              : <p className="text-sm text-muted-foreground">Tu ficha de coach aún no tiene categoría asignada.</p>}
           </TabsContent>
 
           {/* Materials Tab */}
