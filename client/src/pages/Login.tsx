@@ -50,13 +50,13 @@ export default function Login() {
         },
       });
 
-      // If user doesn't exist, create their record
+      // If user doesn't exist, create their titular (guardian) account
       if (!existingUsers?.users || existingUsers.users.length === 0) {
         await db.transact([
           db.tx.users[result.user.id].update({
             email: email,
-            role: 'player', // default role
-            status: 'pending', // needs admin approval
+            role: 'guardian', // cuenta-titular (padre o adulto)
+            status: 'active',  // el login no requiere aprobación; la aprobación es por hijo
             createdAt: Date.now(),
             updatedAt: Date.now(),
           }),
