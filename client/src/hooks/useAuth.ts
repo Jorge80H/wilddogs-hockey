@@ -12,8 +12,9 @@ import { db } from "@/lib/instant";
  * - isAuthenticated: Whether user is logged in
  * - isAdmin: Whether user has admin role
  * - isCoach: Whether user has coach role
- * - isPlayer: Whether user has player role
- * - isGuardian: Whether user has guardian role
+ * - isGuardian: Whether user has guardian (titular) role
+ * - players: Player profiles linked to this user (for guardians)
+ * - coachProfile: Coach profile linked to this user (for coaches)
  */
 
 // Type for the InstantDB user object
@@ -29,8 +30,14 @@ interface User {
   firstName?: string;
   lastName?: string;
   profileImageUrl?: string;
-  role: 'admin' | 'coach' | 'player' | 'guardian';
-  status: 'pending' | 'approved' | 'rejected' | 'inactive';
+  phone?: string;
+  documentType?: string;
+  documentNumber?: string;
+  address?: string;
+  role: "admin" | "coach" | "guardian";
+  status: "active" | "inactive";
+  players?: any[];
+  coachProfile?: any[];
   createdAt: number;
   updatedAt: number;
 }
@@ -43,12 +50,12 @@ export function useAuth() {
   const { data, isLoading: dataLoading } = db.useQuery(
     instantUser
       ? {
-        users: {
-          $: {
-            where: { id: instantUser.id },
+          users: {
+            $: { where: { id: instantUser.id } },
+            players: {},
+            coachProfile: { category: {} },
           },
-        },
-      }
+        }
       : null
   );
 
@@ -65,8 +72,9 @@ export function useAuth() {
     isAuthenticated: !!instantUser && !!user,
     isAdmin: user?.role === "admin",
     isCoach: user?.role === "coach",
-    isPlayer: user?.role === "player",
     isGuardian: user?.role === "guardian",
+    players: (user?.players || []) as any[],
+    coachProfile: (user?.coachProfile?.[0] || null) as any,
   };
 }
 
