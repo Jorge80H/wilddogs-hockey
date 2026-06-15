@@ -684,6 +684,20 @@ const graph = i.graph(
         label: "uploadedMaterials",
       },
     },
+
+    // $users (sistema de auth de Instant) <-> users (perfil de la app)
+    userProfile: {
+      forward: {
+        on: "$users",
+        has: "one",
+        label: "profile",
+      },
+      reverse: {
+        on: "users",
+        has: "one",
+        label: "$user",
+      },
+    },
   }
 );
 

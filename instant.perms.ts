@@ -14,9 +14,11 @@ export default {
     allow: {
       view: "true",
       create: "auth.id != ''",
-      update: "auth.id == data.id",
+      // Cada quien edita su cuenta; el admin edita cualquiera (incluido el rol).
+      update: "auth.id == data.id || isAdmin",
       delete: "false",
     },
+    bind: ["isAdmin", "auth.ref('$user.profile.role') == 'admin'"],
   },
 
   // ============================================
@@ -25,11 +27,15 @@ export default {
   playerProfiles: {
     allow: {
       view: "true",
-      create: "isOwner",
-      update: "isOwner",
-      delete: "false",
+      create: "auth.id != ''",
+      // El titular edita los suyos pero NO cambia status; staff sí.
+      update: "isTitular || isStaff",
+      delete: "isStaff",
     },
-    bind: ["isOwner", "auth.id in data.ref('users.id')"],
+    bind: [
+      "isTitular", "auth.id in data.ref('titular.id')",
+      "isStaff", "auth.ref('$user.profile.role') in ['admin', 'coach']",
+    ],
   },
 
   // ============================================
@@ -175,11 +181,15 @@ export default {
   // ============================================
   documents: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "isFamily || isStaff",
+      create: "auth.id != ''",
+      update: "isStaff",
+      delete: "isFamily || isStaff",
     },
+    bind: [
+      "isFamily", "auth.id in data.ref('playerProfile.titular.id')",
+      "isStaff", "auth.ref('$user.profile.role') in ['admin', 'coach']",
+    ],
   },
 
   // ============================================
