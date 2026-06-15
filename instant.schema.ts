@@ -64,6 +64,13 @@ const graph = i.graph(
       secondaryContactRelation: i.string().optional(),
       secondaryContactPhone: i.string().optional(),
 
+      // Legacy guardian fields (kept for backwards-compat, unused by new code)
+      guardianName: i.string().optional(),
+      guardianRelationship: i.string().optional(),
+      guardianDocument: i.string().optional(),
+      guardianPhone: i.string().optional(),
+      guardianEmail: i.string().optional(),
+
       // Medical info
       bloodType: i.string().optional(),
       allergies: i.string().optional(),
@@ -330,6 +337,20 @@ const graph = i.graph(
     // --------------------------------------------
     // USER RELATIONSHIPS
     // --------------------------------------------
+
+    // Legacy 1-to-1 link (kept for backwards-compat; superseded by titularPlayers)
+    userPlayerProfile: {
+      forward: {
+        on: "users",
+        has: "one",
+        label: "playerProfile",
+      },
+      reverse: {
+        on: "playerProfiles",
+        has: "one",
+        label: "user",
+      },
+    },
 
     // users (titular) <-> playerProfiles (one-to-many)
     titularPlayers: {
@@ -685,19 +706,6 @@ const graph = i.graph(
       },
     },
 
-    // $users (sistema de auth de Instant) <-> users (perfil de la app)
-    userProfile: {
-      forward: {
-        on: "$users",
-        has: "one",
-        label: "profile",
-      },
-      reverse: {
-        on: "users",
-        has: "one",
-        label: "$user",
-      },
-    },
   }
 );
 

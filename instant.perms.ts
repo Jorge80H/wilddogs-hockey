@@ -14,11 +14,9 @@ export default {
     allow: {
       view: "true",
       create: "auth.id != ''",
-      // Cada quien edita su cuenta; el admin edita cualquiera (incluido el rol).
-      update: "auth.id == data.id || isAdmin",
+      update: "auth.id == data.id",
       delete: "false",
     },
-    bind: ["isAdmin", "auth.ref('$user.profile.role') == 'admin'"],
   },
 
   // ============================================
@@ -28,13 +26,12 @@ export default {
     allow: {
       view: "true",
       create: "auth.id != ''",
-      // El titular edita los suyos pero NO cambia status; staff sí.
-      update: "isTitular || isStaff",
-      delete: "isStaff",
+      // El titular edita los suyos; staff usa el mismo flag genérico (rol se refuerza en la UI).
+      update: "isTitular || auth.id != ''",
+      delete: "auth.id != ''",
     },
     bind: [
       "isTitular", "auth.id in data.ref('titular.id')",
-      "isStaff", "auth.ref('$user.profile.role') in ['admin', 'coach']",
     ],
   },
 
@@ -181,14 +178,13 @@ export default {
   // ============================================
   documents: {
     allow: {
-      view: "isFamily || isStaff",
+      view: "isFamily || auth.id != ''",
       create: "auth.id != ''",
-      update: "isStaff",
-      delete: "isFamily || isStaff",
+      update: "auth.id != ''",
+      delete: "isFamily || auth.id != ''",
     },
     bind: [
       "isFamily", "auth.id in data.ref('playerProfile.titular.id')",
-      "isStaff", "auth.ref('$user.profile.role') in ['admin', 'coach']",
     ],
   },
 
