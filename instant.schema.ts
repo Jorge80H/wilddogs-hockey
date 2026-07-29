@@ -83,6 +83,9 @@ const graph = i.graph(
       goals: i.number(),
       assists: i.number(),
 
+      // Gamificación (Bloque B)
+      xp: i.number(),
+
       // status: 'pending' | 'approved' | 'rejected' | 'inactive'
       status: i.string().indexed(),
       // relationshipToTitular: 'self' | 'hijo' | 'hija' | 'otro'
@@ -289,6 +292,36 @@ const graph = i.graph(
       isPublic: i.boolean(),          // visible para todos o solo su categoría
       createdAt: i.number(),
       updatedAt: i.number(),
+    }),
+
+    // --------------------------------------------
+    // BLOQUE B — QUIZZES, RUTA, PROGRESO, INSIGNIAS
+    // --------------------------------------------
+    quizQuestions: i.entity({
+      questionText: i.string(),
+      options: i.json(),           // array de 2-4 strings
+      correctIndex: i.number(),
+      order: i.number(),
+      createdAt: i.number(),
+    }),
+
+    pathSteps: i.entity({
+      order: i.number(),
+      createdAt: i.number(),
+    }),
+
+    materialProgress: i.entity({
+      // status: 'in_progress' | 'completed'
+      status: i.string().indexed(),
+      comprehensionPct: i.number(),
+      attempts: i.number(),
+      completedAt: i.number().optional(),
+      updatedAt: i.number(),
+    }),
+
+    playerBadges: i.entity({
+      badgeKey: i.string().indexed(),
+      earnedAt: i.number(),
     }),
 
     // --------------------------------------------
@@ -704,6 +737,46 @@ const graph = i.graph(
         has: "many",
         label: "uploadedMaterials",
       },
+    },
+
+    // --------------------------------------------
+    // BLOQUE B — LINKS
+    // --------------------------------------------
+
+    // quizQuestions -> trainingMaterials (many-to-one)
+    questionMaterial: {
+      forward: { on: "quizQuestions", has: "one", label: "material" },
+      reverse: { on: "trainingMaterials", has: "many", label: "questions" },
+    },
+
+    // pathSteps -> categories (many-to-one)
+    stepCategory: {
+      forward: { on: "pathSteps", has: "one", label: "category" },
+      reverse: { on: "categories", has: "many", label: "pathSteps" },
+    },
+
+    // pathSteps -> trainingMaterials (many-to-one)
+    stepMaterial: {
+      forward: { on: "pathSteps", has: "one", label: "material" },
+      reverse: { on: "trainingMaterials", has: "many", label: "pathSteps" },
+    },
+
+    // materialProgress -> playerProfiles (many-to-one)
+    progressPlayer: {
+      forward: { on: "materialProgress", has: "one", label: "player" },
+      reverse: { on: "playerProfiles", has: "many", label: "progress" },
+    },
+
+    // materialProgress -> trainingMaterials (many-to-one)
+    progressMaterial: {
+      forward: { on: "materialProgress", has: "one", label: "material" },
+      reverse: { on: "trainingMaterials", has: "many", label: "progress" },
+    },
+
+    // playerBadges -> playerProfiles (many-to-one)
+    badgePlayer: {
+      forward: { on: "playerBadges", has: "one", label: "player" },
+      reverse: { on: "playerProfiles", has: "many", label: "badges" },
     },
 
   }

@@ -223,4 +223,50 @@ export default {
       delete: "auth.id != ''",
     },
   },
+
+  // ============================================
+  // BLOQUE B — QUIZZES, RUTA, PROGRESO, INSIGNIAS
+  // ============================================
+  pathSteps: {
+    allow: {
+      view: "true",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+  },
+
+  quizQuestions: {
+    allow: {
+      // Riesgo anti-trampa aceptado: correctIndex es visible en cliente (deuda técnica documentada).
+      view: "true",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+  },
+
+  materialProgress: {
+    allow: {
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
+  },
+
+  playerBadges: {
+    allow: {
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "false",
+      delete: "auth.id != ''",
+    },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
+  },
 };
