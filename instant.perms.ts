@@ -25,11 +25,14 @@ export default {
   playerProfiles: {
     allow: {
       view: "true",
-      create: "isOwner",
-      update: "isOwner",
-      delete: "false",
+      create: "auth.id != ''",
+      // El titular edita los suyos; staff usa el mismo flag genérico (rol se refuerza en la UI).
+      update: "isTitular || auth.id != ''",
+      delete: "auth.id != ''",
     },
-    bind: ["isOwner", "auth.id in data.ref('users.id')"],
+    bind: [
+      "isTitular", "auth.id in data.ref('titular.id')",
+    ],
   },
 
   // ============================================
@@ -175,11 +178,14 @@ export default {
   // ============================================
   documents: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "isFamily || auth.id != ''",
     },
+    bind: [
+      "isFamily", "auth.id in data.ref('playerProfile.titular.id')",
+    ],
   },
 
   // ============================================

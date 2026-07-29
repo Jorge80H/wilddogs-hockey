@@ -31,6 +31,8 @@ import { tx, id as txId } from "@instantdb/react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { motion } from "framer-motion";
+import { ApprovalQueue } from "@/components/admin/ApprovalQueue";
+import { AccountManager } from "@/components/admin/AccountManager";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -110,7 +112,7 @@ export default function AdminDashboard() {
   const materials = (materialsData?.trainingMaterials || []) as any[];
   const news = (newsData?.newsPosts || []) as any[];
 
-  const totalPlayers = allUsers.filter((u) => u.role === "player").length;
+  const totalPlayers = profiles.filter((p: any) => p.status === "approved").length;
   const totalCoaches = allUsers.filter((u) => u.role === "coach").length;
   const pendingUsers = allUsers.filter((u) => u.status === "pending").length;
   const recentMatches = matches.filter((m) => {
@@ -308,7 +310,7 @@ export default function AdminDashboard() {
           transition={{ delay: 0.3 }}
         >
           <Tabs defaultValue="users" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 h-12 bg-white/80 backdrop-blur border shadow-sm">
+            <TabsList className="grid w-full grid-cols-6 h-12 bg-white/80 backdrop-blur border shadow-sm">
               <TabsTrigger
                 value="users"
                 className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -332,6 +334,18 @@ export default function AdminDashboard() {
                 className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               >
                 <Newspaper className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Noticias
+              </TabsTrigger>
+              <TabsTrigger
+                value="approvals"
+                className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <CheckCircle className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Aprobaciones
+              </TabsTrigger>
+              <TabsTrigger
+                value="accounts"
+                className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <Shield className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Cuentas
               </TabsTrigger>
             </TabsList>
 
@@ -871,6 +885,16 @@ export default function AdminDashboard() {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* ═══════════ Approvals Tab ═══════════ */}
+            <TabsContent value="approvals">
+              <ApprovalQueue reviewerId={user?.id || ""} />
+            </TabsContent>
+
+            {/* ═══════════ Accounts Tab ═══════════ */}
+            <TabsContent value="accounts">
+              <AccountManager />
             </TabsContent>
           </Tabs>
         </motion.div>

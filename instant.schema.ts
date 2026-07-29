@@ -30,6 +30,10 @@ const graph = i.graph(
       role: i.string().indexed(),
       // status: 'pending' | 'approved' | 'rejected' | 'inactive'
       status: i.string().indexed(),
+      phone: i.string().optional(),
+      documentType: i.string().optional(),
+      documentNumber: i.string().optional(),
+      address: i.string().optional(),
       createdAt: i.number(),
       updatedAt: i.number(),
     }),
@@ -38,6 +42,8 @@ const graph = i.graph(
     // PLAYER PROFILES
     // --------------------------------------------
     playerProfiles: i.entity({
+      firstName: i.string().optional(),
+      lastName: i.string().optional(),
       // Personal info
       documentType: i.string().optional(),
       documentNumber: i.string().optional(),
@@ -53,7 +59,12 @@ const graph = i.graph(
       jerseyNumber: i.number().optional(),
       uniformSize: i.string().optional(),
 
-      // Guardian info (for minors)
+      // Secondary contact (the other parent/contact, no login)
+      secondaryContactName: i.string().optional(),
+      secondaryContactRelation: i.string().optional(),
+      secondaryContactPhone: i.string().optional(),
+
+      // Legacy guardian fields (kept for backwards-compat, unused by new code)
       guardianName: i.string().optional(),
       guardianRelationship: i.string().optional(),
       guardianDocument: i.string().optional(),
@@ -71,6 +82,13 @@ const graph = i.graph(
       gamesPlayed: i.number(),
       goals: i.number(),
       assists: i.number(),
+
+      // status: 'pending' | 'approved' | 'rejected' | 'inactive'
+      status: i.string().indexed(),
+      // relationshipToTitular: 'self' | 'hijo' | 'hija' | 'otro'
+      relationshipToTitular: i.string().optional(),
+      rejectionReason: i.string().optional(),
+      approvedAt: i.number().optional(),
 
       createdAt: i.number(),
       updatedAt: i.number(),
@@ -320,7 +338,7 @@ const graph = i.graph(
     // USER RELATIONSHIPS
     // --------------------------------------------
 
-    // users <-> playerProfiles (one-to-one)
+    // Legacy 1-to-1 link (kept for backwards-compat; superseded by titularPlayers)
     userPlayerProfile: {
       forward: {
         on: "users",
@@ -331,6 +349,48 @@ const graph = i.graph(
         on: "playerProfiles",
         has: "one",
         label: "user",
+      },
+    },
+
+    // users (titular) <-> playerProfiles (one-to-many)
+    titularPlayers: {
+      forward: {
+        on: "users",
+        has: "many",
+        label: "players",
+      },
+      reverse: {
+        on: "playerProfiles",
+        has: "one",
+        label: "titular",
+      },
+    },
+
+    // coaches <-> users (one-to-one): login de coach mapea a su ficha
+    coachUser: {
+      forward: {
+        on: "coaches",
+        has: "one",
+        label: "user",
+      },
+      reverse: {
+        on: "users",
+        has: "one",
+        label: "coachProfile",
+      },
+    },
+
+    // playerProfiles -> users (staff que aprobó)
+    playerApprovedBy: {
+      forward: {
+        on: "playerProfiles",
+        has: "one",
+        label: "approvedBy",
+      },
+      reverse: {
+        on: "users",
+        has: "many",
+        label: "approvedPlayers",
       },
     },
 
@@ -645,6 +705,7 @@ const graph = i.graph(
         label: "uploadedMaterials",
       },
     },
+
   }
 );
 
