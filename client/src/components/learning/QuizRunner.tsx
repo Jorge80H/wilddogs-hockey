@@ -21,16 +21,23 @@ export function QuizRunner({ player, material, onDone }: { player: any; material
   // Progreso + estado del jugador para idempotencia y evaluación de insignias
   const { data } = db.useQuery({
     materialProgress: { $: { where: { "player.id": player.id } }, material: {} },
-    playerProfiles: { $: { where: { id: player.id } }, badges: {}, progress: { material: {} } },
+    playerProfiles: { $: { where: { id: player.id } }, badges: {} },
     pathSteps: { $: { where: { "category.id": player.category } }, material: {} },
   });
 
   const [answers, setAnswers] = useState<(number | null)[]>(questions.map(() => null));
   const [result, setResult] = useState<{ score: number; passed: boolean; newBadges: BadgeKey[] } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const pick = (qi: number, oi: number) => setAnswers((a) => a.map((x, j) => (j === qi ? oi : x)));
 
   const submit = async () => {
+    // Guarda contra doble-submit: la snapshot de la query (existing/wasAlreadyCompleted)
+    // solo se actualiza tras el round-trip de la transacción, así que un segundo click
+    // antes de que resuelva vería el mismo estado "no completado" y duplicaría XP/insignias.
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const score = computeQuizScore(answers, questions);
     const passed = isPassing(score);
 
@@ -59,6 +66,8 @@ export function QuizRunner({ player, material, onDone }: { player: any; material
     // Gamificación SOLO en la primera transición a completed (idempotencia)
     if (passed && !wasAlreadyCompleted) {
       const xpGain = xpForQuizPass(score);
+      // Tech debt aceptada: read-modify-write de XP en el cliente (sin operación atómica
+      // de servidor en InstantDB). Aceptable para este flujo mono-usuario de quiz.
       ops.push(db.tx.playerProfiles[player.id].update({ xp: (profile.xp ?? 0) + xpGain }));
 
       // Estado para evaluar insignias (incluye este material recién completado)
@@ -85,12 +94,16 @@ export function QuizRunner({ player, material, onDone }: { player: any; material
       });
     }
 
-    await db.transact(ops);
-    setResult({ score, passed, newBadges });
-    if (passed) {
-      toast({ title: `✅ Aprobado (${score}%)` });
-    } else {
-      toast({ title: `Puntaje: ${score}%`, description: "Necesitas 70% para aprobar. ¡Reintenta!", variant: "destructive" });
+    try {
+      await db.transact(ops);
+      setResult({ score, passed, newBadges });
+      if (passed) {
+        toast({ title: `✅ Aprobado (${score}%)` });
+      } else {
+        toast({ title: `Puntaje: ${score}%`, description: "Necesitas 70% para aprobar. ¡Reintenta!", variant: "destructive" });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -136,7 +149,9 @@ export function QuizRunner({ player, material, onDone }: { player: any; material
           </div>
         ))}
         {questions.length > 0 && (
-          <Button onClick={submit} disabled={answers.some((a) => a === null)} className="w-full">Enviar respuestas</Button>
+          <Button onClick={submit} disabled={isSubmitting || answers.some((a) => a === null)} className="w-full">
+            {isSubmitting ? "Enviando..." : "Enviar respuestas"}
+          </Button>
         )}
       </CardContent>
     </Card>
