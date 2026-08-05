@@ -4,7 +4,8 @@ import { useFamily } from "@/hooks/useFamily";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, Home, ArrowLeft } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LogOut, Home, ArrowLeft, BookOpen, Star } from "lucide-react";
 import { Link } from "wouter";
 import { PlayerSwitcher } from "@/components/family/PlayerSwitcher";
 import { TitularOnboardingForm } from "@/components/family/TitularOnboardingForm";
@@ -16,6 +17,9 @@ import { PathCarousel } from "@/components/learning/PathCarousel";
 import { ContentViewer } from "@/components/learning/ContentViewer";
 import { QuizRunner } from "@/components/learning/QuizRunner";
 import { Leaderboard } from "@/components/learning/Leaderboard";
+import { FeedbackMetricsCard } from "@/components/feedback/FeedbackMetricsCard";
+import { MonthlyReportCard } from "@/components/feedback/MonthlyReportCard";
+import { FeedbackHistoryList } from "@/components/feedback/FeedbackHistoryList";
 
 export default function PlayerDashboard() {
   const { authUser, titular, players, isLoading, needsOnboarding } = useFamily();
@@ -118,8 +122,26 @@ function FormacionSection({ player, openMaterialId, setOpenMaterialId, inQuiz, s
   return (
     <div className="space-y-6">
       <PlayerProgressHeader player={player} />
-      <PathCarousel player={player} onOpen={(mid: string) => { setOpenMaterialId(mid); setInQuiz(false); }} />
-      <Leaderboard category={player.category} currentPlayerId={player.id} />
+
+      <Tabs defaultValue="formacion" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="formacion"><BookOpen className="mr-2 h-4 w-4" /> Ruta de Formación</TabsTrigger>
+          <TabsTrigger value="feedback"><Star className="mr-2 h-4 w-4" /> Evaluación & Feedback</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="formacion" className="space-y-6">
+          <PathCarousel player={player} onOpen={(mid: string) => { setOpenMaterialId(mid); setInQuiz(false); }} />
+          <Leaderboard category={player.category} currentPlayerId={player.id} />
+        </TabsContent>
+
+        <TabsContent value="feedback" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FeedbackMetricsCard playerProfileId={player.id} />
+            <MonthlyReportCard playerProfileId={player.id} />
+          </div>
+          <FeedbackHistoryList playerProfileId={player.id} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

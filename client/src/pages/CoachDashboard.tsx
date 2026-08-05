@@ -28,6 +28,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { LibraryManager } from "@/components/coach/LibraryManager";
 import { PathBuilder } from "@/components/coach/PathBuilder";
 import { CategoryProgressDashboard } from "@/components/coach/CategoryProgressDashboard";
+import { FeedbackManager } from "@/components/coach/FeedbackManager";
 import { Library, Route, BarChart3 } from "lucide-react";
 
 export default function CoachDashboard() {
@@ -303,116 +304,7 @@ export default function CoachDashboard() {
 
           {/* Feedback Tab */}
           <TabsContent value="feedback">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Star className="h-5 w-5" /> Evaluar Jugador
-                </CardTitle>
-                <Button
-                  size="sm"
-                  onClick={() => setShowFeedbackForm(!showFeedbackForm)}
-                >
-                  <Plus className="mr-1 h-4 w-4" /> Nueva Evaluación
-                </Button>
-              </CardHeader>
-              <CardContent>
-                {showFeedbackForm && (
-                  <div className="border rounded-lg p-4 mb-6 space-y-4 bg-muted/30">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Jugador</Label>
-                        <select
-                          className="w-full mt-1 border rounded-md p-2 bg-background"
-                          value={selectedPlayerId}
-                          onChange={(e) => setSelectedPlayerId(e.target.value)}
-                        >
-                          <option value="">Seleccionar jugador...</option>
-                          {players.map((p: any) => (
-                            <option key={p.id} value={p.id}>
-                              {p.user?.[0]?.firstName || "Jugador"}{" "}
-                              {p.user?.[0]?.lastName || ""} ({p.category})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <Label>Tipo</Label>
-                        <select
-                          className="w-full mt-1 border rounded-md p-2 bg-background"
-                          value={feedbackType}
-                          onChange={(e) => setFeedbackType(e.target.value)}
-                        >
-                          <option value="post-match">Post-partido</option>
-                          <option value="quarterly">Trimestral</option>
-                          <option value="general">General</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4">
-                      {[
-                        { label: "Técnica", value: technicalScore, set: setTechnicalScore },
-                        { label: "Táctica", value: tacticalScore, set: setTacticalScore },
-                        { label: "Física", value: physicalScore, set: setPhysicalScore },
-                        { label: "Actitud", value: attitudeScore, set: setAttitudeScore },
-                      ].map((s) => (
-                        <div key={s.label} className="text-center">
-                          <Label className="text-xs">{s.label}</Label>
-                          <Input
-                            type="number"
-                            min={1}
-                            max={10}
-                            value={s.value}
-                            onChange={(e) => s.set(Number(e.target.value))}
-                            className="text-center text-lg font-bold mt-1"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div>
-                      <Label>Comentarios *</Label>
-                      <textarea
-                        className="w-full mt-1 border rounded-md p-2 bg-background min-h-[80px]"
-                        value={comments}
-                        onChange={(e) => setComments(e.target.value)}
-                        placeholder="Observaciones generales del desempeño..."
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Fortalezas</Label>
-                        <Input
-                          value={strengths}
-                          onChange={(e) => setStrengths(e.target.value)}
-                          placeholder="¿En qué destacó?"
-                        />
-                      </div>
-                      <div>
-                        <Label>Áreas a mejorar</Label>
-                        <Input
-                          value={areasToImprove}
-                          onChange={(e) => setAreasToImprove(e.target.value)}
-                          placeholder="¿Qué debe trabajar?"
-                        />
-                      </div>
-                    </div>
-
-                    <Button onClick={handleSubmitFeedback} className="w-full">
-                      <Send className="mr-2 h-4 w-4" /> Enviar Evaluación
-                    </Button>
-                  </div>
-                )}
-
-                {!showFeedbackForm && (
-                  <p className="text-muted-foreground text-sm">
-                    Haz clic en "Nueva Evaluación" para empezar a evaluar a un
-                    jugador con scores numéricos y comentarios.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+            <FeedbackManager coachCategory={coachCategory} />
           </TabsContent>
 
           {/* Approvals Tab */}
