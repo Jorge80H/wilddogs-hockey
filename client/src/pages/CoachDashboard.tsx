@@ -25,6 +25,10 @@ import { es } from "date-fns/locale";
 import { tx, id as txId } from "@instantdb/react";
 import { ApprovalQueue } from "@/components/admin/ApprovalQueue";
 import { useAuth } from "@/hooks/useAuth";
+import { LibraryManager } from "@/components/coach/LibraryManager";
+import { PathBuilder } from "@/components/coach/PathBuilder";
+import { CategoryProgressDashboard } from "@/components/coach/CategoryProgressDashboard";
+import { Library, Route, BarChart3 } from "lucide-react";
 
 export default function CoachDashboard() {
   const { toast } = useToast();
@@ -224,7 +228,7 @@ export default function CoachDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="players" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="players">
               <Users className="mr-1 h-4 w-4" /> Jugadores
             </TabsTrigger>
@@ -233,6 +237,15 @@ export default function CoachDashboard() {
             </TabsTrigger>
             <TabsTrigger value="materials">
               <BookOpen className="mr-1 h-4 w-4" /> Formación
+            </TabsTrigger>
+            <TabsTrigger value="library">
+              <Library className="mr-1 h-4 w-4" /> Biblioteca
+            </TabsTrigger>
+            <TabsTrigger value="path">
+              <Route className="mr-1 h-4 w-4" /> Ruta
+            </TabsTrigger>
+            <TabsTrigger value="progress">
+              <BarChart3 className="mr-1 h-4 w-4" /> Progreso
             </TabsTrigger>
             <TabsTrigger value="approvals">
               <CheckCircle className="mr-1 h-4 w-4" /> Aprobaciones
@@ -550,6 +563,20 @@ export default function CoachDashboard() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="library"><LibraryManager /></TabsContent>
+
+          <TabsContent value="path">
+            {coachCategory
+              ? <PathBuilder category={coachCategory} />
+              : <p className="text-sm text-muted-foreground">Tu ficha de coach aún no tiene categoría asignada.</p>}
+          </TabsContent>
+
+          <TabsContent value="progress">
+            {coachCategory
+              ? <CategoryProgressDashboard category={coachCategory} />
+              : <p className="text-sm text-muted-foreground">Tu ficha de coach aún no tiene categoría asignada.</p>}
           </TabsContent>
         </Tabs>
       </main>

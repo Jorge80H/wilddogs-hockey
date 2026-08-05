@@ -11,11 +11,18 @@ import { TitularOnboardingForm } from "@/components/family/TitularOnboardingForm
 import { PlayerProfileForm } from "@/components/family/PlayerProfileForm";
 import { PlayerStatusBanner } from "@/components/family/PlayerStatusBanner";
 import { canViewContent, playerDisplayName } from "@/lib/players";
+import { PlayerProgressHeader } from "@/components/learning/PlayerProgressHeader";
+import { PathCarousel } from "@/components/learning/PathCarousel";
+import { ContentViewer } from "@/components/learning/ContentViewer";
+import { QuizRunner } from "@/components/learning/QuizRunner";
+import { Leaderboard } from "@/components/learning/Leaderboard";
 
 export default function PlayerDashboard() {
   const { authUser, titular, players, isLoading, needsOnboarding } = useFamily();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [openMaterialId, setOpenMaterialId] = useState<string | null>(null);
+  const [inQuiz, setInQuiz] = useState(false);
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>;
@@ -85,17 +92,34 @@ export default function PlayerDashboard() {
 
         {!unlocked ? (
           <Card><CardContent className="py-10 text-center text-muted-foreground">
-            El contenido (videos, cartera y estadísticas) se habilita cuando el club apruebe a este jugador.
+            El contenido se habilita cuando el club apruebe a este jugador.
           </CardContent></Card>
         ) : (
-          <div className="grid gap-4 md:grid-cols-3">
-            {/* Contenedores para bloques B / E / D */}
-            <Card><CardHeader><CardTitle className="text-base">Formación</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">Próximamente (Bloque B)</CardContent></Card>
-            <Card><CardHeader><CardTitle className="text-base">Cartera</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">Próximamente (Bloque E)</CardContent></Card>
-            <Card><CardHeader><CardTitle className="text-base">Estadísticas</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">Próximamente (Bloque D)</CardContent></Card>
-          </div>
+          <FormacionSection player={player} openMaterialId={openMaterialId} setOpenMaterialId={setOpenMaterialId} inQuiz={inQuiz} setInQuiz={setInQuiz} />
         )}
       </main>
+    </div>
+  );
+}
+
+function FormacionSection({ player, openMaterialId, setOpenMaterialId, inQuiz, setInQuiz }: any) {
+  const { data } = db.useQuery(
+    openMaterialId ? { trainingMaterials: { $: { where: { id: openMaterialId } }, questions: {} } } : null
+  );
+  const material = (data?.trainingMaterials?.[0] as any) || null;
+
+  if (openMaterialId && material) {
+    if (inQuiz) {
+      return <QuizRunner player={player} material={material} onDone={() => { setInQuiz(false); setOpenMaterialId(null); }} />;
+    }
+    return <ContentViewer material={material} onQuiz={() => setInQuiz(true)} onBack={() => setOpenMaterialId(null)} />;
+  }
+
+  return (
+    <div className="space-y-6">
+      <PlayerProgressHeader player={player} />
+      <PathCarousel player={player} onOpen={(mid: string) => { setOpenMaterialId(mid); setInQuiz(false); }} />
+      <Leaderboard category={player.category} currentPlayerId={player.id} />
     </div>
   );
 }
