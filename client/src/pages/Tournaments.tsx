@@ -52,7 +52,7 @@ const isFedehockey = (m: any): boolean => {
 };
 
 const WD_DISPLAY_FH = "Wild Dogs";
-const WD_DISPLAY_FP = "Optima Wild Dogs (Condors)";
+const WD_DISPLAY_FP = "Optima Wild Dogs";
 
 // ─────────────────────────────────────────────
 // MINI CALENDARIO
@@ -416,7 +416,7 @@ export const matchCat = (m: any) => {
     const parts = notesStr.split(" - ");
     // En Fedepatín el formato es "Liga/Torneo - División - Notas Adicionales"
     // Buscamos cualquier segmento que explícitamente mencione "sub" o "juvenil" (la categoría)
-    const divPart = parts.find(p => p.toLowerCase().includes("sub") || p.toLowerCase().includes("juvenil"));
+    const divPart = parts.find((p: string) => p.toLowerCase().includes("sub") || p.toLowerCase().includes("juvenil"));
     if (divPart) {
       return divPart.trim();
     }
@@ -639,7 +639,6 @@ export default function Tournaments() {
               <div className="mb-4 flex items-center gap-3 flex-wrap">
                 <Badge variant="outline" className="border-secondary/30 bg-secondary/5 text-secondary px-3 py-1">Liga Fedepatín Colombia</Badge>
                 <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedepatín</span>
-                <Badge variant="secondary" className="text-xs">Jugamos como: Condors</Badge>
               </div>
               <CategoryFilter categories={fpCategories} selected={fpCat} onChange={setFpCat} />
               <Tabs defaultValue="upcoming-fp">
