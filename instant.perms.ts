@@ -269,4 +269,40 @@ export default {
       "isFamily", "auth.id in data.ref('player.titular.id')",
     ],
   },
+
+  // ============================================
+  // BLOQUE D — ENTRENAMIENTOS, ASISTENCIA Y ESTADÍSTICAS
+  // ============================================
+  trainingSessions: {
+    allow: {
+      view: "true",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+  },
+
+  attendance: {
+    allow: {
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
+  },
+
+  playerMatchStats: {
+    allow: {
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
+    },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
+  },
 };

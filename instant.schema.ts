@@ -325,6 +325,40 @@ const graph = i.graph(
     }),
 
     // --------------------------------------------
+    // BLOQUE D — ENTRENAMIENTOS, ASISTENCIA Y ESTADÍSTICAS
+    // --------------------------------------------
+    trainingSessions: i.entity({
+      category: i.string().indexed(),
+      date: i.number(),              // timestamp ms
+      startTime: i.string().optional(),
+      endTime: i.string().optional(),
+      location: i.string().optional(),
+      objective: i.string().optional(),
+      notes: i.string().optional(),
+      createdAt: i.number(),
+      updatedAt: i.number(),
+    }),
+
+    attendance: i.entity({
+      // status: 'present' | 'absent' | 'excused' | 'late'
+      status: i.string().indexed(),
+      notes: i.string().optional(),
+      createdAt: i.number(),
+      updatedAt: i.number(),
+    }),
+
+    playerMatchStats: i.entity({
+      goals: i.number(),
+      assists: i.number(),
+      penalties: i.number(),          // minutos de penalización
+      shots: i.number(),
+      plusMinus: i.number(),
+      minutesPlayed: i.number().optional(),
+      notes: i.string().optional(),
+      createdAt: i.number(),
+    }),
+
+    // --------------------------------------------
     // FEDEHOCKEY - MATCHES & STANDINGS
     // (Auto-synced from Fedehockey via n8n)
     // --------------------------------------------
@@ -779,6 +813,39 @@ const graph = i.graph(
       reverse: { on: "playerProfiles", has: "many", label: "badges" },
     },
 
+    // --------------------------------------------
+    // BLOQUE D — LINKS
+    // --------------------------------------------
+
+    // trainingSessions -> categories
+    sessionCategory: {
+      forward: { on: "trainingSessions", has: "one", label: "categoryEntity" },
+      reverse: { on: "categories", has: "many", label: "trainingSessions" },
+    },
+
+    // attendance -> playerProfiles
+    attendancePlayer: {
+      forward: { on: "attendance", has: "one", label: "player" },
+      reverse: { on: "playerProfiles", has: "many", label: "attendances" },
+    },
+
+    // attendance -> trainingSessions
+    attendanceSession: {
+      forward: { on: "attendance", has: "one", label: "session" },
+      reverse: { on: "trainingSessions", has: "many", label: "attendances" },
+    },
+
+    // playerMatchStats -> playerProfiles
+    statPlayer: {
+      forward: { on: "playerMatchStats", has: "one", label: "player" },
+      reverse: { on: "playerProfiles", has: "many", label: "matchStats" },
+    },
+
+    // playerMatchStats -> matches
+    statMatch: {
+      forward: { on: "playerMatchStats", has: "one", label: "match" },
+      reverse: { on: "matches", has: "many", label: "playerStats" },
+    },
   }
 );
 

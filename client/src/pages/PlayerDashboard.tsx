@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Home, ArrowLeft, BookOpen, Star } from "lucide-react";
+import { LogOut, Home, ArrowLeft, BookOpen, Star, CalendarCheck } from "lucide-react";
 import { Link } from "wouter";
 import { PlayerSwitcher } from "@/components/family/PlayerSwitcher";
 import { TitularOnboardingForm } from "@/components/family/TitularOnboardingForm";
@@ -20,6 +20,8 @@ import { Leaderboard } from "@/components/learning/Leaderboard";
 import { FeedbackMetricsCard } from "@/components/feedback/FeedbackMetricsCard";
 import { MonthlyReportCard } from "@/components/feedback/MonthlyReportCard";
 import { FeedbackHistoryList } from "@/components/feedback/FeedbackHistoryList";
+import { AttendanceSummaryCard } from "@/components/training/AttendanceSummaryCard";
+import { PlayerMatchStatsCard } from "@/components/training/PlayerMatchStatsCard";
 
 export default function PlayerDashboard() {
   const { authUser, titular, players, isLoading, needsOnboarding } = useFamily();
@@ -124,9 +126,10 @@ function FormacionSection({ player, openMaterialId, setOpenMaterialId, inQuiz, s
       <PlayerProgressHeader player={player} />
 
       <Tabs defaultValue="formacion" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="formacion"><BookOpen className="mr-2 h-4 w-4" /> Ruta de Formación</TabsTrigger>
           <TabsTrigger value="feedback"><Star className="mr-2 h-4 w-4" /> Evaluación & Feedback</TabsTrigger>
+          <TabsTrigger value="stats"><CalendarCheck className="mr-2 h-4 w-4" /> Asistencia & Stats</TabsTrigger>
         </TabsList>
 
         <TabsContent value="formacion" className="space-y-6">
@@ -140,6 +143,11 @@ function FormacionSection({ player, openMaterialId, setOpenMaterialId, inQuiz, s
             <MonthlyReportCard playerProfileId={player.id} />
           </div>
           <FeedbackHistoryList playerProfileId={player.id} />
+        </TabsContent>
+
+        <TabsContent value="stats" className="space-y-6">
+          <AttendanceSummaryCard playerProfileId={player.id} />
+          <PlayerMatchStatsCard playerProfileId={player.id} />
         </TabsContent>
       </Tabs>
     </div>

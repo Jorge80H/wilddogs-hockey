@@ -29,7 +29,9 @@ import { LibraryManager } from "@/components/coach/LibraryManager";
 import { PathBuilder } from "@/components/coach/PathBuilder";
 import { CategoryProgressDashboard } from "@/components/coach/CategoryProgressDashboard";
 import { FeedbackManager } from "@/components/coach/FeedbackManager";
-import { Library, Route, BarChart3 } from "lucide-react";
+import { AttendanceTracker } from "@/components/coach/AttendanceTracker";
+import { MatchStatsManager } from "@/components/coach/MatchStatsManager";
+import { Library, Route, BarChart3, CalendarCheck, Activity } from "lucide-react";
 
 export default function CoachDashboard() {
   const { toast } = useToast();
@@ -229,9 +231,15 @@ export default function CoachDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="players" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-9">
             <TabsTrigger value="players">
               <Users className="mr-1 h-4 w-4" /> Jugadores
+            </TabsTrigger>
+            <TabsTrigger value="attendance">
+              <CalendarCheck className="mr-1 h-4 w-4" /> Asistencia
+            </TabsTrigger>
+            <TabsTrigger value="stats">
+              <Activity className="mr-1 h-4 w-4" /> Estadísticas
             </TabsTrigger>
             <TabsTrigger value="feedback">
               <Star className="mr-1 h-4 w-4" /> Feedback
@@ -470,6 +478,9 @@ export default function CoachDashboard() {
               ? <CategoryProgressDashboard category={coachCategory} />
               : <p className="text-sm text-muted-foreground">Tu ficha de coach aún no tiene categoría asignada.</p>}
           </TabsContent>
+
+          <TabsContent value="attendance"><AttendanceTracker coachCategory={coachCategory} /></TabsContent>
+          <TabsContent value="stats"><MatchStatsManager coachCategory={coachCategory} /></TabsContent>
         </Tabs>
       </main>
     </div>
