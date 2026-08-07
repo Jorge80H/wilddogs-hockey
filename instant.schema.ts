@@ -677,6 +677,34 @@ const graph = i.graph(
       },
     },
 
+    // accountsReceivable -> playerProfiles (many-to-one)
+    accountPlayer: {
+      forward: {
+        on: "accountsReceivable",
+        has: "one",
+        label: "player",
+      },
+      reverse: {
+        on: "playerProfiles",
+        has: "many",
+        label: "receivables",
+      },
+    },
+
+    // payments -> playerProfiles (many-to-one)
+    paymentPlayer: {
+      forward: {
+        on: "payments",
+        has: "one",
+        label: "player",
+      },
+      reverse: {
+        on: "playerProfiles",
+        has: "many",
+        label: "paymentRecords",
+      },
+    },
+
     // --------------------------------------------
     // DOCUMENT RELATIONSHIPS
     // --------------------------------------------

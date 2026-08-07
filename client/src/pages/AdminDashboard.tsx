@@ -33,6 +33,7 @@ import { es } from "date-fns/locale";
 import { motion } from "framer-motion";
 import { ApprovalQueue } from "@/components/admin/ApprovalQueue";
 import { AccountManager } from "@/components/admin/AccountManager";
+import { FinanceManager } from "@/components/admin/FinanceManager";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -310,12 +311,18 @@ export default function AdminDashboard() {
           transition={{ delay: 0.3 }}
         >
           <Tabs defaultValue="users" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 h-12 bg-white/80 backdrop-blur border shadow-sm">
+            <TabsList className="grid w-full grid-cols-7 h-12 bg-white/80 backdrop-blur border shadow-sm">
               <TabsTrigger
                 value="users"
                 className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               >
                 <Users className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Usuarios
+              </TabsTrigger>
+              <TabsTrigger
+                value="finance"
+                className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <DollarSign className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Tesorería
               </TabsTrigger>
               <TabsTrigger
                 value="feedback"
@@ -890,6 +897,11 @@ export default function AdminDashboard() {
             {/* ═══════════ Approvals Tab ═══════════ */}
             <TabsContent value="approvals">
               <ApprovalQueue reviewerId={user?.id || ""} />
+            </TabsContent>
+
+            {/* ═══════════ Finance Tab ═══════════ */}
+            <TabsContent value="finance">
+              <FinanceManager />
             </TabsContent>
 
             {/* ═══════════ Accounts Tab ═══════════ */}

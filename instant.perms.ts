@@ -139,37 +139,43 @@ export default {
   // ============================================
   paymentConcepts: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "true",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
   },
 
   accountsReceivable: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
   },
 
   payments: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "isFamily || auth.id != ''",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
+    bind: [
+      "isFamily", "auth.id in data.ref('player.titular.id')",
+    ],
   },
 
   paymentApplications: {
     allow: {
-      view: "false",
-      create: "false",
-      update: "false",
-      delete: "false",
+      view: "true",
+      create: "auth.id != ''",
+      update: "auth.id != ''",
+      delete: "auth.id != ''",
     },
   },
 
