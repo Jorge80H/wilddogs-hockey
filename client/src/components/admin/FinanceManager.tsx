@@ -11,6 +11,7 @@ import { DollarSign, Plus, CheckCircle, Receipt } from "lucide-react";
 import { formatCOP, generateReceiptNumber } from "@/lib/finance";
 import { playerDisplayName } from "@/lib/players";
 import { format } from "date-fns";
+import { BreBPaymentCard } from "@/components/finance/BreBPaymentCard";
 
 export function FinanceManager() {
   const { toast } = useToast();
@@ -163,6 +164,8 @@ export function FinanceManager() {
 
   return (
     <div className="space-y-6">
+      <BreBPaymentCard />
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-base">
