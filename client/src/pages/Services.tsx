@@ -278,8 +278,8 @@ function LeadFormModal({ mode, price, onClose }: { mode: LeadMode; price: string
 
 export default function Services() {
   useSEO({
-    title: "Servicios y Membresías",
-    description: "Escuela de formación deportiva, preparación física especializada, torneos y membresía oficial en Optima Wild Dogs Hockey Club. Afiliación desde $475.000/mes.",
+    title: "Clases, Entrenamientos y Afiliaciones de Hockey en Bogotá",
+    description: "Escuela de formación deportiva, clases de patinaje y hockey, preparación física y membresía oficial en Optima Wild Dogs Bogotá. ¡Agenda tu clase de prueba gratis!",
     url: "/servicios",
   });
 

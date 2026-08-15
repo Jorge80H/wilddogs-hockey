@@ -12,6 +12,7 @@ import { es } from "date-fns/locale";
 import { useSEO } from "@/hooks/useSEO";
 import { useState, useEffect } from "react";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
+import { matchCat } from "@/pages/Tournaments";
 
 // Roster images for background slideshow
 import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
@@ -52,8 +53,8 @@ const staggerContainer = {
 
 export default function Landing() {
   useSEO({
-    title: "Optima Wild Dogs Hockey Club",
-    description: "Club de Hockey en Línea en Bogotá, Colombia. El poder de la manada. Formación deportiva de excelencia para todas las edades desde Sub 8 hasta Mayores.",
+    title: "Escuela y Club de Hockey en Línea en Bogotá",
+    description: "Club y escuela formativa de hockey en línea en Bogotá. Clases deportivas para niños desde los 4 años, jóvenes y adultos. ¡Agenda tu clase de prueba gratis con equipamiento incluido!",
     url: "/",
   });
 
@@ -264,7 +265,7 @@ export default function Landing() {
                 const isWildDogsHome = match.isHome;
                 const homeTeam = isWildDogsHome ? "Wild Dogs" : match.opponent;
                 const awayTeam = isWildDogsHome ? match.opponent : "Wild Dogs";
-                const divisionStr = match.notes?.split(' - ')[0] || "General";
+                const divisionStr = matchCat(match);
 
                 return (
                   <motion.div key={match.id} variants={fadeIn}>

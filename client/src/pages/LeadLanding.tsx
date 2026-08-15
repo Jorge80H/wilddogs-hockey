@@ -218,8 +218,8 @@ function StatItem({ value, label, suffix = "" }: { value: string; label: string;
 // ─── MAIN LANDING ────────────────────────────────────────────────────────────
 export default function LeadLanding() {
     useSEO({
-        title: "Únete a la Manada",
-        description: "¿Quieres que tu hijo/a practique hockey en línea en Bogotá? Optima Wild Dogs Hockey Club ofrece formación profesional desde los 5 años. Cupos limitados.",
+        title: "Clase de Prueba Gratis de Hockey en Bogotá | Niños y Jóvenes",
+        description: "Reserva una clase de prueba demostrativa de hockey en línea en Bogotá para tu hijo/a. Formación deportiva desde los 4 años. Equipamiento incluido y cupos limitados.",
         url: "/unete",
     });
 

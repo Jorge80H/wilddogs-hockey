@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0a0f1e;
+        font-family: "Oswald", "Arial Black", sans-serif;
+      }
+
+      .scene {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px; height: 1080px;
+        overflow: hidden;
+        background: #0a0f1e;
+      }
+
+      /* Scene 1 visible by default; all others start hidden */
+      #s1 { z-index: 1; }
+      #s2 { z-index: 2; opacity: 0; }
+      #s3a { z-index: 3; opacity: 0; }
+      #s3b { z-index: 4; opacity: 0; }
+      #s3c { z-index: 5; opacity: 0; }
+      #s4  { z-index: 6; opacity: 0; }
+      #s5  { z-index: 7; opacity: 0; }
+
+      .full-img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px; height: 1080px;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .grad-bottom {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top,
+          rgba(10,15,30,0.93) 0%,
+          rgba(10,15,30,0.18) 55%,
+          rgba(10,15,30,0) 100%);
+      }
+
+      .grad-side {
+        position: absolute; inset: 0;
+        background: linear-gradient(to right,
+          rgba(10,15,30,0.90) 36%,
+          rgba(10,15,30,0.22) 100%);
+      }
+
+      .scene-flex {
+        width: 100%; height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .orange { color: #EA580C; }
+      .label-sm {
+        font-size: 24px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="wilddogs-promo"
+      data-start="0"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+
+      <!-- ===== S1: Logo Reveal — 0–4s ===== -->
+      <div id="s1" class="scene">
+        <!-- Ambient radial glow -->
+        <div id="s1-glow" style="
+          position: absolute;
+          width: 920px; height: 920px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(234,88,12,0.38) 0%, rgba(234,88,12,0) 70%);
+          top: 50%; left: 50%; transform: translate(-50%,-50%);
+        "></div>
+        <!-- Ghost watermark -->
+        <div id="s1-ghost" style="
+          position: absolute;
+          font-size: 440px; font-weight: 900;
+          color: rgba(234,88,12,0.045);
+          top: 50%; left: 50%; transform: translate(-50%,-50%);
+          user-select: none; white-space: nowrap; letter-spacing: -0.02em;
+        ">WD</div>
+        <!-- Hairline accent -->
+        <div id="s1-line" style="
+          position: absolute; top: 50%; left: 50%;
+          transform: translate(-50%, 220px);
+          width: 0; height: 2px; background: #EA580C;
+        "></div>
+
+        <div class="scene-flex" style="align-items: center; position: relative; z-index: 2;">
+          <img id="s1-logo" src="images/Logo_Optima.webp"
+               style="width: 300px; height: auto;" alt="Wild Dogs" />
+          <div id="s1-name" style="
+            font-size: 110px; font-weight: 700; color: #fff;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            margin-top: 18px;
+          ">WILD DOGS</div>
+          <div id="s1-tag" style="
+            font-size: 26px; letter-spacing: 0.26em;
+            text-transform: uppercase; margin-top: 10px;
+            font-weight: 500; color: #EA580C;
+          ">HOCKEY CLUB · BOGOTÁ</div>
+        </div>
+      </div>
+
+      <!-- ===== S2: Team Power — 4–12s ===== -->
+      <div id="s2" class="scene">
+        <img id="s2-photo" class="full-img" src="images/Jugadores_Wilddogs.webp" alt="Wild Dogs Team" />
+        <div class="grad-side"></div>
+        <div style="position: absolute; inset: 0; background: rgba(10,15,30,0.22);"></div>
+
+        <div class="scene-flex" style="padding: 0 160px; position: relative; z-index: 2;">
+          <div id="s2-pre" class="label-sm orange" style="margin-bottom: 22px;">
+            Optima Presenta
+          </div>
+          <div id="s2-title" style="
+            font-size: 140px; font-weight: 700; color: #fff;
+            line-height: 0.93; text-transform: uppercase;
+            letter-spacing: 0.03em; max-width: 860px;
+          ">EL PODER<br>DE LA<br>MANADA</div>
+          <div id="s2-bar" style="
+            width: 0; height: 5px; background: #EA580C; margin-top: 34px;
+          "></div>
+          <div id="s2-sub" style="
+            font-size: 30px; color: rgba(255,255,255,0.62);
+            margin-top: 20px; font-weight: 300; letter-spacing: 0.04em;
+            font-family: 'Inter', sans-serif;
+          ">Wild Dogs Hockey Club · Bogotá, Colombia</div>
+        </div>
+      </div>
+
+      <!-- ===== S3a: Arquero — 12–15s ===== -->
+      <div id="s3a" class="scene">
+        <img id="s3a-photo" class="full-img" src="images/Arquero.webp"
+             alt="Arquero" style="object-position: center top;" />
+        <div class="grad-bottom"></div>
+        <div style="position: absolute; bottom: 108px; left: 160px; z-index: 2;">
+          <div id="s3a-label" style="
+            font-size: 82px; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+          ">Arqueros de Élite</div>
+          <div id="s3a-bar" style="width: 0; height: 5px; background: #EA580C; margin-top: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- ===== S3b: Acción DSC01384 — 15–18s ===== -->
+      <div id="s3b" class="scene">
+        <img id="s3b-photo" class="full-img" src="images/DSC01384.webp" alt="Wild Dogs acción" />
+        <div class="grad-bottom"></div>
+        <div style="position: absolute; bottom: 108px; right: 160px; z-index: 2; text-align: right;">
+          <div id="s3b-label" style="
+            font-size: 82px; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+          ">Jugando con Pasión</div>
+          <div id="s3b-bar" style="
+            width: 0; height: 5px; background: #EA580C;
+            margin-top: 14px; margin-left: auto;
+          "></div>
+        </div>
+      </div>
+
+      <!-- ===== S3c: Equipo IMG_7933 — 18–21s ===== -->
+      <div id="s3c" class="scene">
+        <img id="s3c-photo" class="full-img" src="images/IMG_7933.webp" alt="Wild Dogs equipo" />
+        <div class="grad-bottom"></div>
+        <div style="
+          position: absolute; bottom: 108px; left: 0; right: 0; z-index: 2;
+          display: flex; flex-direction: column; align-items: center;
+        ">
+          <div id="s3c-label" style="
+            font-size: 82px; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            line-height: 1; text-align: center;
+          ">La Manada en Acción</div>
+          <div id="s3c-bar" style="width: 0; height: 5px; background: #EA580C; margin-top: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- ===== S4: Stats — 21–26s ===== -->
+      <div id="s4" class="scene">
+        <img class="full-img" src="images/textura_grande_wilddogs.webp" alt="" style="opacity: 0.05;" />
+        <!-- Ambient glow -->
+        <div style="
+          position: absolute; width: 1400px; height: 680px; border-radius: 50%;
+          background: radial-gradient(ellipse, rgba(234,88,12,0.13) 0%, rgba(234,88,12,0) 70%);
+          top: 50%; left: 50%; transform: translate(-50%,-50%);
+        "></div>
+
+        <div class="scene-flex" style="align-items: center; position: relative; z-index: 2;">
+          <div id="s4-pretitle" class="label-sm orange" style="margin-bottom: 60px;">
+            La Manada
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 80px;">
+            <!-- Stat 1 -->
+            <div id="s4-stat1" style="text-align: center;">
+              <div style="
+                font-size: 180px; font-weight: 700; color: #fff;
+                line-height: 1; font-variant-numeric: tabular-nums;
+              ">30</div>
+              <div style="
+                font-size: 28px; color: rgba(255,255,255,0.52);
+                text-transform: uppercase; letter-spacing: 0.18em;
+                margin-top: 14px; font-family: 'Inter', sans-serif; font-weight: 300;
+              ">Jugadores</div>
+            </div>
+            <!-- Divider -->
+            <div id="s4-div1" style="width: 2px; height: 220px; background: rgba(234,88,12,0.45);"></div>
+            <!-- Stat 2 -->
+            <div id="s4-stat2" style="text-align: center;">
+              <div style="
+                font-size: 180px; font-weight: 700; color: #EA580C;
+                line-height: 1;
+              ">6</div>
+              <div style="
+                font-size: 28px; color: rgba(255,255,255,0.52);
+                text-transform: uppercase; letter-spacing: 0.18em;
+                margin-top: 14px; font-family: 'Inter', sans-serif; font-weight: 300;
+              ">Categorías</div>
+            </div>
+            <!-- Divider -->
+            <div id="s4-div2" style="width: 2px; height: 220px; background: rgba(234,88,12,0.45);"></div>
+            <!-- Stat 3 -->
+            <div id="s4-stat3" style="text-align: center;">
+              <div style="
+                font-size: 180px; font-weight: 700; color: #fff; line-height: 1;
+              ">100<span style="font-size: 96px; color: #EA580C;">%</span></div>
+              <div style="
+                font-size: 28px; color: rgba(255,255,255,0.52);
+                text-transform: uppercase; letter-spacing: 0.18em;
+                margin-top: 14px; font-family: 'Inter', sans-serif; font-weight: 300;
+              ">Pasión</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== S5: CTA + Outro — 26–30s ===== -->
+      <div id="s5" class="scene">
+        <img id="s5-photo" class="full-img" src="images/IMG_8260.webp" alt="Wild Dogs celebración" />
+        <div style="position: absolute; inset: 0; background: rgba(10,15,30,0.74);"></div>
+
+        <div class="scene-flex" style="align-items: center; position: relative; z-index: 2;">
+          <div id="s5-logo" style="width: 180px; height: 180px; background: url('images/Logo_Optima.webp') center/contain no-repeat;"></div>
+          <div id="s5-title" style="
+            font-size: 110px; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            text-align: center; margin-top: 26px; line-height: 1;
+          ">Únete a la Manada</div>
+          <div id="s5-bar" style="width: 0; height: 5px; background: #EA580C; margin-top: 26px;"></div>
+          <div id="s5-url" style="
+            font-size: 32px; color: rgba(255,255,255,0.58);
+            letter-spacing: 0.12em; margin-top: 22px;
+            font-family: 'Inter', sans-serif;
+          ">wilddogs.com.co</div>
+        </div>
+
+        <!-- Fade to black — ONLY exit animation, on final scene -->
+        <div id="s5-fade" style="
+          position: absolute; inset: 0; background: #0a0f1e;
+          opacity: 0; z-index: 10; pointer-events: none;
+        "></div>
+      </div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ====== S1: Logo Reveal (0–4s) ======
+
+      // Glow bursts open
+      tl.from("#s1-glow", { scale: 0.15, opacity: 0, duration: 1.5, ease: "power2.out" }, 0.15);
+      // Glow breathes — starts after entrance completes, finite (4 beats × 0.9s)
+      tl.to("#s1-glow", { scale: 1.18, duration: 0.9, ease: "sine.inOut", repeat: 3, yoyo: true, overwrite: "auto" }, 1.65);
+      // Ghost text drifts in slowly
+      tl.from("#s1-ghost", { opacity: 0, scale: 1.12, duration: 2.0, ease: "power1.out" }, 0.2);
+      // Logo scales in with bounce
+      tl.from("#s1-logo", { opacity: 0, scale: 0.6, duration: 0.8, ease: "back.out(1.6)" }, 0.5);
+      // Name SLAMS up
+      tl.from("#s1-name", { y: 80, opacity: 0, duration: 0.48, ease: "expo.out" }, 1.1);
+      // Tag fades wide then closes
+      tl.from("#s1-tag", { opacity: 0, letterSpacing: "0.6em", duration: 0.7, ease: "power2.out" }, 1.55);
+      // Accent line extends
+      tl.to("#s1-line", { width: 200, duration: 0.55, ease: "power3.out" }, 1.8);
+
+      // → TRANSITION S1→S2: blur-crossfade at t=3.78
+      tl.to("#s1",  { opacity: 0, filter: "blur(10px)", duration: 0.28, ease: "power2.in" }, 3.78);
+      tl.fromTo("#s2", { opacity: 0, filter: "blur(10px)" },
+                       { opacity: 1, filter: "blur(0px)", duration: 0.38, ease: "power3.out" }, 3.88);
+
+      // ====== S2: Team Power (4–12s) ======
+
+      // Photo Ken Burns
+      tl.from("#s2-photo", { scale: 1.1, duration: 9.0, ease: "none" }, 4.0);
+      // Pre-label slides in
+      tl.from("#s2-pre",   { x: -55, opacity: 0, duration: 0.48, ease: "power3.out" }, 4.28);
+      // Big title crashes from left
+      tl.from("#s2-title", { x: -110, opacity: 0, duration: 0.62, ease: "expo.out" }, 4.72);
+      // Bar draws right
+      tl.to("#s2-bar",   { width: 220, duration: 0.58, ease: "power3.out" }, 5.45);
+      // Sub floats up
+      tl.from("#s2-sub", { y: 30, opacity: 0, duration: 0.52, ease: "power2.out" }, 5.82);
+
+      // → TRANSITION S2→S3a: hard cut at t=11.88
+      tl.to("#s2",  { opacity: 0, duration: 0.12, ease: "none" }, 11.88);
+      tl.to("#s3a", { opacity: 1, duration: 0.12, ease: "none" }, 11.88);
+
+      // ====== S3a: Arquero (12–15s) ======
+
+      tl.from("#s3a-photo", { scale: 1.07, duration: 3.3, ease: "none" }, 12.0);
+      tl.from("#s3a-label", { y: 38, opacity: 0, duration: 0.4, ease: "power3.out" }, 12.18);
+      tl.to("#s3a-bar",     { width: 300, duration: 0.5, ease: "power3.out" }, 12.52);
+
+      // → TRANSITION S3a→S3b: hard cut at t=14.88
+      tl.to("#s3a", { opacity: 0, duration: 0.12, ease: "none" }, 14.88);
+      tl.to("#s3b", { opacity: 1, duration: 0.12, ease: "none" }, 14.88);
+
+      // ====== S3b: Acción (15–18s) ======
+
+      tl.from("#s3b-photo", { scale: 1.07, duration: 3.3, ease: "none" }, 15.0);
+      tl.from("#s3b-label", { x: 55, opacity: 0, duration: 0.4, ease: "power3.out" }, 15.18);
+      tl.to("#s3b-bar",     { width: 300, duration: 0.5, ease: "power3.out" }, 15.52);
+
+      // → TRANSITION S3b→S3c: hard cut at t=17.88
+      tl.to("#s3b", { opacity: 0, duration: 0.12, ease: "none" }, 17.88);
+      tl.to("#s3c", { opacity: 1, duration: 0.12, ease: "none" }, 17.88);
+
+      // ====== S3c: Equipo en acción (18–21s) ======
+
+      tl.from("#s3c-photo", { scale: 1.07, duration: 3.3, ease: "none" }, 18.0);
+      tl.from("#s3c-label", { opacity: 0, y: 28, duration: 0.5, ease: "power2.out" }, 18.18);
+      tl.to("#s3c-bar",     { width: 300, duration: 0.5, ease: "power3.out" }, 18.62);
+
+      // → TRANSITION S3c→S4: overexposure zoom at t=20.78
+      tl.to("#s3c", { opacity: 0, scale: 1.12, filter: "brightness(2.8)", duration: 0.26, ease: "power3.in" }, 20.78);
+      tl.fromTo("#s4", { opacity: 0, scale: 0.93 },
+                       { opacity: 1, scale: 1, duration: 0.44, ease: "power3.out" }, 20.95);
+
+      // ====== S4: Stats (21–26s) ======
+
+      tl.from("#s4-pretitle", { y: 32, opacity: 0, duration: 0.48, ease: "power3.out" }, 21.18);
+      tl.from("#s4-stat1",    { x: -72, opacity: 0, duration: 0.55, ease: "expo.out" }, 21.5);
+      tl.from("#s4-div1",     { scaleY: 0, opacity: 0, duration: 0.36, ease: "power2.out", transformOrigin: "center" }, 21.85);
+      tl.from("#s4-stat2",    { y: 58, opacity: 0, duration: 0.55, ease: "expo.out" }, 22.1);
+      tl.from("#s4-div2",     { scaleY: 0, opacity: 0, duration: 0.36, ease: "power2.out", transformOrigin: "center" }, 22.45);
+      tl.from("#s4-stat3",    { x: 72, opacity: 0, duration: 0.55, ease: "expo.out" }, 22.7);
+
+      // → TRANSITION S4→S5: blur crossfade at t=25.72
+      tl.to("#s4",  { opacity: 0, filter: "blur(8px)", duration: 0.42, ease: "power2.in" }, 25.72);
+      tl.fromTo("#s5", { opacity: 0, filter: "blur(8px)" },
+                       { opacity: 1, filter: "blur(0px)", duration: 0.52, ease: "power3.out" }, 25.88);
+
+      // ====== S5: CTA + Outro (26–30s) ======
+
+      tl.from("#s5-photo", { scale: 1.07, duration: 4.5, ease: "none" }, 26.0);
+      tl.from("#s5-logo",  { scale: 0.72, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 26.28);
+      tl.from("#s5-title", { y: 48, opacity: 0, duration: 0.62, ease: "power3.out" }, 26.85);
+      tl.to("#s5-bar",     { width: 380, duration: 0.65, ease: "power3.out" }, 27.45);
+      tl.from("#s5-url",   { opacity: 0, letterSpacing: "0.25em", duration: 0.55, ease: "power2.out" }, 27.9);
+
+      // Final fade to black (only exit animation — final scene)
+      tl.to("#s5-fade", { opacity: 1, duration: 0.9, ease: "power2.in" }, 29.0);
+
+      window.__timelines["wilddogs-promo"] = tl;
+    </script>
+  </body>
+</html>

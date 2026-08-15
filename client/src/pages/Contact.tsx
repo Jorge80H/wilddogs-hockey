@@ -45,8 +45,8 @@ import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function Contact() {
   useSEO({
-    title: "Contacto",
-    description: "Únete a la manada. Contáctanos en Optima Wild Dogs Hockey Club, Bogotá Colombia. Inscripciones abiertas para todas las edades.",
+    title: "Sede y Contacto | Pista de Hockey en Bogotá Norte",
+    description: "Pista y sede de entrenamiento en Carrera 22 No. 164-83 Bogotá. Horarios de entrenamiento, atención por WhatsApp e inscripciones abiertas en Optima Wild Dogs.",
     url: "/contacto",
   });
 

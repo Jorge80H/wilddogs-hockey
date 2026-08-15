@@ -469,8 +469,8 @@ function CategoryFilter({ categories, selected, onChange }: { categories: string
 // ─────────────────────────────────────────────
 export default function Tournaments() {
   useSEO({
-    title: "Torneos y Resultados",
-    description: "Calendario, resultados y tabla de posiciones de Optima Wild Dogs Hockey Club.",
+    title: "Torneos y Partidos de Hockey en Línea en Bogotá",
+    description: "Calendario de partidos, resultados en vivo y tabla de posiciones de Optima Wild Dogs Hockey Club en la Liga Fedepatín y torneos de Bogotá.",
     url: "/torneos",
   });
 

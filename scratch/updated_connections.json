@@ -1,0 +1,84 @@
+{
+  "Build InstantDB Transaction": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Write to InstantDB",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Get Matches": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Parse Matches",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Get Standings": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Parse Standings",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Merge All Data": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Build InstantDB Transaction",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Parse Matches": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Merge All Data",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Parse Standings": {
+    "main": [
+      [
+        {
+          "index": 1,
+          "node": "Merge All Data",
+          "type": "main"
+        }
+      ]
+    ]
+  },
+  "Schedule Trigger": {
+    "main": [
+      [
+        {
+          "index": 0,
+          "node": "Get Matches",
+          "type": "main"
+        },
+        {
+          "index": 0,
+          "node": "Get Standings",
+          "type": "main"
+        }
+      ]
+    ]
+  }
+}

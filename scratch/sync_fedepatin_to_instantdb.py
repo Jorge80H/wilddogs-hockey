@@ -3,10 +3,24 @@ import json
 import uuid
 import hashlib
 import time
+import os
 
-# Credentials
-INSTANT_APP_ID = "27acc1e8-fce9-4800-a9cd-c769cea6844f"
-INSTANT_ADMIN_TOKEN = "450f5899-e79f-4895-817d-109d61592977"
+def _load_env():
+    env_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(env_path):
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                k, v = line.split('=', 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+_load_env()
+
+# Credentials (see scratch/.env)
+INSTANT_APP_ID = os.environ["INSTANT_APP_ID"]
+INSTANT_ADMIN_TOKEN = os.environ["INSTANT_ADMIN_TOKEN"]
 
 SUPABASE_URL_MATCHES = "https://pzogexsqhvlggeedfhsh.supabase.co/rest/v1/matches?select=*,match_teams(*,teams(*)),categories(*,divisions(*))&limit=500"
 SUPABASE_URL_STANDINGS = "https://pzogexsqhvlggeedfhsh.supabase.co/rest/v1/standings_aggregate?select=*,teams(*),categories(*,divisions(*))&limit=500"

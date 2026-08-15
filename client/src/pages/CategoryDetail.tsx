@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Trophy, Clock, Target } from "lucide-react";
 import type { PlayerProfile, User, Coach } from "@shared/schema";
 import { motion } from "framer-motion";
+import { useSEO } from "@/hooks/useSEO";
 import playerPlaceholder from "@assets/client_images/Arquero.webp";
 import coachPlaceholder from "@assets/client_images/Arquero.webp";
 import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
@@ -185,6 +186,12 @@ export default function CategoryDetail() {
 
   const info = categoryInfo[categoryId] || categoryInfo.sub8;
   const heroImage = categoryImages[categoryId] || sub8Image;
+
+  useSEO({
+    title: `Categoría ${info.name} - Escuela de Hockey en Bogotá`,
+    description: `${info.description} Horarios de entrenamiento en Bogotá, objetivos formativos y cuerpo técnico. Optima Wild Dogs Hockey Club.`,
+    url: `/categorias/${categoryId}`,
+  });
 
   return (
     <div className="min-h-screen flex flex-col">

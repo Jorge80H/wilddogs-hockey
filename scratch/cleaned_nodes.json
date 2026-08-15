@@ -1,0 +1,153 @@
+[
+  {
+    "name": "Schedule Trigger",
+    "type": "n8n-nodes-base.scheduleTrigger",
+    "typeVersion": 1.2,
+    "position": [
+      112,
+      304
+    ],
+    "parameters": {
+      "rule": {
+        "interval": [
+          {
+            "field": "cronExpression",
+            "expression": "0 0 * * *"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "Get Matches",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 4.2,
+    "position": [
+      320,
+      208
+    ],
+    "parameters": {
+      "url": "https://pzogexsqhvlggeedfhsh.supabase.co/rest/v1/matches?select=*,match_teams(*,teams(*)),categories(*,divisions(*))&limit=500",
+      "sendHeaders": true,
+      "headerParameters": {
+        "parameters": [
+          {
+            "name": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6b2dleHNxaHZsZ2dlZWRmaHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjQzNjgsImV4cCI6MjA4NzIwMDM2OH0.RuTf-Sz9Fgp9-KlUahzEMKR3RhvA6vJ-d4lL-m4-7wE"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6b2dleHNxaHZsZ2dlZWRmaHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjQzNjgsImV4cCI6MjA4NzIwMDM2OH0.RuTf-Sz9Fgp9-KlUahzEMKR3RhvA6vJ-d4lL-m4-7wE"
+          }
+        ]
+      },
+      "options": {}
+    }
+  },
+  {
+    "name": "Get Standings",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 4.2,
+    "position": [
+      320,
+      400
+    ],
+    "parameters": {
+      "url": "https://pzogexsqhvlggeedfhsh.supabase.co/rest/v1/standings_aggregate?select=*,teams(*),categories(*,divisions(*))&limit=500",
+      "sendHeaders": true,
+      "headerParameters": {
+        "parameters": [
+          {
+            "name": "apikey",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6b2dleHNxaHZsZ2dlZWRmaHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjQzNjgsImV4cCI6MjA4NzIwMDM2OH0.RuTf-Sz9Fgp9-KlUahzEMKR3RhvA6vJ-d4lL-m4-7wE"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6b2dleHNxaHZsZ2dlZWRmaHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjQzNjgsImV4cCI6MjA4NzIwMDM2OH0.RuTf-Sz9Fgp9-KlUahzEMKR3RhvA6vJ-d4lL-m4-7wE"
+          }
+        ]
+      },
+      "options": {}
+    }
+  },
+  {
+    "name": "Parse Matches",
+    "type": "n8n-nodes-base.code",
+    "typeVersion": 2,
+    "position": [
+      544,
+      208
+    ],
+    "parameters": {
+      "jsCode": "const results = [];\nconst items = $input.all();\n\nfor (const item of items) {\n  const g = item.json;\n  \n  if (!g.match_teams) continue;\n  // Wild Dogs juega en FedePatin como equipo 'CONDORS'\n  const isWildDogsGame = g.match_teams.some(mt => mt.teams && mt.teams.name && \n    (mt.teams.name.toUpperCase().includes('CONDORS') || mt.teams.name.toUpperCase().includes('WILD DOGS')));\n  if (!isWildDogsGame) continue;\n  \n  const home = g.match_teams.find(mt => mt.side === 'home');\n  const away = g.match_teams.find(mt => mt.side === 'away');\n  \n  const homeName = home && home.teams ? home.teams.name : 'Unknown';\n  const awayName = away && away.teams ? away.teams.name : 'Unknown';\n  const homeScore = home ? home.score_regular : null;\n  const awayScore = away ? away.score_regular : null;\n  \n  const isHome = homeName.toUpperCase().includes('CONDORS') || homeName.toUpperCase().includes('WILD DOGS');\n  const opponent = isHome ? awayName : homeName;\n  const played = g.status === 'locked' || g.status === 'played' || g.status === 'finished';\n  \n  let result = null;\n  if (played && homeScore !== null && awayScore !== null) {\n    const wdScore = isHome ? homeScore : awayScore;\n    const opScore = isHome ? awayScore : homeScore;\n    result = wdScore > opScore ? 'win' : wdScore < opScore ? 'loss' : 'draw';\n  }\n  \n  let divName = '';\n  if (g.categories && g.categories.divisions) {\n      divName = g.categories.divisions.name;\n  }\n  const catName = g.categories ? g.categories.name : '';\n  const fullDivision = divName ? divName + ' - ' + catName : catName;\n  \n  results.push({\n    json: {\n      type: 'match',\n      gameId: g.id,\n      date: g.match_date ? g.match_date.split('T')[0] : null,\n      time: g.match_date ? g.match_date.split('T')[1].substring(0, 5) : null,\n      division: fullDivision,\n      opponent: opponent,\n      location: g.venue || null,\n      homeScore: played ? homeScore : null,\n      awayScore: played ? awayScore : null,\n      result: result,\n      status: g.status,\n      isHome: isHome,\n      notes: g.notes || null,\n      timestamp: g.match_date\n    }\n  });\n}\nreturn results;"
+    }
+  },
+  {
+    "name": "Parse Standings",
+    "type": "n8n-nodes-base.code",
+    "typeVersion": 2,
+    "position": [
+      544,
+      400
+    ],
+    "parameters": {
+      "jsCode": "const results = [];\nconst items = $input.all();\n\nfor (const item of items) {\n  const s = item.json;\n  \n  const teamName = s.teams ? s.teams.name : 'Unknown';\n  \n  let divName = '';\n  if (s.categories && s.categories.divisions) {\n      divName = s.categories.divisions.name;\n  } else if (s.teams && s.teams.categories && s.teams.categories.divisions) {\n      divName = s.teams.categories.divisions.name;\n  }\n  \n  let catName = '';\n  if (s.categories) {\n      catName = s.categories.name;\n  } else if (s.teams && s.teams.categories) {\n      catName = s.teams.categories.name;\n  }\n  \n  const fullDivision = divName ? divName + ' - ' + catName : catName;\n  \n  results.push({\n    json: {\n      type: 'standing',\n      division: fullDivision,\n      teamName: teamName,\n      position: s.rank || 0,\n      played: s.played || 0,\n      won: s.wins || 0,\n      drawn: s.draws || 0,\n      lost: s.losses || 0,\n      goalsFor: s.goals_for || 0,\n      goalsAgainst: s.goals_against || 0,\n      goalDifference: s.goal_diff || 0,\n      points: s.points || 0\n    }\n  });\n}\nreturn results;"
+    }
+  },
+  {
+    "name": "Merge All Data",
+    "type": "n8n-nodes-base.merge",
+    "typeVersion": 3,
+    "position": [
+      768,
+      304
+    ],
+    "parameters": {}
+  },
+  {
+    "name": "Build InstantDB Transaction",
+    "type": "n8n-nodes-base.code",
+    "typeVersion": 2,
+    "position": [
+      992,
+      304
+    ],
+    "parameters": {
+      "jsCode": "// Generate a deterministic UUID v4-like from a string seed\nfunction seedUUID(seed) {\n  let hash = 0;\n  for (let i = 0; i < seed.length; i++) {\n    const ch = seed.charCodeAt(i);\n    hash = ((hash << 5) - hash) + ch;\n    hash = hash & hash;\n  }\n  const hex = (n) => {\n    const h = Math.abs(n).toString(16).padStart(8, '0');\n    return h.substring(0, 8);\n  };\n  const h1 = hex(hash);\n  const h2 = hex(hash * 31 + 7);\n  const h3 = hex(hash * 37 + 13);\n  const h4 = hex(hash * 41 + 17);\n  return `${h1}-${h2.substring(0,4)}-4${h3.substring(1,4)}-a${h4.substring(1,4)}-${h2}${h3.substring(0,4)}`;\n}\n\nconst items = $input.all();\nconst now = Date.now();\nconst steps = [];\n\nfor (const item of items) {\n  const d = item.json;\n  if (d.type === 'match') {\n    const uuid = seedUUID('fp-match-' + d.gameId);\n    // FedePatin: match_date llega en UTC desde Supabase (e.g. '2026-03-28T17:45:00')\n    // Guardamos como UTC para que sea consistente con Fedehockey\n    // En el frontend se muestra con toLocaleTimeString para convertir a hora local del usuario\n    const rawDate = d.date && d.time ? d.date + 'T' + d.time + ':00Z' : null;\n    const dateMs = rawDate ? new Date(rawDate).getTime() : now;\n    steps.push(['update', 'matches', uuid, {\n      gameId: String(d.gameId),\n      date: dateMs,\n      opponent: d.opponent,\n      location: d.location,\n      homeScore: d.homeScore,\n      awayScore: d.awayScore,\n      result: d.result,\n      notes: (d.division || '') + (d.notes ? ' - ' + d.notes : ''),\n      isHome: d.isHome || false,\n      status: d.status || 'unknown',\n      league: 'fedepatin',\n      createdAt: now,\n      updatedAt: now\n    }]);\n  } else if (d.type === 'standing') {\n    const key = (d.division||'') + '-' + (d.teamName||'') + '-fp';\n    const uuid = seedUUID('standing-' + key);\n    steps.push(['update', 'standings', uuid, {\n      teamName: d.teamName,\n      division: d.division,\n      position: d.position,\n      played: d.played,\n      won: d.won,\n      drawn: d.drawn,\n      lost: d.lost,\n      goalsFor: d.goalsFor,\n      goalsAgainst: d.goalsAgainst,\n      goalDifference: d.goalDifference,\n      points: d.points,\n      league: 'fedepatin',\n      updatedAt: now\n    }]);\n  }\n}\n\nreturn [{ json: { steps } }];"
+    }
+  },
+  {
+    "name": "Write to InstantDB",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 4.2,
+    "position": [
+      1200,
+      304
+    ],
+    "parameters": {
+      "method": "POST",
+      "url": "https://api.instantdb.com/admin/transact",
+      "sendHeaders": true,
+      "headerParameters": {
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer REDACTED_SEE_N8N_LIVE_WORKFLOW"
+          },
+          {
+            "name": "App-Id",
+            "value": "27acc1e8-fce9-4800-a9cd-c769cea6844f"
+          }
+        ]
+      },
+      "sendBody": true,
+      "specifyBody": "json",
+      "jsonBody": "={{ JSON.stringify({ steps: $json.steps }) }}",
+      "options": {}
+    }
+  }
+]

@@ -25,8 +25,8 @@ import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function About() {
   useSEO({
-    title: "Nosotros",
-    description: "Conoce la historia, misión y valores de Optima Wild Dogs Hockey Club. El renacer del hockey en línea en Bogotá, Colombia. El poder de la manada.",
+    title: "Sobre Nosotros | Club Deportivo de Hockey en Línea en Bogotá",
+    description: "Historia, metodología y cuerpo técnico de Optima Wild Dogs Hockey Club en Bogotá, Colombia. Formando deportistas de alto nivel y valores humanos.",
     url: "/nosotros",
   });
 
