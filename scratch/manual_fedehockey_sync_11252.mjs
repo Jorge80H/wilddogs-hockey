@@ -17,6 +17,15 @@ function seedUUID(seed) {
   return `${h1}-${h2.substring(0,4)}-4${h3.substring(1,4)}-a${h4.substring(1,4)}-${h2}${h3.substring(0,4)}`;
 }
 
+// Semestre calendario: meses 1-6 (UTC) -> S1, meses 7-12 (UTC) -> S2.
+// Debe coincidir exactamente con client/src/lib/semester.ts y con el nodo
+// "Build InstantDB Transaction" de los workflows de n8n.
+function semesterOf(dateMs) {
+  const d = new Date(dateMs);
+  const half = d.getUTCMonth() < 6 ? 1 : 2;
+  return `${d.getUTCFullYear()}-S${half}`;
+}
+
 function extractJsonArray(html, varName) {
   const re = new RegExp(varName.replace('.', '\\.') + '=\\[');
   const match = html.match(re);
@@ -135,6 +144,7 @@ async function main() {
   console.log(`Standings rows: ${results.length}`);
 
   const now = Date.now();
+  const nowSemester = semesterOf(now);
   const steps = [];
   const seen = new Set();
   for (const d of matches) {
@@ -148,16 +158,16 @@ async function main() {
       gameId: String(d.gameId), date: dateMs, opponent: d.opponent, location: d.location,
       homeScore: d.homeScore, awayScore: d.awayScore, result: d.result, isHome: d.isHome || false,
       notes: (d.division || '') + (d.notes ? ' - ' + d.notes : ''), status: d.status || 'unknown',
-      league: 'fedehockey', createdAt: now, updatedAt: now,
+      league: 'fedehockey', semester: semesterOf(dateMs), createdAt: now, updatedAt: now,
     }]);
   }
   for (const d of results) {
-    const key = (d.division||'') + '-' + (d.teamName||'') + '-fh';
+    const key = (d.division||'') + '-' + (d.teamName||'') + '-fh-' + nowSemester;
     const uuid = seedUUID('standing-' + key);
     steps.push(['update', 'standings', uuid, {
       teamName: d.teamName, division: d.division, position: d.position, played: d.played,
       won: d.won, drawn: d.drawn, lost: d.lost, goalsFor: d.goalsFor, goalsAgainst: d.goalsAgainst,
-      goalDifference: d.goalDifference, points: d.points, league: 'fedehockey', updatedAt: now,
+      goalDifference: d.goalDifference, points: d.points, league: 'fedehockey', semester: nowSemester, updatedAt: now,
     }]);
   }
 
