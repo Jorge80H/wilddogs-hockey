@@ -10,3 +10,8 @@ vite.config.ts.*
 .superpowers
 __unconfig_instant.schema.ts
 *.log
+# Local Netlify folder
+.netlify
+
+# Git worktrees for isolated feature work
+.worktrees
