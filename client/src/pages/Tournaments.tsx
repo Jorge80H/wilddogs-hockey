@@ -8,8 +8,10 @@ import { Calendar, MapPin, Trophy, ChevronLeft, ChevronRight, X } from "lucide-r
 import { format, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths, subMonths, isToday } from "date-fns";
 import { es } from "date-fns/locale";
 import { motion } from "framer-motion";
+import { semesterOf, sortSemestersDesc } from "@/lib/semester";
 import { useSEO } from "@/hooks/useSEO";
 import { useState, useMemo } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
 
@@ -471,6 +473,26 @@ function CategoryFilter({ categories, selected, onChange }: { categories: string
   );
 }
 
+function SemesterSelect({ semesters, selected, onChange }: { semesters: string[], selected: string, onChange: (s: string) => void }) {
+  if (semesters.length <= 1) return null;
+  const label = (sem: string) => {
+    const [year, half] = sem.split("-S");
+    return `${year} · Semestre ${half}`;
+  };
+  return (
+    <Select value={selected} onValueChange={onChange}>
+      <SelectTrigger className="w-[190px] h-9 text-sm">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {semesters.map(s => (
+          <SelectItem key={s} value={s}>{label(s)}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
 // ─────────────────────────────────────────────
 // PÁGINA PRINCIPAL
 // ─────────────────────────────────────────────
@@ -484,6 +506,8 @@ export default function Tournaments() {
   const { isLoading, error, data } = db.useQuery({ matches: {}, standings: {} });
   const [fhCat, setFhCat] = useState<string>("all");
   const [fpCat, setFpCat] = useState<string>("all");
+  const [fhSem, setFhSem] = useState<string>(() => semesterOf(Date.now()));
+  const [fpSem, setFpSem] = useState<string>(() => semesterOf(Date.now()));
 
   const now = Date.now();
   const rawMatches: any[] = data?.matches || [];
@@ -513,16 +537,25 @@ export default function Tournaments() {
   // ── Fedehockey ──────────────────────────────
   const fhMatches = matchesData.filter(isFedehockey);
   const fhStandings = standingsData.filter(isFedehockey);
-  
+
+  const fhSemesters = useMemo(() => sortSemestersDesc([
+    ...fhMatches.map(m => m.semester).filter(Boolean),
+    ...fhStandings.map((s: any) => s.semester).filter(Boolean),
+    semesterOf(Date.now()),
+  ]), [fhMatches, fhStandings]);
+
+  const fhMatchesInSem = fhMatches.filter(m => m.semester === fhSem);
+  const fhStandingsInSem = fhStandings.filter((s: any) => s.semester === fhSem);
+
   const fhCategories = useMemo(() => {
     const s = new Set<string>();
-    fhMatches.forEach(m => s.add(matchCat(m)));
-    fhStandings.forEach(st => s.add(standCat(st)));
+    fhMatchesInSem.forEach(m => s.add(matchCat(m)));
+    fhStandingsInSem.forEach(st => s.add(standCat(st)));
     return Array.from(s).sort(sortCategories);
-  }, [fhMatches, fhStandings]);
+  }, [fhMatchesInSem, fhStandingsInSem]);
 
-  const viewFhMatches = fhCat === "all" ? fhMatches : fhMatches.filter(m => matchCat(m) === fhCat);
-  const viewFhStandings = fhCat === "all" ? fhStandings : fhStandings.filter(s => standCat(s) === fhCat);
+  const viewFhMatches = fhCat === "all" ? fhMatchesInSem : fhMatchesInSem.filter(m => matchCat(m) === fhCat);
+  const viewFhStandings = fhCat === "all" ? fhStandingsInSem : fhStandingsInSem.filter(s => standCat(s) === fhCat);
 
   const fhUpcoming = viewFhMatches
     .filter(m => isNotStarted(m) && new Date(m.date).getTime() >= now)
@@ -536,10 +569,19 @@ export default function Tournaments() {
   const fpMatches = matchesData.filter(isFedepatin);
   const fpStandings = standingsData.filter(isFedepatin);
 
+  const fpSemesters = useMemo(() => sortSemestersDesc([
+    ...fpMatches.map(m => m.semester).filter(Boolean),
+    ...fpStandings.map((s: any) => s.semester).filter(Boolean),
+    semesterOf(Date.now()),
+  ]), [fpMatches, fpStandings]);
+
+  const fpMatchesInSem = fpMatches.filter(m => m.semester === fpSem);
+  const fpStandingsInSem = fpStandings.filter((s: any) => s.semester === fpSem);
+
   // Mapa de apoyo para Standings que no tienen categoría clara
   const fpTeamCatMap = useMemo(() => {
     const map = new Map<string, string>();
-    fpMatches.forEach(m => {
+    fpMatchesInSem.forEach(m => {
       const cat = matchCat(m);
       if (cat && cat !== "General") {
         if (m.home) map.set(m.home.toLowerCase().trim(), cat);
@@ -547,7 +589,7 @@ export default function Tournaments() {
       }
     });
     return map;
-  }, [fpMatches]);
+  }, [fpMatchesInSem]);
 
   const getFpStandCat = (s: any) => {
     let cat = standCat(s);
@@ -562,13 +604,13 @@ export default function Tournaments() {
 
   const fpCategories = useMemo(() => {
     const s = new Set<string>();
-    fpMatches.forEach(m => s.add(matchCat(m)));
-    fpStandings.forEach(st => s.add(getFpStandCat(st)));
+    fpMatchesInSem.forEach(m => s.add(matchCat(m)));
+    fpStandingsInSem.forEach(st => s.add(getFpStandCat(st)));
     return Array.from(s).sort(sortCategories);
-  }, [fpMatches, fpStandings, fpTeamCatMap]);
+  }, [fpMatchesInSem, fpStandingsInSem, fpTeamCatMap]);
 
-  const viewFpMatches = fpCat === "all" ? fpMatches : fpMatches.filter(m => matchCat(m) === fpCat);
-  const viewFpStandings = fpCat === "all" ? fpStandings : fpStandings.filter(s => getFpStandCat(s) === fpCat);
+  const viewFpMatches = fpCat === "all" ? fpMatchesInSem : fpMatchesInSem.filter(m => matchCat(m) === fpCat);
+  const viewFpStandings = fpCat === "all" ? fpStandingsInSem : fpStandingsInSem.filter(s => getFpStandCat(s) === fpCat);
 
   const fpUpcoming = viewFpMatches
     .filter(m => isNotStarted(m) && new Date(m.date).getTime() >= now)
@@ -618,9 +660,12 @@ export default function Tournaments() {
 
             {/* ── FEDEHOCKEY ── */}
             <TabsContent value="fedehockey">
-              <div className="mb-4 flex items-center gap-3 flex-wrap">
-                <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary px-3 py-1">Liga Fedehockey Colombia</Badge>
-                <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedehockey</span>
+              <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary px-3 py-1">Liga Fedehockey Colombia</Badge>
+                  <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedehockey</span>
+                </div>
+                <SemesterSelect semesters={fhSemesters} selected={fhSem} onChange={setFhSem} />
               </div>
               <CategoryFilter categories={fhCategories} selected={fhCat} onChange={setFhCat} />
               <Tabs defaultValue="upcoming-fh">
@@ -643,9 +688,12 @@ export default function Tournaments() {
 
             {/* ── FEDEPATÍN ── */}
             <TabsContent value="fedepatin">
-              <div className="mb-4 flex items-center gap-3 flex-wrap">
-                <Badge variant="outline" className="border-secondary/30 bg-secondary/5 text-secondary px-3 py-1">Liga Fedepatín Colombia</Badge>
-                <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedepatín</span>
+              <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <Badge variant="outline" className="border-secondary/30 bg-secondary/5 text-secondary px-3 py-1">Liga Fedepatín Colombia</Badge>
+                  <span className="text-sm text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> Cancha Fedepatín</span>
+                </div>
+                <SemesterSelect semesters={fpSemesters} selected={fpSem} onChange={setFpSem} />
               </div>
               <CategoryFilter categories={fpCategories} selected={fpCat} onChange={setFpCat} />
               <Tabs defaultValue="upcoming-fp">
