@@ -51,6 +51,13 @@ const isFedehockey = (m: any): boolean => {
   return !esFedepatin;
 };
 
+// Fedehockey usa status "Not Started"/"Final"; Fedepatín (Supabase) usa
+// "scheduled"/"locked"/"closed". Un partido "no jugado" es cualquiera que
+// no esté en un estado terminal de cualquiera de las dos fuentes.
+const TERMINAL_STATUSES = new Set(["Final", "locked", "closed"]);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isNotStarted = (m: any): boolean => !TERMINAL_STATUSES.has(m.status);
+
 const WD_DISPLAY_FH = "Wild Dogs";
 const WD_DISPLAY_FP = "Optima Wild Dogs";
 
@@ -518,10 +525,10 @@ export default function Tournaments() {
   const viewFhStandings = fhCat === "all" ? fhStandings : fhStandings.filter(s => standCat(s) === fhCat);
 
   const fhUpcoming = viewFhMatches
-    .filter(m => m.status === "Not Started" && new Date(m.date).getTime() >= now)
+    .filter(m => isNotStarted(m) && new Date(m.date).getTime() >= now)
     .sort((a, b) => a.date - b.date);
   const fhPast = viewFhMatches
-    .filter(m => m.status !== "Not Started" || new Date(m.date).getTime() < now)
+    .filter(m => !isNotStarted(m) || new Date(m.date).getTime() < now)
     .filter(m => m.result)   // solo mostrar partidos con resultado registrado
     .sort((a, b) => b.date - a.date);
 
@@ -564,10 +571,10 @@ export default function Tournaments() {
   const viewFpStandings = fpCat === "all" ? fpStandings : fpStandings.filter(s => getFpStandCat(s) === fpCat);
 
   const fpUpcoming = viewFpMatches
-    .filter(m => m.status === "Not Started" && new Date(m.date).getTime() >= now)
+    .filter(m => isNotStarted(m) && new Date(m.date).getTime() >= now)
     .sort((a, b) => a.date - b.date);
   const fpPast = viewFpMatches
-    .filter(m => m.status !== "Not Started" || new Date(m.date).getTime() < now)
+    .filter(m => !isNotStarted(m) || new Date(m.date).getTime() < now)
     .filter(m => m.result)
     .sort((a, b) => b.date - a.date);
 

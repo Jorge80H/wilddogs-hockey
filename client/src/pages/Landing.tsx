@@ -12,7 +12,7 @@ import { es } from "date-fns/locale";
 import { useSEO } from "@/hooks/useSEO";
 import { useState, useEffect } from "react";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
-import { matchCat } from "@/pages/Tournaments";
+import { matchCat, isNotStarted } from "@/pages/Tournaments";
 
 // Roster images for background slideshow
 import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
@@ -91,7 +91,7 @@ export default function Landing() {
 
   // Extract latest 3 matches that aren't "Not Started" and are in the past
   const pastMatches = (data?.matches || [])
-    .filter((m: any) => m.status !== "Not Started" && m.date < Date.now())
+    .filter((m: any) => !isNotStarted(m) && m.date < Date.now())
     .sort((a: any, b: any) => b.date - a.date)
     .slice(0, 3);
 
