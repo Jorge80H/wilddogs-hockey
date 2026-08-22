@@ -91,7 +91,12 @@ async function main() {
       homeScore: played ? homeScore : null,
       awayScore: played ? awayScore : null,
       result,
-      notes: fullDivision + (g.notes ? ' - ' + g.notes : ''),
+      // NOTA: 'notes' solo guarda la división/categoría. La fuente (Supabase de terceros)
+      // mezcla ahí reportes de arbitraje/disciplinarios de texto libre (a veces con nombres
+      // de menores); no se debe concatenar esa info cruda a un campo que se usa como badge
+      // de categoría en el sitio publico. Debe coincidir con el nodo "Build InstantDB
+      // Transaction" del workflow n8n "Fede Patin Sync - Wild Dogs".
+      notes: fullDivision,
       isHome,
       status: g.status || 'unknown',
       league: 'fedepatin',
