@@ -60,7 +60,7 @@ const TERMINAL_STATUSES = new Set(["Final", "locked", "closed"]);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isNotStarted = (m: any): boolean => !TERMINAL_STATUSES.has(m.status);
 
-const WD_DISPLAY_FH = "Wild Dogs";
+const WD_DISPLAY_FH = "Optima Wild Dogs";
 const WD_DISPLAY_FP = "Optima Wild Dogs";
 
 // ─────────────────────────────────────────────
@@ -138,7 +138,7 @@ function MiniCalendar({ matchDates, selectedDate, onSelectDate }: MiniCalendarPr
 // ─────────────────────────────────────────────
 // TABLA DE POSICIONES
 // ─────────────────────────────────────────────
-function StandingsTable({ standings, getCategory }: { standings: any[], getCategory?: (s: any) => string }) {
+function StandingsTable({ standings, getCategory, league }: { standings: any[], getCategory?: (s: any) => string, league: "fedehockey" | "fedepatin" }) {
   if (standings.length === 0) {
     return (
       <motion.div variants={fadeIn} initial="hidden" animate="visible">
@@ -163,8 +163,17 @@ function StandingsTable({ standings, getCategory }: { standings: any[], getCateg
     }
   }
 
-  const isWD = (name: string) =>
-    name?.toLowerCase().includes("wild dogs") || name?.toLowerCase().includes("condors");
+  // "Condors" a secas (sin "Wild Dogs") es un club sin afiliación en ambas ligas — en
+  // Fedehockey es un rival directo, y en Fedepatín es el ex-socio de una alianza ya
+  // terminada. Solo "wild dogs" (incluye "Optima Wild Dogs" y "Condors-Wild Dogs")
+  // identifica al club, así que no hace falta chequear "condors" por separado.
+  const isWD = (name: string) => (name?.toLowerCase() || "").includes("wild dogs");
+  // Cada división registra el club con un nombre de texto libre distinto (typos y
+  // variantes de la federación/liga) — normalizamos al nombre oficial al mostrar.
+  const displayName = (name: string) => {
+    if (!isWD(name)) return name;
+    return league === "fedehockey" ? WD_DISPLAY_FH : WD_DISPLAY_FP;
+  };
 
   return (
     <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="space-y-8">
@@ -209,7 +218,7 @@ function StandingsTable({ standings, getCategory }: { standings: any[], getCateg
                             className={`hover:bg-muted/30 transition-colors ${isWD(team.teamName) ? "bg-primary/[0.03] border-l-2 border-l-primary" : ""}`}
                           >
                             <td className="py-4 pl-6 pr-2 font-black text-muted-foreground/50">{index + 1}</td>
-                            <td className={`py-4 px-2 font-bold ${isWD(team.teamName) ? "text-primary" : ""}`}>{team.teamName}</td>
+                            <td className={`py-4 px-2 font-bold ${isWD(team.teamName) ? "text-primary" : ""}`}>{displayName(team.teamName)}</td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.played ?? "-"}</td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.won ?? "-"}</td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.drawn ?? "-"}</td>
@@ -681,7 +690,7 @@ export default function Tournaments() {
                   <PastMatchesList matches={fhPast} isLoading={isLoading} wdDisplayName={WD_DISPLAY_FH} />
                 </TabsContent>
                 <TabsContent value="standings-fh">
-                  <StandingsTable standings={viewFhStandings} getCategory={standCat} />
+                  <StandingsTable standings={viewFhStandings} getCategory={standCat} league="fedehockey" />
                 </TabsContent>
               </Tabs>
             </TabsContent>
@@ -709,7 +718,7 @@ export default function Tournaments() {
                   <PastMatchesList matches={fpPast} isLoading={isLoading} wdDisplayName={WD_DISPLAY_FP} />
                 </TabsContent>
                 <TabsContent value="standings-fp">
-                  <StandingsTable standings={viewFpStandings} getCategory={getFpStandCat} />
+                  <StandingsTable standings={viewFpStandings} getCategory={getFpStandCat} league="fedepatin" />
                 </TabsContent>
               </Tabs>
             </TabsContent>
