@@ -1,11 +1,15 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X } from "lucide-react";
+import { Menu, X, CreditCard } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 // WhatsApp del club con mensaje prellenado para identificar leads de la web
 export const WHATSAPP_URL =
   "https://wa.me/573143100208?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92";
+
+// Link de pagos Bold del club (mensualidades, torneos, etc.)
+export const PAYMENT_URL = "https://checkout.bold.co/payment/LNK_YNZ3RYK2DN";
 
 export function PublicNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,7 +61,13 @@ export function PublicNav() {
                 Iniciar Sesión
               </Button>
             </a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" data-testid="button-join">
+            <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" data-testid="button-pay">
+              <Button size="sm" className="bg-[hsl(var(--wild-dogs-orange))] text-white border-[hsl(var(--wild-dogs-orange))] hover:bg-[hsl(var(--wild-dogs-orange))]">
+                <CreditCard className="h-4 w-4" />
+                Pagar
+              </Button>
+            </a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("nav_desktop")} data-testid="button-join">
               <Button size="sm">
                 Únete al Club
               </Button>
@@ -97,7 +107,13 @@ export function PublicNav() {
                   Iniciar Sesión
                 </Button>
               </a>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-join">
+              <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" className="block" data-testid="button-mobile-pay">
+                <Button className="w-full bg-[hsl(var(--wild-dogs-orange))] text-white border-[hsl(var(--wild-dogs-orange))] hover:bg-[hsl(var(--wild-dogs-orange))]">
+                  <CreditCard className="h-4 w-4" />
+                  Pagar
+                </Button>
+              </a>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="block" onClick={() => trackWhatsAppClick("nav_mobile")} data-testid="button-mobile-join">
                 <Button className="w-full">
                   Únete al Club
                 </Button>

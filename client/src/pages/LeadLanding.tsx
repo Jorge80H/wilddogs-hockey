@@ -4,6 +4,14 @@ import { db } from "@/lib/instant";
 import { id } from "@instantdb/react";
 import { useSEO } from "@/hooks/useSEO";
 import { useToast } from "@/hooks/use-toast";
+import {
+    slotsForAge,
+    findSlot,
+    buildWhatsAppTrialUrl,
+    buildLeadSubject,
+    buildLeadMessage,
+} from "@/lib/leads";
+import { trackLeadSubmitted, trackWhatsAppClick } from "@/lib/analytics";
 import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
 import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
@@ -22,30 +30,62 @@ function LeadModal({ onClose }: { onClose: () => void }) {
         childAge: "",
         phone: "",
         email: "",
+        slotId: "",
     });
 
+    // Franjas compatibles con la edad elegida (fuente única en @/lib/leads).
+    const availableSlots = slotsForAge(form.childAge);
+    const selectedSlot = findSlot(form.slotId);
+    const whatsappUrl = buildWhatsAppTrialUrl(form);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setForm((prev) => {
+            const next = { ...prev, [name]: value };
+            // Si cambia la edad, la franja elegida puede dejar de aplicar.
+            if (name === "childAge" && !slotsForAge(value).some((s) => s.id === prev.slotId)) {
+                next.slotId = "";
+            }
+            return next;
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!form.parentName || !form.phone) return;
         setIsSubmitting(true);
+
+        // Mismo patrón que Services.tsx: abrimos la ventana dentro del gesto del
+        // usuario para que el navegador no la bloquee (el guardado es asíncrono).
+        const waWindow = window.open("", "_blank");
+
         try {
             await db.transact([
                 db.tx.contactSubmissions[id()].update({
                     name: form.parentName,
                     email: form.email || "no-email@optimawilddogs.com",
                     phone: form.phone,
-                    subject: `Inscripción interesada - Niño/a: ${form.childName}, ${form.childAge} años`,
-                    message: `Padre/madre: ${form.parentName} | Hijo/a: ${form.childName} | Edad: ${form.childAge} | Tel: ${form.phone}`,
+                    subject: buildLeadSubject(form),
+                    message: buildLeadMessage(form),
+                    status: "nuevo",
                     isRead: false,
                     createdAt: Date.now(),
                 }),
             ]);
+
+            trackLeadSubmitted({ slot: form.slotId, childAge: form.childAge });
             setSubmitted(true);
+
+            // La familia inicia la conversación: el club puede responder sin restricciones
+            // y el lead no se enfría esperando a que lo llamen.
+            trackWhatsAppClick("lead_modal_auto");
+            if (waWindow) {
+                waWindow.location.href = whatsappUrl;
+            } else {
+                window.location.href = whatsappUrl;
+            }
         } catch {
+            waWindow?.close();
             toast({ title: "Error", description: "Intenta de nuevo.", variant: "destructive" });
         } finally {
             setIsSubmitting(false);
@@ -80,14 +120,15 @@ function LeadModal({ onClose }: { onClose: () => void }) {
                         <>
                             <div className="mb-8">
                                 <p className="text-orange-400 text-sm font-black uppercase tracking-[0.25em] mb-2">
-                                    Paso 1 de 1
+                                    Clase de cortesía · Gratis
                                 </p>
                                 <h2 className="text-3xl font-black text-white leading-tight">
-                                    Asegura el cupo<br />
+                                    Agenda la clase<br />
                                     <span className="text-orange-400">de tu hijo/a</span>
                                 </h2>
                                 <p className="text-zinc-400 text-sm mt-3 leading-relaxed">
-                                    Déjanos tus datos y un coach se comunicará contigo en menos de 24 horas.
+                                    Elige el día que te sirve. Al enviar, se abre WhatsApp con tu solicitud
+                                    lista para confirmar el cupo con un coach.
                                 </p>
                             </div>
 
@@ -162,16 +203,59 @@ function LeadModal({ onClose }: { onClose: () => void }) {
                                     </div>
                                 </div>
 
+                                {/* ── Selector de franja ───────────────────────────────── */}
+                                <div>
+                                    <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2">
+                                        ¿Qué día te sirve?
+                                    </label>
+
+                                    {availableSlots.length > 0 ? (
+                                        <div className="space-y-2">
+                                            {availableSlots.map((slot) => (
+                                                <label
+                                                    key={slot.id}
+                                                    className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${form.slotId === slot.id
+                                                            ? "bg-orange-500/10 border-orange-500"
+                                                            : "bg-zinc-900 border-zinc-700 hover:border-zinc-600"
+                                                        }`}
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        name="slotId"
+                                                        value={slot.id}
+                                                        checked={form.slotId === slot.id}
+                                                        onChange={handleChange}
+                                                        className="mt-1 accent-orange-500"
+                                                    />
+                                                    <span>
+                                                        <span className="block text-white text-sm font-bold">
+                                                            {slot.label}
+                                                        </span>
+                                                        <span className="block text-zinc-500 text-xs">
+                                                            {slot.location} · {slot.categories}
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-zinc-500 text-xs bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3">
+                                            Para esa edad coordinamos un horario a la medida. Envía tus datos
+                                            y un coach te propone las opciones disponibles.
+                                        </p>
+                                    )}
+                                </div>
+
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
                                     className="w-full mt-2 bg-orange-500 hover:bg-orange-400 active:scale-[0.98] text-white font-black text-lg py-4 rounded-2xl transition-all duration-200 shadow-[0_0_40px_-8px_rgba(249,115,22,0.6)] hover:shadow-[0_0_60px_-8px_rgba(249,115,22,0.9)] disabled:opacity-50"
                                 >
-                                    {isSubmitting ? "Enviando..." : "Quiero unirme a la manada →"}
+                                    {isSubmitting ? "Enviando..." : "Agendar mi clase de cortesía →"}
                                 </button>
 
                                 <p className="text-center text-zinc-600 text-xs mt-3">
-                                    Sin compromisos. Te contactamos nosotros.
+                                    Gratis · Patines y protecciones incluidos · Sin compromiso
                                 </p>
                             </form>
                         </>
@@ -183,15 +267,30 @@ function LeadModal({ onClose }: { onClose: () => void }) {
                         >
                             <div className="text-6xl mb-6">🐺</div>
                             <h3 className="text-3xl font-black text-white mb-3">
-                                ¡Bienvenido/a <br />
-                                <span className="text-orange-400">a la manada!</span>
+                                Último paso: <br />
+                                <span className="text-orange-400">confirma por WhatsApp</span>
                             </h3>
                             <p className="text-zinc-400 leading-relaxed mb-8">
-                                Recibimos tu información. Un coach de Wild Dogs se comunicará contigo muy pronto para darte todos los detalles.
+                                {selectedSlot
+                                    ? `Guardamos tu solicitud para el ${selectedSlot.label}. Envía el mensaje que abrimos en WhatsApp y un coach te confirma el cupo.`
+                                    : "Guardamos tu solicitud. Envía el mensaje que abrimos en WhatsApp y un coach te propone los horarios disponibles."}
                             </p>
+
+                            {/* El navegador puede bloquear la apertura automática: este enlace
+                                sale de un clic del usuario y siempre funciona. */}
+                            <a
+                                href={whatsappUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackWhatsAppClick("lead_modal_success")}
+                                className="block w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-black text-lg py-4 rounded-2xl transition-colors mb-3"
+                            >
+                                Abrir WhatsApp y confirmar →
+                            </a>
+
                             <button
                                 onClick={onClose}
-                                className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 px-8 rounded-xl transition-colors"
+                                className="text-zinc-500 hover:text-white text-sm font-bold py-2 px-8 transition-colors"
                             >
                                 Cerrar
                             </button>
@@ -308,7 +407,7 @@ export default function LeadLanding() {
                         className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-[0.3em] px-4 py-2 rounded-full mb-8"
                     >
                         <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-                        Inscripciones Abiertas · Cupos Limitados
+                        Clase de Cortesía Gratis · Cupos Limitados
                     </motion.div>
 
                     <motion.h1
@@ -344,12 +443,12 @@ export default function LeadLanding() {
                             className="group relative bg-orange-500 hover:bg-orange-400 text-white font-black text-xl px-10 py-5 rounded-2xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(249,115,22,0.7)] hover:shadow-[0_0_80px_-10px_rgba(249,115,22,1)] hover:scale-105 active:scale-95"
                         >
                             <span className="relative z-10">
-                                ¡Quiero asegurar un cupo!
+                                Agendar clase de cortesía gratis
                             </span>
                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                         <p className="text-zinc-500 text-sm mt-4">
-                            Gratis · Sin compromiso · Respuesta en &lt;24h
+                            Gratis · Patines incluidos · Cupos limitados por semana
                         </p>
                     </motion.div>
                 </motion.div>
@@ -558,14 +657,14 @@ export default function LeadLanding() {
                             </span>
                         </h2>
                         <p className="text-zinc-400 text-xl max-w-xl mx-auto mb-12 leading-relaxed">
-                            Los cupos son limitados. Asegura el lugar de tu hijo/a en la manada y recibe toda la información sin compromiso.
+                            Una clase real, con el grupo de su edad, patines y protecciones incluidos. Sin costo y sin compromiso.
                         </p>
 
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="group relative inline-flex items-center gap-3 bg-orange-500 hover:bg-orange-400 text-white font-black text-2xl px-14 py-6 rounded-2xl transition-all duration-300 shadow-[0_0_80px_-10px_rgba(249,115,22,0.8)] hover:shadow-[0_0_120px_-10px_rgba(249,115,22,1)] hover:scale-105 active:scale-95"
                         >
-                            Solicitar información gratuita
+                            Agendar clase de cortesía
                             <span className="text-3xl transition-transform duration-300 group-hover:translate-x-2">→</span>
                         </button>
 

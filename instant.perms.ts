@@ -199,9 +199,11 @@ export default {
   // ============================================
   contactSubmissions: {
     allow: {
-      view: "false",
+      // Cualquiera puede dejar un lead; solo usuarios autenticados lo leen y
+      // gestionan desde la bandeja de admin (el rol se refuerza en la UI).
+      view: "auth.id != ''",
       create: "true",
-      update: "false",
+      update: "auth.id != ''",
       delete: "false",
     },
   },

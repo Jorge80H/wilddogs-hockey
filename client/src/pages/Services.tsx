@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/instant";
 import { id } from "@instantdb/react";
 import { useToast } from "@/hooks/use-toast";
+import { CLUB_WHATSAPP } from "@/lib/leads";
+import { trackLeadSubmitted, trackWhatsAppClick } from "@/lib/analytics";
 
 
 const containerVariants = {
@@ -36,7 +38,7 @@ import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
 import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 // WhatsApp del club para recibir solicitudes de afiliación
-const CLUB_WHATSAPP = "573143100208";
+// El número vive en @/lib/leads como fuente única.
 
 // ─── MODAL DE CAPTURA (Afiliación / Clase de prueba) ─────────────────────────
 type LeadMode = "affiliation" | "trial";
@@ -83,6 +85,7 @@ function LeadFormModal({ mode, price, onClose }: { mode: LeadMode; price: string
           phone: form.phone,
           subject,
           message: `${reqLabel} | Interesado/a: ${form.name} | Jugador/a: ${form.playerName || "—"} | Edad: ${form.age || "—"} | Tel: ${form.phone} | Email: ${form.email || "—"}`,
+          status: "nuevo",
           isRead: false,
           createdAt: Date.now(),
         }),
@@ -99,6 +102,9 @@ function LeadFormModal({ mode, price, onClose }: { mode: LeadMode; price: string
         `*Email:* ${form.email || "—"}\n\n` +
         `Vengo de la página web del club.`;
       const waUrl = `https://wa.me/${CLUB_WHATSAPP}?text=${encodeURIComponent(text)}`;
+
+      trackLeadSubmitted({ slot: isTrial ? "servicios_clase_prueba" : "servicios_afiliacion", childAge: form.age });
+      trackWhatsAppClick(isTrial ? "servicios_clase_prueba" : "servicios_afiliacion");
 
       if (waWindow) {
         waWindow.location.href = waUrl;

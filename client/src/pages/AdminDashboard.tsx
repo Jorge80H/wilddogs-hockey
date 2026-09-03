@@ -25,6 +25,7 @@ import {
   XCircle,
   TrendingUp,
   Activity,
+  Inbox,
 } from "lucide-react";
 import { Link } from "wouter";
 import { tx, id as txId } from "@instantdb/react";
@@ -34,6 +35,7 @@ import { motion } from "framer-motion";
 import { ApprovalQueue } from "@/components/admin/ApprovalQueue";
 import { AccountManager } from "@/components/admin/AccountManager";
 import { FinanceManager } from "@/components/admin/FinanceManager";
+import { LeadsInbox } from "@/components/admin/LeadsInbox";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -310,8 +312,14 @@ export default function AdminDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <Tabs defaultValue="users" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7 h-12 bg-white/80 backdrop-blur border shadow-sm">
+          <Tabs defaultValue="leads" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-8 h-12 bg-white/80 backdrop-blur border shadow-sm">
+              <TabsTrigger
+                value="leads"
+                className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <Inbox className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Leads
+              </TabsTrigger>
               <TabsTrigger
                 value="users"
                 className="text-xs sm:text-sm data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -355,6 +363,11 @@ export default function AdminDashboard() {
                 <Shield className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Cuentas
               </TabsTrigger>
             </TabsList>
+
+            {/* ═══════════ Leads Tab ═══════════ */}
+            <TabsContent value="leads">
+              <LeadsInbox />
+            </TabsContent>
 
             {/* ═══════════ Users Tab ═══════════ */}
             <TabsContent value="users">

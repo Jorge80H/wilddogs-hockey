@@ -255,6 +255,9 @@ const graph = i.graph(
       phone: i.string().optional(),
       subject: i.string(),
       message: i.string(),
+      // Embudo de captacion: nuevo | contactado | agendado | asistio | inscrito | descartado
+      // (ver LEAD_STATUSES en client/src/lib/leads.ts)
+      status: i.string().optional(),
       isRead: i.boolean(),
       createdAt: i.number(),
     }),
