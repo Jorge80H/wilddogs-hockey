@@ -297,7 +297,7 @@ export default function About() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight"
           >
-            Nuestras Instalaciones
+            Dónde Entrenamos
           </motion.h2>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -310,25 +310,22 @@ export default function About() {
               <CardContent className="p-0">
                 <div className="grid grid-cols-1 md:grid-cols-2">
                   <div className="p-10 flex flex-col justify-center">
-                    <h3 className="text-2xl font-black mb-4">Hockey.One Academy</h3>
+                    <h3 className="text-2xl font-black mb-4">Las mejores pistas del norte de Bogotá</h3>
                     <div className="space-y-6 text-muted-foreground leading-relaxed">
                       <p>
-                        Nuestra sede es el hogar oficial de Optima Wild Dogs, equipada con una gran pista para brindar un entorno premium para el desarrollo deportivo.
+                        Optima Wild Dogs entrena en pistas profesionales de hockey en línea, con superficie reglamentaria y vallas completas, para que cada sesión sea segura y de nivel competitivo.
                       </p>
-                      <p>
-                        Todos los deportistas que forman parte del equipo cuentan con <strong>acceso ilimitado</strong> a las instalaciones de Hockey.One para practicar cuando quieran.
-                      </p>
-                      <div className="pt-4 border-t border-border/40">
-                        <p className="mb-2"><strong className="text-foreground">Ubicación:</strong> Carrera 22 # 164-83, Bogotá</p>
-                        <p><strong className="text-foreground">Teléfono:</strong> +57 314 310 0208</p>
-                        <p><strong className="text-foreground">Web:</strong> www.hockeyone.co</p>
+                      <div className="pt-4 border-t border-border/40 space-y-2">
+                        <p><strong className="text-foreground">Entre semana:</strong> Coliseo de Hockey en Línea — Fedepatín, San Andresito Norte</p>
+                        <p><strong className="text-foreground">Fines de semana:</strong> Pista de Hockey Guaymaral — Fedehockey, Autopista Norte</p>
+                        <p><strong className="text-foreground">Atención:</strong> WhatsApp +57 318 168 1336 · Lunes a Sábado, 8:00 AM – 5:00 PM</p>
                       </div>
                     </div>
                   </div>
                   <div className="bg-muted h-64 md:h-auto overflow-hidden relative">
                     <img
                       src={facilitiesImage}
-                      alt="Instalaciones Hockey One"
+                      alt="Jugadores de Optima Wild Dogs en la pista"
                       className="w-full h-full object-cover mix-blend-luminosity opacity-40 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
                       loading="lazy"
                       decoding="async"

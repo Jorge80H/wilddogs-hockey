@@ -63,17 +63,17 @@ export function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <span className="text-sm text-muted-foreground">
-                  Carrera 22 No. 164 - 83<br />
-                  Bogotá, Colombia
+                  Coliseo Fedepatín y Pista Guaymaral<br />
+                  Norte de Bogotá, Colombia
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 <a
-                  href="tel:+573143100208"
+                  href="tel:+573181681336"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
-                  314 310 0208
+                  318 168 1336
                 </a>
               </li>
               <li className="flex items-center gap-2">

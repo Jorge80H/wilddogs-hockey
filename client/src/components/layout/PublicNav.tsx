@@ -3,10 +3,11 @@ import { Menu, X, CreditCard } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
+import { CLUB_WHATSAPP } from "@/lib/leads";
 
 // WhatsApp del club con mensaje prellenado para identificar leads de la web
 export const WHATSAPP_URL =
-  "https://wa.me/573143100208?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92";
+  `https://wa.me/${CLUB_WHATSAPP}?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92`;
 
 // Link de pagos Bold del club (mensualidades, torneos, etc.)
 export const PAYMENT_URL = "https://checkout.bold.co/payment/LNK_YNZ3RYK2DN";

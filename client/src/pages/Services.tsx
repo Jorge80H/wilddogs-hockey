@@ -2,7 +2,7 @@ import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin, ExternalLink, X } from "lucide-react";
+import { GraduationCap, Dumbbell, Trophy, Heart, Clock, DollarSign, CheckCircle2, MapPin, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
 import { useState, useEffect } from "react";
@@ -302,9 +302,6 @@ export default function Services() {
         "Material didáctico incluido",
         "Evaluaciones periódicas",
       ],
-      note: "Los jugadores que inician desde cero ingresan a la Escuela de Formación que ofrece Hockey One, donde aprenden los fundamentos del patinaje y el hockey antes de integrarse a las categorías competitivas del club.",
-      noteUrl: "https://hockeyone.co",
-      noteLabel: "Conoce la escuela de Hockey One",
     },
     {
       icon: Dumbbell,
@@ -341,16 +338,14 @@ export default function Services() {
     },
   ];
 
-  const HOCKEY_ONE_MAP = "https://www.google.com/maps/place/Hockey.One+Academy/@4.7466044,-74.0455953,141m";
   const FEDE_MAP = "https://www.google.com/maps/place/Coliseo+de+Hockey+en+Linea/@4.7754122,-74.0406326,165m";
-  const GUAYMARAL_MAP = "https://www.google.com/maps/place/Pista+De+Hockey+Guaymaral/@4.808551,-74.0353605,130m";
 
   const schedules = [
-    { category: "Sub 8, Sub 10, Sub 12", detail: "Lunes (17:00–19:00) y Viernes (16:30–18:30)", location: "Hockey One (Federación)", mapUrl: FEDE_MAP },
-    { category: "Sub 14", detail: "Lunes (17:00–19:00) y Sábado (07:00–09:00)", location: "Hockey One (Federación)", mapUrl: FEDE_MAP },
-    { category: "Sub 16", detail: "Lunes (19:30–21:30) / Sábado (07:00–09:00) Fed · Domingo (08:00–09:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
-    { category: "Femenino", detail: "Lun (19:30–21:30), Mié (18:00 H1), Sáb (07:00–09:00) Fed · Dom (08:00–09:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
-    { category: "Sub 18 y Mayores", detail: "Lunes (21:00–22:30) y Jueves (19:00–20:30) Fed · Domingo (07:00–08:00) Guaymaral", location: "Hockey One / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Sub 8, Sub 10, Sub 12", detail: "Lunes (17:00–19:00) y Viernes (16:30–18:30)", location: "Coliseo Fedepatín", mapUrl: FEDE_MAP },
+    { category: "Sub 14", detail: "Lunes (17:00–19:00) Fedepatín · Sábado (07:00–09:00) Guaymaral", location: "Fedepatín / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Sub 16", detail: "Lunes (19:30–21:30) Fedepatín · Sábado (07:00–09:00) y Domingo (08:00–09:00) Guaymaral", location: "Fedepatín / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Femenino", detail: "Lunes (19:30–21:30) Fedepatín · Sábado (07:00–09:00) y Domingo (08:00–09:00) Guaymaral", location: "Fedepatín / Guaymaral", mapUrl: FEDE_MAP },
+    { category: "Sub 18 y Mayores", detail: "Lunes (21:00–22:30) y Jueves (19:00–20:30) Fedepatín · Domingo (07:00–08:00) Guaymaral", location: "Fedepatín / Guaymaral", mapUrl: FEDE_MAP },
   ];
 
   const membershipPlan = {
@@ -439,23 +434,6 @@ export default function Services() {
                         </li>
                       ))}
                     </ul>
-                    {(service as any).note && (
-                      <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/15">
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                          {(service as any).note}
-                        </p>
-                        <a
-                          href={(service as any).noteUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
-                          data-testid="link-hockey-one-school"
-                        >
-                          {(service as any).noteLabel}
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -508,30 +486,11 @@ export default function Services() {
               Entrenamos en las mejores instalaciones de hockey en línea de Bogotá
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Hockey One - Sede */}
-            <div>
-              <h3 className="text-xl font-bold mb-1">Hockey One Academy</h3>
-              <p className="text-sm text-muted-foreground mb-3">Cra. 22 #164-83, Bogotá • Sede principal del club</p>
-              <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
-                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
-                <iframe
-                  src="https://maps.google.com/maps?width=100%25&height=400&hl=en&q=4.7466044,-74.0455953+(Hockey+One+Wild+Dogs)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Hockey One Academy - Wild Dogs"
-                  className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Fedepatin */}
             <div>
-              <h3 className="text-xl font-bold mb-1">Coliseo Hockey en Línea</h3>
-              <p className="text-sm text-muted-foreground mb-3">Bogotá • Cancha de entrenamiento Fedepatín</p>
+              <h3 className="text-xl font-bold mb-1">Coliseo Hockey en Línea — Fedepatín</h3>
+              <p className="text-sm text-muted-foreground mb-3">San Andresito Norte, Bogotá • Entrenamientos entre semana</p>
               <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
                 <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
                 <iframe
@@ -549,8 +508,8 @@ export default function Services() {
             </div>
             {/* Guaymaral */}
             <div>
-              <h3 className="text-xl font-bold mb-1">Pista Hockey Guaymaral</h3>
-              <p className="text-sm text-muted-foreground mb-3">Autopista Norte, Bogotá • Cancha de competencia</p>
+              <h3 className="text-xl font-bold mb-1">Pista Hockey Guaymaral — Fedehockey</h3>
+              <p className="text-sm text-muted-foreground mb-3">Autopista Norte, Bogotá • Entrenamientos de fin de semana y competencia</p>
               <div className="aspect-video w-full rounded-xl overflow-hidden relative group shadow-md">
                 <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
                 <iframe

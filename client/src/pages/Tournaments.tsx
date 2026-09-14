@@ -165,11 +165,17 @@ function StandingsTable({ standings, getCategory, league }: { standings: any[], 
 
   // "Condors" a secas (sin "Wild Dogs") es un club sin afiliación en ambas ligas — en
   // Fedehockey es un rival directo, y en Fedepatín es el ex-socio de una alianza ya
-  // terminada. Solo "wild dogs" (incluye "Optima Wild Dogs" y "Condors-Wild Dogs")
-  // identifica al club, así que no hace falta chequear "condors" por separado.
-  const isWD = (name: string) => (name?.toLowerCase() || "").includes("wild dogs");
+  // terminada, así que nunca cuenta como nosotros.
+  // En Fedepatín además hay una alianza distinta para las categorías mayores (Juvenil,
+  // Sub-16 Mixto, Femenino): "Rinos" / "Rinos Napalm" / "Rinos - Andinos" (confirmado
+  // 2026-09-01) — esa variante solo aplica a Fedepatín, en Fedehockey no existe.
+  const isWD = (name: string) => {
+    const n = name?.toLowerCase() || "";
+    if (league === "fedepatin") return n.includes("wild dogs") || n.includes("rinos");
+    return n.includes("wild dogs");
+  };
   // Cada división registra el club con un nombre de texto libre distinto (typos y
-  // variantes de la federación/liga) — normalizamos al nombre oficial al mostrar.
+  // variantes de alianza) — normalizamos al nombre oficial al mostrar.
   const displayName = (name: string) => {
     if (!isWD(name)) return name;
     return league === "fedehockey" ? WD_DISPLAY_FH : WD_DISPLAY_FP;

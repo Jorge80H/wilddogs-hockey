@@ -9,7 +9,7 @@
  */
 
 /** WhatsApp oficial del club en formato internacional sin '+' (requerido por wa.me). */
-export const CLUB_WHATSAPP = "573143100208";
+export const CLUB_WHATSAPP = "573181681336";
 
 export interface TrialSlot {
   id: string;
@@ -26,27 +26,30 @@ export interface TrialSlot {
  * Franjas de clase de cortesía: cupos dentro de entrenamientos que ya existen,
  * de modo que no cuestan horas extra de coach.
  */
+export const FEDEPATIN_LOCATION = "Coliseo Fedepatín (San Andresito Norte)";
+export const GUAYMARAL_LOCATION = "Pista de Hockey Guaymaral (Autopista Norte)";
+
 export const TRIAL_SLOTS: TrialSlot[] = [
   {
     id: "lun-17",
     label: "Lunes 5:00 PM",
-    location: "Hockey One (Cra 22 #164-83)",
+    location: FEDEPATIN_LOCATION,
     categories: "Sub 8, Sub 10 y Sub 12",
-    minAge: 5,
+    minAge: 4,
     maxAge: 12,
   },
   {
     id: "vie-1630",
     label: "Viernes 4:30 PM",
-    location: "Hockey One (Cra 22 #164-83)",
+    location: FEDEPATIN_LOCATION,
     categories: "Sub 8, Sub 10 y Sub 12",
-    minAge: 5,
+    minAge: 4,
     maxAge: 12,
   },
   {
     id: "sab-07",
     label: "Sábado 7:00 AM",
-    location: "Hockey One (Cra 22 #164-83)",
+    location: GUAYMARAL_LOCATION,
     categories: "Sub 14 y Sub 16",
     minAge: 13,
     maxAge: 17,

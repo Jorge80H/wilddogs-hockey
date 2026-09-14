@@ -45,8 +45,8 @@ import logoOptima from "@assets/client_images/Logo_Optima.webp";
 
 export default function Contact() {
   useSEO({
-    title: "Sede y Contacto | Pista de Hockey en Bogotá Norte",
-    description: "Pista y sede de entrenamiento en Carrera 22 No. 164-83 Bogotá. Horarios de entrenamiento, atención por WhatsApp e inscripciones abiertas en Optima Wild Dogs.",
+    title: "Contacto | Hockey en Línea en Bogotá Norte",
+    description: "Entrenamos en el Coliseo Fedepatín (San Andresito Norte) y la Pista Guaymaral. Horarios de entrenamiento, atención por WhatsApp e inscripciones abiertas en Optima Wild Dogs.",
     url: "/contacto",
   });
 
@@ -277,9 +277,10 @@ export default function Contact() {
                       <MapPin className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <div className="font-bold mb-1 group-hover:text-primary transition-colors">Dirección</div>
+                      <div className="font-bold mb-1 group-hover:text-primary transition-colors">Dónde entrenamos</div>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Carrera 22 No. 164 - 83<br />
+                        Entre semana: Coliseo Fedepatín, San Andresito Norte<br />
+                        Fines de semana: Pista de Hockey Guaymaral, Autopista Norte<br />
                         Bogotá, Colombia
                       </p>
                     </div>
@@ -291,10 +292,10 @@ export default function Contact() {
                     <div>
                       <div className="font-bold mb-1 group-hover:text-primary transition-colors">Teléfono</div>
                       <a
-                        href="tel:+573143100208"
+                        href="tel:+573181681336"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors block"
                       >
-                        314 310 0208
+                        318 168 1336
                       </a>
                     </div>
                   </div>
@@ -319,8 +320,7 @@ export default function Contact() {
                     <div>
                       <div className="font-bold mb-1 group-hover:text-primary transition-colors">Horarios de Atención</div>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Lunes a Viernes: 3:00 PM - 9:00 PM<br />
-                        Sábados: 9:00 AM - 2:00 PM<br />
+                        Lunes a Sábado: 8:00 AM - 5:00 PM<br />
                         Domingos: Cerrado
                       </p>
                     </div>
@@ -330,20 +330,20 @@ export default function Contact() {
 
               <Card className="border-border/40 shadow-md bg-card/40 backdrop-blur-sm overflow-hidden">
                 <CardHeader className="bg-muted/30 border-b border-border/40 pb-3">
-                  <CardTitle className="text-lg font-bold">Ubicación</CardTitle>
+                  <CardTitle className="text-lg font-bold">Coliseo Fedepatín · Entrenos entre semana</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="aspect-video w-full relative group">
                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent pointer-events-none transition-colors duration-500 z-10" />
                     <iframe
-                      src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=4.7466044,-74.0455953+(Hockey+One+Wild+Dogs)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
+                      src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=4.7754122,-74.0406326+(Coliseo+Hockey+Fedepatin)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Hockey One - Wild Dogs Hockey Club"
+                      title="Coliseo de Hockey en Línea Fedepatín - Wild Dogs Hockey Club"
                       className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700 object-cover"
                     />
                   </div>

@@ -20,10 +20,16 @@ Para crear la ficha, ingresa a: **[https://business.google.com/](https://busines
   * `Club de atletismo / Club atlético`
   * `Centro de formación deportiva`
 * **Dirección Física Principal**:
-  * **Dirección**: `Carrera 22 No. 164 - 83` (Hockey One)
-  * **Barrio / Sector**: `Toberín / Usaquén / San Antonio Norte`
+
+  > **⚠️ Actualizado 2026-09-14:** Hockey One (Cra 22 #164-83) ya no está disponible y el club
+  > no tiene sede propia — entrena en canchas alquiladas. Google exige que la dirección visible
+  > sea un lugar propio con personal en el horario publicado; una cancha alquilada no cumple.
+  > Configurar la ficha como **negocio de área de servicio** (opción "No atiendo clientes en mi
+  > dirección" / ocultar dirección) con el área de cobertura de abajo. Las clases de cortesía se
+  > dictan en el **Coliseo de Hockey en Línea de Fedepatín (San Andresito Norte)** — mencionarlo
+  > en la descripción y en las publicaciones, no como dirección de la ficha.
+
   * **Ciudad**: `Bogotá`
-  * **Código Postal**: `110141`
   * **Departamento / Estado**: `Bogotá D.C.`
   * **País**: `Colombia`
 * **Área de Cobertura (Service Area)**:
@@ -35,7 +41,7 @@ Para crear la ficha, ingresa a: **[https://business.google.com/](https://busines
   * `Chicó, Bogotá`
   * `Rosales / Chapinero, Bogotá`
 * **Teléfono de Contacto Principal**:
-  `+57 314 310 0208`
+  `+57 318 168 1336`
 * **Sitio Web**:
   `https://optimawilddogs.com`
 * **Enlace de Citas / Reservas (Lead Magnet)**:
@@ -45,9 +51,9 @@ Para crear la ficha, ingresa a: **[https://business.google.com/](https://busines
 
 ### ⏰ Horarios de Atención
 
-* **Lunes a Viernes**: 03:00 PM – 10:00 PM
-* **Sábados**: 07:00 AM – 02:00 PM
-* **Domingos**: 07:00 AM – 01:00 PM
+* **Lunes a Sábado**: 08:00 AM – 05:00 PM *(horario en que Sindy responde WhatsApp — en GBP
+  el horario es de atención, no de entrenos)*
+* **Domingos**: Cerrado
 
 ---
 

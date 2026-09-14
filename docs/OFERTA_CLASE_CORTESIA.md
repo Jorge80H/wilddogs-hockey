@@ -17,31 +17,40 @@ demo aislada — el niño/a entrena con el equipo que le correspondería si se i
 - **Incluye**: préstamo de patines y protecciones para la clase.
 - **Duración**: la del entrenamiento normal de esa categoría (~2 horas, ver horarios en
   `Services.tsx`).
-- **Desde qué edad**: 5 años *(ajustar aquí si el club decide otro mínimo; hoy hay una
-  inconsistencia en el sitio entre "desde los 4" del SEO y "desde los 5" de la landing —
-  definir un solo número y propagarlo)*.
+- **Desde qué edad**: **4 años** *(confirmado por el club el 2026-09-14. La landing todavía
+  dice "desde los 5" — pendiente propagar a código; el SEO/GBP ya dicen 4)*.
 - **Costo**: gratis, sin compromiso.
 
 ## 2. Franjas fijas (cupos dentro de entrenamientos existentes)
 
+> **Sedes confirmadas 2026-09-14.** El club no tiene sede propia ni menciona ya a Hockey One en
+> el sitio (decisión del club: no nombrarlo y no publicar dirección). Entrena en dos canchas
+> alquiladas; por eso las sedes viven en constantes (`FEDEPATIN_LOCATION`, `GUAYMARAL_LOCATION`
+> en `leads.ts`) para que un cambio sea una línea.
+
 | Franja | Categorías | Sede | Cupos sugeridos |
 |---|---|---|---|
-| Lunes 5:00 PM | Sub 8, Sub 10, Sub 12 | Hockey One (Cra 22 #164-83) | 3–4 |
-| Viernes 4:30 PM | Sub 8, Sub 10, Sub 12 | Hockey One (Cra 22 #164-83) | 3–4 |
-| Sábado 7:00 AM | Sub 14, Sub 16 | Hockey One (Cra 22 #164-83) | 3–4 |
+| Lunes 5:00 PM | Sub 8, Sub 10, Sub 12 | Coliseo Fedepatín (San Andresito Norte) | 3–4 |
+| Viernes 4:30 PM | Sub 8, Sub 10, Sub 12 | Coliseo Fedepatín (San Andresito Norte) | 3–4 |
+| Sábado 7:00 AM | Sub 14, Sub 16 | Pista de Hockey Guaymaral — Fedehockey (Autopista Norte) | 3–4 |
 
-*(Sub 16/18/Mayores en Guaymaral quedan fuera del embudo de cortesía por ahora — categorías
-de alto rendimiento, no el foco de una campaña de captación masiva.)*
+*(Sub 18 y Mayores quedan fuera del embudo de cortesía por ahora — categorías de alto
+rendimiento, no el foco de una campaña de captación masiva.)*
 
-**Puertas Abiertas mensual**: un sábado al mes, evento ampliado con cupo mayor, pensado como pico
-de contenido y de captación. Fecha y mecánica a definir con el club — *pendiente*.
+**Puertas Abiertas mensual**: *suspendido hasta tener sede*. Sin una cancha propia o con
+disponibilidad garantizada no se puede prometer un evento ampliado con cupo mayor. Retomar
+cuando se resuelva la sede.
 
 ## 3. Quién responde y en cuánto tiempo
 
-- **Canal único**: WhatsApp del club, `+57 314 310 0208`.
-- **Responsable**: *(nombre a asignar por el club — bloqueante)*.
-- **SLA de respuesta**: menor a 30 minutos en horario de atención (L–V 15:00–22:00,
-  Sáb 07:00–14:00). Fuera de ese horario, respuesta antes de las 9:00 AM del día hábil siguiente.
+- **Canal único**: WhatsApp del club, `+57 318 168 1336`.
+- **Responsable**: **Sindy** (confirmado 2026-09-14).
+- **Horario de atención**: **Lunes a Sábado, 8:00 AM – 5:00 PM** (confirmado 2026-09-14).
+- **SLA de respuesta**: menor a 30 minutos dentro de ese horario. Fuera de él (noches y
+  domingos), respuesta antes de las 9:00 AM del día siguiente hábil.
+- Ojo con el embudo: los entrenos son en la tarde/noche y sábado temprano, pero la atención es
+  de oficina — un padre que escribe a las 7 PM recibe respuesta a la mañana siguiente. Eso está
+  bien siempre que el autorespondedor de WhatsApp Business lo diga.
 - El circuito ya construido en el sitio hace que **la familia inicie la conversación**: al
   agendar en `/unete`, se abre WhatsApp con el mensaje ya redactado (franja elegida, nombre y
   edad del niño). El club solo confirma.
@@ -52,10 +61,11 @@ de contenido y de captación. Fecha y mecánica a definir con el club — *pendi
 >
 > Para la clase de cortesía de [Nombre del niño/a], quedas agendado/a:
 > 📅 [Franja elegida]
-> 📍 Sede: Carrera 22 # 164-83 (Hockey One)
+> 📍 [Coliseo Fedepatín, San Andresito Norte — o Pista Guaymaral si es la franja del sábado]
+> 🗺️ [enlace de Google Maps de esa cancha]
 > 🏒 Te prestamos patines y protecciones para esa primera clase.
 >
-> ¿Confirmamos ese horario o prefieres otro día? Cualquier duda, escríbeme por aquí mismo.
+> ¿Te sirve ese horario o prefieres otro día? Cualquier duda, escríbeme por aquí mismo.
 
 ## 4. Seguimiento post-clase
 
@@ -68,7 +78,16 @@ de contenido y de captación. Fecha y mecánica a definir con el club — *pendi
 
 ## Pendientes que bloquean el lanzamiento
 
-- [ ] Confirmar edad mínima única (4 o 5 años) y propagarla en SEO, landing y este documento.
-- [ ] Asignar responsable y horario real de respuesta de WhatsApp.
-- [ ] Definir fecha y mecánica de la primera Puertas Abiertas.
+- [x] Edad mínima: **4 años** — propagada a `/unete` y a `TRIAL_SLOTS` (2026-09-14).
+- [x] Responsable WhatsApp: **Sindy**, L–S 8:00 AM – 5:00 PM (2026-09-14).
+- [x] WhatsApp oficial: **+57 318 168 1336** — ya en `leads.ts`, Footer, Contact, GBP guide.
+- [x] Franjas y sedes confirmadas: Lun 5 PM y Vie 4:30 PM en **Coliseo Fedepatín**; Sáb 7 AM en
+  **Pista Guaymaral (Fedehockey)**. Reflejado en `leads.ts`, `Services.tsx` y `CategoryDetail.tsx`.
+- [x] Hockey One eliminado de todo el sitio sin poner dirección nueva: Footer, Contacto, Nosotros,
+  Servicios (tabla de horarios, tarjeta de sede, nota "escuela de Hockey One"), categoría
+  Femenino (sesión de miércoles) y schema.org/FAQ de `index.html`. Horario de atención del
+  sitio actualizado a L–S 8–5.
 - [ ] Aprobación del club sobre cupos por franja (hoy sugeridos en 3–4).
+- [ ] Confirmar si la sesión de **miércoles 6 PM de Femenino** (era en Hockey One) sigue en otra
+  cancha o desapareció — se quitó del sitio por no poder nombrar la sede.
+- [~] Puertas Abiertas: suspendido hasta tener sede propia o cancha con disponibilidad garantizada.
