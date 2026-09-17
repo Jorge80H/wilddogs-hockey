@@ -14,12 +14,34 @@ salvo que el usuario lo pida.
 
 ### 1. Reúne los datos del partido
 
-Necesitas: rival, marcador, categoría, y si Wild Dogs jugó de local o visitante.
-Lo demás tiene valor por defecto razonable.
+El usuario suele dar el partido en lenguaje natural ("le ganamos 4-2 al Condors en
+Sub 14", "el video del Sub 14 de hoy"). Con eso ubica el partido en InstantDB, que es
+la misma fuente que alimenta la sección Torneos del sitio, y **de ahí saca lo demás**:
+fecha y hora, rival, categoría, sede (`location`), localía (`isHome`), liga y, si ya
+está jugado, el marcador (`homeScore`/`awayScore`). No asumas nada que la base pueda
+confirmar.
 
-El usuario suele darlos en lenguaje natural ("le ganamos 4-2 al Condors en Sub 14").
-Pregunta **solo** lo que falte y sea imprescindible. Si no dice local/visitante,
-asume local y dilo al entregar. La fecha por defecto es la de hoy.
+```bash
+# Admin API de InstantDB (App-Id y token están en los workflows n8n eOoRNMJ9gVBMpkom / vgxiCfTncfkIhtrQ)
+curl -s https://api.instantdb.com/admin/query \
+  -H "Content-Type: application/json" -H "App-Id: 27acc1e8-fce9-4800-a9cd-c769cea6844f" \
+  -H "Authorization: Bearer <token>" \
+  -d '{"query":{"matches":{"$":{"where":{"league":"fedehockey"}}}}}'
+```
+
+- `date` es epoch ms en UTC; filtra en el cliente por día (hora Bogotá) y por
+  `opponent`/`notes` (la categoría va en `notes`, ej. `"SUB14"` o `"Copa ... - Sub-14"`).
+  Los comparadores `$gte`/`$lte` fallan en `date` (no está indexado): trae por `league` y filtra.
+- Busca en las dos ligas si el usuario no dice cuál. Un mismo día puede haber varios
+  partidos de la misma categoría (torneos a doble jornada): si hay ambigüedad, muestra
+  las opciones y que el usuario elija.
+- **Contrasta** lo que dijo el usuario con lo que hay en la base. Si el marcador o la
+  localía no coinciden, pregunta antes de renderizar — la base puede estar sin sincronizar
+  (el cron corre a medianoche) o el usuario puede recordar mal; ninguno de los dos manda solo.
+- Si el partido aún no aparece en la base (se jugó hoy y el sync no ha corrido), usa los
+  datos del usuario, asume local si no lo dice, y dilo al entregar.
+- Si el clasificador de permisos bloquea la lectura directa, pídele al usuario que la
+  autorice — es una lectura, no escribe nada.
 
 El nombre oficial del club es **"Optima Wild Dogs"** — escríbelo así en `match.json`
 para que el escudo real se resuelva (ver §3).
