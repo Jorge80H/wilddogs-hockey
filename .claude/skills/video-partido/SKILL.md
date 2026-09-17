@@ -54,6 +54,12 @@ Por orden de preferencia:
 2. **Google Drive** → `mcp__Google_Drive__search_files` para ubicar la carpeta del
    partido, luego `mcp__Google_Drive__download_file_content` por cada imagen.
    Si el usuario no dice cuál es la carpeta, busca por fecha o por el nombre del rival.
+   El repositorio de fotos del club es la carpeta compartida **"Redes Sociales"**
+   (id `1Xi9xbpL8r1eM6xfVo8WTwVX2_RsSbURZ`, dueño `tgohockeyacademy@gmail.com`): tiene
+   subcarpetas por categoría (Sub 8/10/12/16), por evento ("Competencia", "finales 1° 2026",
+   "CAMP", "Noche de Gala"…) y por jugador. Empieza por la carpeta del partido si existe;
+   si no, mira "Competencia" y la carpeta de la categoría, y prioriza fotos con
+   `createdTime` del día del partido.
 3. Si no hay fotos, **detente y pídelas**: el video no funciona sin ellas.
 
 De 3 a 6 fotos es el rango bueno. Con más, elige las mejores: acción, celebración,
