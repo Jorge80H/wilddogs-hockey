@@ -10,7 +10,7 @@ le pasas las fotos y ella hace el resto. Este README documenta el proyecto por d
 ## Uso
 
 ```bash
-npm install --ignore-scripts        # ver "Entorno" antes de omitir el flag
+npm install --ignore-scripts        # ver "Entorno" antes de omitir el flag (en Windows añade --force)
 # 1. editar match.json con los datos del partido
 # 2. dejar las fotos en assets/photos/
 npm run check                       # build + lint + validate + inspect
@@ -33,6 +33,7 @@ match.json   →   build.mjs   →   index.html   →   hyperframes render   →
 | `build.mjs` | Genera el HTML. Contiene los tiempos (`T`), el layout y las tweens de GSAP |
 | `assets/teams/` | Escudos reales, nombrados por slug del equipo |
 | `assets/photos/` | Fotos del partido |
+| `assets/music/` | Pistas del club + `tracks.json` con el segundo de entrada de cada una |
 | `assets/fonts/` | Big Shoulders y Outfit (OFL), servidas localmente |
 | `assets/vendor/` | GSAP vendorizado |
 

@@ -74,10 +74,17 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
   "home": { "name": "Optima Wild Dogs", "abbr": "WD",  "score": 4, "isWildDogs": true },
   "away": { "name": "Condors",          "abbr": "CON", "score": 2, "isWildDogs": false },
   "photos": ["assets/photos/1.webp", "assets/photos/2.webp"],
+  "music": "auto",
   "handle": "@optimawilddogs",
-  "site": "wilddogs.com.co"
+  "site": "optimawilddogs.com"
 }
 ```
+
+- `music`: `"auto"` elige una pista de `assets/music/` de forma estable para ese partido
+  (misma fecha+categoría+rival → misma pista), un nombre de archivo (`"furia-sobre-el-hielo.mp3"`)
+  la fuerza, `"none"` deja el video mudo. Cada pista entra en su tramo más enérgico
+  (`assets/music/tracks.json`, campo `start`) con fade-in de 0.8s y fade-out de 2.2s.
+  Para agregar una canción: copiarla a `assets/music/` y añadir su entrada en `tracks.json`.
 
 - `home` / `away` deben reflejar la localía real; `isWildDogs: true` va en el bloque
   del club, sea cual sea. De ahí sale el destacado naranja y el cálculo de
@@ -95,9 +102,10 @@ npm run render   # deja el MP4 en renders/
 ```
 
 `npm run check` debe terminar con **0 errores de lint y 0 problemas de layout**.
-Los avisos de contraste WCAG en `t=10.5s` son falsos positivos: a esa altura la
-escena del marcador ya está oculta (`opacity:0`) y la herramienta la mide igual.
-Ignóralos. Cualquier otro aviso sí revísalo.
+Los avisos `text_occluded` en `t=2.5s` (textos de S1 tapados por S2) y el warning
+`duplicate_media_discovery_risk` son falsos positivos conocidos: son la transición entre
+escenas y el mismo logo usado dos veces. Ignóralos. Cualquier otro aviso sí revísalo.
+No animes `letterSpacing` con GSAP: el lint de hyperframes ≥ 0.8 lo rechaza; usa `scaleX`.
 
 Después de renderizar, **extrae fotogramas y míralos** antes de entregar — es la
 única forma de detectar un nombre desbordado, una foto mal recortada o un escudo
@@ -115,10 +123,10 @@ Entrega el MP4 con `SendUserFile` y di el marcador, la duración y cuántas foto
 
 | Tramo | Contenido |
 |---|---|
-| 0–2.6s | Logo Wild Dogs, "RESULTADO", categoría y fecha |
+| 0–2.6s | Logo Wild Dogs, "RESULTADO", categoría y fecha (la música entra con fade) |
 | 2.6–7.6s | Placa de marcador: torneo, categoría, sede, escudos, marcador que cuenta, VICTORIA/EMPATE/DERROTA |
 | 7.6–12.9s | Montaje de fotos con Ken Burns y barra compacta de marcador arriba |
-| 12.9–15s | Logo, "Wild Dogs Hockey Club", handle y sitio |
+| 12.9–15s | Logo, "Wild Dogs Hockey Club", handle y sitio (la música sale con fade) |
 
 Los tiempos están en la constante `T` de `build.mjs`. Cambiar `T.end` exige ajustar
 también `data-duration` (lo hace solo) y revisar que las tweens sigan dentro del rango.

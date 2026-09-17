@@ -35,6 +35,11 @@
          data-start="0" data-duration="15"
          data-width="1080" data-height="1920">
 
+      <audio id="bgm" src="assets/music/hockey-shots-2.mp3"
+             data-start="0" data-duration="15"
+             data-media-start="9"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.8,"v":0.85},{"t":12.8,"v":0.85},{"t":15,"v":0}]}]}'></audio>
+
       <!-- ============ S1 · Apertura 0–2.6s ============ -->
       <div id="s1" class="scene" style="z-index:1;">
         <div class="tex" style="opacity:0.09;"></div>
@@ -191,7 +196,7 @@
             letter-spacing:0.07em; margin-top:30px; line-height:1; text-align:center;
           ">Wild Dogs<br/>Hockey Club</div>
           <div id="s4-bar" style="width:0; height:5px; background:#EA580C; margin-top:30px;"></div>
-          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">@optimawilddogs · wilddogs.com.co</div>
+          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">@optimawilddogs · optimawilddogs.com</div>
         </div>
         <div id="s4-fade" style="position:absolute; inset:0; background:#0a0f1e; opacity:0; z-index:10;"></div>
       </div>
@@ -206,7 +211,7 @@
       tl.from("#s1-logo",   { scale: 0.62, opacity: 0, duration: 0.72, ease: "back.out(1.7)" }, 0.25);
       tl.from("#s1-kicker", { y: 70, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.85);
       tl.to("#s1-line",     { width: 260, duration: 0.5, ease: "power3.out" }, 1.2);
-      tl.from("#s1-div",    { opacity: 0, letterSpacing: "0.6em", duration: 0.6, ease: "power2.out" }, 1.4);
+      tl.from("#s1-div",    { opacity: 0, scaleX: 1.18, duration: 0.6, ease: "power2.out" }, 1.4);
 
       // ---- S1 -> S2
       tl.to("#s1", { opacity: 0, filter: "blur(12px)", duration: 0.26, ease: "power2.in" }, 2.32);
@@ -233,7 +238,7 @@
       });
 
       tl.from("#s2-result", { scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.9)" }, 4.55);
-      tl.from("#s2-status", { opacity: 0, letterSpacing: "0.9em", duration: 0.55, ease: "power2.out" }, 4.90);
+      tl.from("#s2-status", { opacity: 0, scaleX: 1.25, duration: 0.55, ease: "power2.out" }, 4.90);
 
       // ---- S2 -> fotos
       tl.to("#s2",  { opacity: 0, duration: 0.2, ease: "power2.in" }, 7.36);
@@ -262,7 +267,7 @@
       tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 13.05);
       tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, 13.40);
       tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, 13.75);
-      tl.from("#s4-handle", { opacity: 0, letterSpacing: "0.5em", duration: 0.5, ease: "power2.out" }, 13.95);
+      tl.from("#s4-handle", { opacity: 0, scaleX: 1.15, duration: 0.5, ease: "power2.out" }, 13.95);
       tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, 14.40);
 
       window.__timelines["wilddogs-match"] = tl;

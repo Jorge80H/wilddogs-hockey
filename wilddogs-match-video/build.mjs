@@ -98,6 +98,46 @@ const fotos = m.photos ?? [];
 if (fotos.length === 0) throw new Error("match.json: se necesita al menos una foto en 'photos'.");
 const dur = PHOTO_WINDOW / fotos.length;
 
+// ------------------------------------------------------------------------ música
+// assets/music/tracks.json guarda, por pista, el segundo de entrada (la ventana de 15s
+// más enérgica). match.json `music`: nombre de archivo, "auto" (elige por partido, estable
+// entre builds) o "none".
+const MUSIC_DIR = "assets/music";
+const tracks = JSON.parse(readFileSync(join(ROOT, MUSIC_DIR, "tracks.json"), "utf8"));
+function elegirPista() {
+  const pedido = m.music ?? "auto";
+  if (pedido === "none") return null;
+  const nombres = Object.keys(tracks).sort();
+  if (pedido !== "auto") {
+    if (!tracks[pedido]) throw new Error(`match.json: pista '${pedido}' no está en ${MUSIC_DIR}/tracks.json`);
+    return pedido;
+  }
+  const semilla = `${m.date}|${m.division}|${rival.name}`;
+  let h = 0;
+  for (const ch of semilla) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return nombres[h % nombres.length];
+}
+const pista = elegirPista();
+const MUSIC_PEAK = 0.85;
+// Fades como carril de automatización: lo hornea el mezclador de render (requiere hyperframes >= 0.8).
+const automation = JSON.stringify({
+  version: 1,
+  lanes: [{
+    target: "volume",
+    points: [
+      { t: 0, v: 0 },
+      { t: 0.8, v: MUSIC_PEAK },
+      { t: +(T.end - 2.2).toFixed(2), v: MUSIC_PEAK },
+      { t: T.end, v: 0 },
+    ],
+  }],
+});
+const audioHtml = pista ? `
+      <audio id="bgm" src="${MUSIC_DIR}/${pista}"
+             data-start="0" data-duration="${T.end}"
+             data-media-start="${tracks[pista].start}"
+             data-automation='${automation}'></audio>` : "";
+
 // --------------------------------------------------------------- fila de marcador
 // El ancho útil del nombre en la fila es ~460px; se baja el cuerpo si el nombre es largo.
 function tamanoNombre(nombre) {
@@ -195,6 +235,7 @@ const html = `<!doctype html>
          data-composition-id="wilddogs-match"
          data-start="0" data-duration="${T.end}"
          data-width="1080" data-height="1920">
+${audioHtml}
 
       <!-- ============ S1 · Apertura ${T.open}–${T.score}s ============ -->
       <div id="s1" class="scene" style="z-index:1;">
@@ -301,7 +342,7 @@ ${escenasFoto}
       tl.from("#s1-logo",   { scale: 0.62, opacity: 0, duration: 0.72, ease: "back.out(1.7)" }, 0.25);
       tl.from("#s1-kicker", { y: 70, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.85);
       tl.to("#s1-line",     { width: 260, duration: 0.5, ease: "power3.out" }, 1.2);
-      tl.from("#s1-div",    { opacity: 0, letterSpacing: "0.6em", duration: 0.6, ease: "power2.out" }, 1.4);
+      tl.from("#s1-div",    { opacity: 0, scaleX: 1.18, duration: 0.6, ease: "power2.out" }, 1.4);
 
       // ---- S1 -> S2
       tl.to("#s1", { opacity: 0, filter: "blur(12px)", duration: 0.26, ease: "power2.in" }, ${(T.score - 0.28).toFixed(2)});
@@ -328,7 +369,7 @@ ${escenasFoto}
       });
 
       tl.from("#s2-result", { scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.9)" }, ${(T.score + 1.95).toFixed(2)});
-      tl.from("#s2-status", { opacity: 0, letterSpacing: "0.9em", duration: 0.55, ease: "power2.out" }, ${(T.score + 2.3).toFixed(2)});
+      tl.from("#s2-status", { opacity: 0, scaleX: 1.25, duration: 0.55, ease: "power2.out" }, ${(T.score + 2.3).toFixed(2)});
 
       // ---- S2 -> fotos
       tl.to("#s2",  { opacity: 0, duration: 0.2, ease: "power2.in" }, ${(T.photos - 0.24).toFixed(2)});
@@ -347,7 +388,7 @@ ${tweensFoto}
       tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, ${(T.outro + 0.15).toFixed(2)});
       tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, ${(T.outro + 0.5).toFixed(2)});
       tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, ${(T.outro + 0.85).toFixed(2)});
-      tl.from("#s4-handle", { opacity: 0, letterSpacing: "0.5em", duration: 0.5, ease: "power2.out" }, ${(T.outro + 1.05).toFixed(2)});
+      tl.from("#s4-handle", { opacity: 0, scaleX: 1.15, duration: 0.5, ease: "power2.out" }, ${(T.outro + 1.05).toFixed(2)});
       tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, ${(T.end - 0.6).toFixed(2)});
 
       window.__timelines["wilddogs-match"] = tl;
@@ -359,5 +400,5 @@ ${tweensFoto}
 writeFileSync(join(ROOT, "index.html"), html);
 console.log(
   `index.html generado · ${wd.name} ${wd.score}-${rival.score} ${rival.name} · ` +
-  `${RESULTADO.texto} · ${fotos.length} foto(s) · ${T.end}s`
+  `${RESULTADO.texto} · ${fotos.length} foto(s) · ${T.end}s · música: ${pista ?? "ninguna"}`
 );
