@@ -46,8 +46,19 @@ Si existe, lo usa; si no, **genera un escudo monograma** con las iniciales y un
 color estable derivado del nombre (el mismo rival siempre sale del mismo color).
 
 - Wild Dogs ya tiene su escudo real en `assets/teams/optima-wild-dogs.png`.
-- Los rivales caen en monograma. Es el comportamiento esperado, no un error: **no
-  bloquees el render por esto ni inventes un logo**.
+- Ya están los escudos reales de los rivales de Fedehockey (Aces, Águilas, Andino's Roar,
+  Avalancha, Condors, H2S Lions, Katíos, Lightning, Rabbits, Rinos Napalm, Velociraptors,
+  V-Raptors), con fondo transparente y alias para las variantes de nombre que usan las
+  ligas (`condors-negro`, `condors-azul`, `rinos-napalm`, `v-raptors`).
+- Un rival que no esté ahí cae en monograma. Es el comportamiento esperado, no un error:
+  **no bloquees el render por esto ni inventes un logo**.
+- Para conseguir el escudo de un rival nuevo: la API de DigitalShift (Fedehockey) los
+  publica en `https://digitalshift-stats.us-lax-1.linodeobjects.com/.../team-logo_url-<id>-<slug>-<ts>.png`
+  (la URL sin sufijo es la original de 400px; `-small` es un thumbnail). Las URLs aparecen
+  en la salida del nodo "Get Standings" de la última ejecución del workflow n8n
+  `vgxiCfTncfkIhtrQ`. Descarga con User-Agent de navegador (Python `urllib` sin UA da 403),
+  quita el fondo uniforme con flood-fill desde los bordes y guárdalo con el slug correcto.
+  Fedepatín (Supabase) trae `teams.logo_url = null`, no sirve como fuente.
 - Si el usuario aporta el logo de un rival, guárdalo con el slug correcto
   (`Club Los Cóndores` → `club-los-condores.png`) y se usará solo.
 
