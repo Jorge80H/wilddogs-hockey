@@ -12,6 +12,7 @@ import { semesterOf, sortSemestersDesc } from "@/lib/semester";
 import { useSEO } from "@/hooks/useSEO";
 import { useState, useMemo } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { TeamLogo } from "@/components/TeamLogo";
 
 import textureBg from "@assets/client_images/textura-grande_wilddogs_01.webp";
 
@@ -224,7 +225,12 @@ function StandingsTable({ standings, getCategory, league }: { standings: any[], 
                             className={`hover:bg-muted/30 transition-colors ${isWD(team.teamName) ? "bg-primary/[0.03] border-l-2 border-l-primary" : ""}`}
                           >
                             <td className="py-4 pl-6 pr-2 font-black text-muted-foreground/50">{index + 1}</td>
-                            <td className={`py-4 px-2 font-bold ${isWD(team.teamName) ? "text-primary" : ""}`}>{displayName(team.teamName)}</td>
+                            <td className={`py-4 px-2 font-bold ${isWD(team.teamName) ? "text-primary" : ""}`}>
+                              <div className="flex items-center gap-3">
+                                <TeamLogo name={team.teamName} isWildDogs={isWD(team.teamName)} size={32} />
+                                <span>{displayName(team.teamName)}</span>
+                              </div>
+                            </td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.played ?? "-"}</td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.won ?? "-"}</td>
                             <td className="py-4 px-2 text-center font-mono opacity-80">{team.drawn ?? "-"}</td>
@@ -246,6 +252,30 @@ function StandingsTable({ standings, getCategory, league }: { standings: any[], 
           );
         })}
     </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// ENFRENTAMIENTO: escudo + nombre a cada lado, marcador (o "vs") al centro
+// ─────────────────────────────────────────────
+function Matchup({ home, away, wdIsHome, homeScore, awayScore }: {
+  home: string; away: string; wdIsHome: boolean; homeScore?: number | null; awayScore?: number | null;
+}) {
+  const hasScore = homeScore !== null && homeScore !== undefined && awayScore !== null && awayScore !== undefined;
+  const side = (name: string, isWD: boolean, align: "left" | "right") => (
+    <div className={`flex items-center gap-3 min-w-0 flex-1 ${align === "right" ? "flex-row-reverse text-right" : ""}`}>
+      <TeamLogo name={name} isWildDogs={isWD} size={48} />
+      <span className={`text-lg md:text-xl font-black tracking-tight leading-tight truncate ${isWD ? "text-primary" : ""}`}>{name}</span>
+    </div>
+  );
+  return (
+    <div className="flex items-center gap-3 md:gap-5 mb-3">
+      {side(home, wdIsHome, "left")}
+      <div className={`shrink-0 font-black font-mono tabular-nums tracking-tighter ${hasScore ? "text-3xl md:text-4xl text-primary/80 group-hover:text-primary" : "text-sm text-muted-foreground uppercase"} transition-colors`}>
+        {hasScore ? <>{homeScore}<span className="text-muted-foreground/30 text-2xl mx-1">-</span>{awayScore}</> : "vs"}
+      </div>
+      {side(away, !wdIsHome, "right")}
+    </div>
   );
 }
 
@@ -295,12 +325,10 @@ function UpcomingWithCalendar({ matches, isLoading, wdDisplayName }: { matches: 
                               {new Date(match.date).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit", timeZone: "America/Bogota" })}
                             </span>
                           </div>
-                          <div className="text-2xl font-black mb-2 tracking-tight group-hover:text-primary transition-colors flex items-baseline gap-3 flex-wrap">
-                            {homeTeam} vs {awayTeam}
-                            <span className="text-xs font-normal text-muted-foreground border border-border/50 rounded px-1.5 py-0.5">
-                              {match.isHome ? "Local" : "Visitante"}
-                            </span>
-                          </div>
+                          <Matchup home={homeTeam} away={awayTeam} wdIsHome={!!match.isHome} />
+                          <span className="inline-block text-xs font-normal text-muted-foreground border border-border/50 rounded px-1.5 py-0.5">
+                            {match.isHome ? "Local" : "Visitante"}
+                          </span>
                           {match.location && (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
                               <MapPin className="h-4 w-4" />
@@ -382,17 +410,10 @@ function PastMatchesList({ matches, isLoading, wdDisplayName }: { matches: any[]
                         {getResultText(match.result)}
                       </Badge>
                     </div>
-                    <div className="text-2xl font-black mb-3 tracking-tight group-hover:text-primary transition-colors flex items-baseline gap-3 flex-wrap">
-                      {homeTeam} vs {awayTeam}
-                      <span className="text-xs font-normal text-muted-foreground border border-border/50 rounded px-1.5 py-0.5">
-                        {match.isHome ? "Local" : "Visitante"}
-                      </span>
-                    </div>
-                    {match.homeScore !== null && match.awayScore !== null && (
-                      <div className="text-4xl font-black font-mono text-primary/80 group-hover:text-primary transition-colors tracking-tighter">
-                        {match.homeScore} <span className="text-muted-foreground/30 text-2xl mx-1">-</span> {match.awayScore}
-                      </div>
-                    )}
+                    <Matchup home={homeTeam} away={awayTeam} wdIsHome={!!match.isHome} homeScore={match.homeScore} awayScore={match.awayScore} />
+                    <span className="inline-block text-xs font-normal text-muted-foreground border border-border/50 rounded px-1.5 py-0.5">
+                      {match.isHome ? "Local" : "Visitante"}
+                    </span>
                     {match.location && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground mt-3 bg-muted/30 w-fit px-3 py-1 rounded-md">
                         <MapPin className="h-3.5 w-3.5" />

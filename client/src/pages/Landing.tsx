@@ -23,6 +23,7 @@ import sub16Image from "@assets/client_images/IMG_8291_1.webp";
 import sub18Image from "@assets/client_images/Sub18_grupo.webp";
 import femeninoImage from "@assets/client_images/IMG_5907.webp";
 import mayoresImage from "@assets/client_images/IMG_7937.webp";
+import { TeamLogo } from "@/components/TeamLogo";
 
 const rosterImages = [
   sub8Image,
@@ -276,14 +277,16 @@ export default function Landing() {
                       </div>
                       <CardContent className="p-6">
                         <div className="flex justify-between items-center mb-4">
-                          <div className={`text-center flex-1 ${isWildDogsHome ? 'font-black text-primary' : 'font-semibold text-foreground'}`}>
-                            {homeTeam}
+                          <div className={`flex flex-col items-center gap-2 text-center flex-1 min-w-0 ${isWildDogsHome ? 'font-black text-primary' : 'font-semibold text-foreground'}`}>
+                            <TeamLogo name={homeTeam} isWildDogs={isWildDogsHome} size={44} />
+                            <span className="text-sm leading-tight line-clamp-2">{homeTeam}</span>
                           </div>
-                          <div className="px-4 text-2xl font-black tabular-nums tracking-tighter bg-muted/50 rounded-lg py-2 mx-2">
+                          <div className="px-4 text-2xl font-black tabular-nums tracking-tighter bg-muted/50 rounded-lg py-2 mx-2 shrink-0">
                             {match.homeScore} - {match.awayScore}
                           </div>
-                          <div className={`text-center flex-1 ${!isWildDogsHome ? 'font-black text-primary' : 'font-semibold text-foreground'}`}>
-                            {awayTeam}
+                          <div className={`flex flex-col items-center gap-2 text-center flex-1 min-w-0 ${!isWildDogsHome ? 'font-black text-primary' : 'font-semibold text-foreground'}`}>
+                            <TeamLogo name={awayTeam} isWildDogs={!isWildDogsHome} size={44} />
+                            <span className="text-sm leading-tight line-clamp-2">{awayTeam}</span>
                           </div>
                         </div>
                         <div className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">
