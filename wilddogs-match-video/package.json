@@ -1,0 +1,19 @@
+{
+  "name": "wilddogs-match-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "npm run build && hyperframes preview",
+    "lint": "hyperframes lint --verbose",
+    "check": "npm run build && hyperframes lint --verbose && hyperframes validate && hyperframes inspect",
+    "render": "npm run build && hyperframes render",
+    "publish": "hyperframes publish"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/linux-x64": "^4.1.0",
+    "@ffprobe-installer/linux-x64": "^5.2.0",
+    "gsap": "^3.14.2",
+    "hyperframes": "^0.6.15"
+  }
+}

@@ -1,0 +1,143 @@
+---
+name: video-partido
+description: Genera el video vertical (1080x1920, Reels/TikTok/Shorts) con el resultado de un partido de Wild Dogs Hockey Club, a partir del marcador y de las fotos tomadas en la cancha. Úsalo cuando el usuario reporte cómo quedó un partido ("ganamos 4-2 al Condors", "quedamos empatados en Sub 14", "haz el video del partido de hoy"), pida el video/reel/resumen de un partido, o señale una carpeta de Drive con fotos de un partido.
+---
+
+# Video de resultado de partido
+
+Convierte **marcador + fotos** en un MP4 vertical de 15s listo para publicar.
+El proyecto vive en `wilddogs-match-video/` y ya está construido: tu trabajo es
+llenar `match.json`, poner las fotos y renderizar. **No rediseñes la composición**
+salvo que el usuario lo pida.
+
+## Flujo
+
+### 1. Reúne los datos del partido
+
+Necesitas: rival, marcador, categoría, y si Wild Dogs jugó de local o visitante.
+Lo demás tiene valor por defecto razonable.
+
+El usuario suele darlos en lenguaje natural ("le ganamos 4-2 al Condors en Sub 14").
+Pregunta **solo** lo que falte y sea imprescindible. Si no dice local/visitante,
+asume local y dilo al entregar. La fecha por defecto es la de hoy.
+
+El nombre oficial del club es **"Optima Wild Dogs"** — escríbelo así en `match.json`
+para que el escudo real se resuelva (ver §3).
+
+### 2. Consigue las fotos
+
+Por orden de preferencia:
+
+1. **Adjuntas en el chat** o ya en disco → cópialas a `wilddogs-match-video/assets/photos/`.
+2. **Google Drive** → `mcp__Google_Drive__search_files` para ubicar la carpeta del
+   partido, luego `mcp__Google_Drive__download_file_content` por cada imagen.
+   Si el usuario no dice cuál es la carpeta, busca por fecha o por el nombre del rival.
+3. Si no hay fotos, **detente y pídelas**: el video no funciona sin ellas.
+
+De 3 a 6 fotos es el rango bueno. Con más, elige las mejores: acción, celebración,
+caras visibles, horizonte recto. Descarta borrosas y repetidas. Las fotos se
+recortan a vertical desde el centro (`object-fit:cover`), así que evita aquellas
+cuyo sujeto quede en un extremo del encuadre.
+
+### 3. Escudos de los equipos
+
+`build.mjs` busca `assets/teams/<slug-del-nombre>.{png,webp,svg,jpg}`.
+Si existe, lo usa; si no, **genera un escudo monograma** con las iniciales y un
+color estable derivado del nombre (el mismo rival siempre sale del mismo color).
+
+- Wild Dogs ya tiene su escudo real en `assets/teams/optima-wild-dogs.png`.
+- Los rivales caen en monograma. Es el comportamiento esperado, no un error: **no
+  bloquees el render por esto ni inventes un logo**.
+- Si el usuario aporta el logo de un rival, guárdalo con el slug correcto
+  (`Club Los Cóndores` → `club-los-condores.png`) y se usará solo.
+
+### 4. Escribe `match.json`
+
+```json
+{
+  "tournament": "Liga de Bogotá · Fedehockey",
+  "division": "Sub 14",
+  "date": "2026-09-17",
+  "venue": "Coliseo El Salitre · Bogotá",
+  "status": "FINAL",
+  "home": { "name": "Optima Wild Dogs", "abbr": "WD",  "score": 4, "isWildDogs": true },
+  "away": { "name": "Condors",          "abbr": "CON", "score": 2, "isWildDogs": false },
+  "photos": ["assets/photos/1.webp", "assets/photos/2.webp"],
+  "handle": "@optimawilddogs",
+  "site": "wilddogs.com.co"
+}
+```
+
+- `home` / `away` deben reflejar la localía real; `isWildDogs: true` va en el bloque
+  del club, sea cual sea. De ahí sale el destacado naranja y el cálculo de
+  VICTORIA / EMPATE / DERROTA.
+- `abbr`: 2-4 letras, es lo que aparece en la barra sobre las fotos.
+- `photos`: rutas relativas a la raíz del proyecto, en el orden en que se verán.
+  El tiempo de montaje se reparte entre ellas automáticamente.
+
+### 5. Renderiza y **mira** el resultado
+
+```bash
+cd wilddogs-match-video
+npm run check    # build + lint + validate + inspect
+npm run render   # deja el MP4 en renders/
+```
+
+`npm run check` debe terminar con **0 errores de lint y 0 problemas de layout**.
+Los avisos de contraste WCAG en `t=10.5s` son falsos positivos: a esa altura la
+escena del marcador ya está oculta (`opacity:0`) y la herramienta la mide igual.
+Ignóralos. Cualquier otro aviso sí revísalo.
+
+Después de renderizar, **extrae fotogramas y míralos** antes de entregar — es la
+única forma de detectar un nombre desbordado, una foto mal recortada o un escudo
+que no cargó:
+
+```bash
+FF=node_modules/@ffmpeg-installer/linux-x64/ffmpeg
+V=$(ls -t renders/*.mp4 | head -1)
+for t in 1.8 5.8 9.5 14.3; do $FF -v error -ss $t -i "$V" -frames:v 1 -vf scale=432:-1 /tmp/f_$t.png -y; done
+```
+
+Entrega el MP4 con `SendUserFile` y di el marcador, la duración y cuántas fotos entraron.
+
+## Estructura del video (15s)
+
+| Tramo | Contenido |
+|---|---|
+| 0–2.6s | Logo Wild Dogs, "RESULTADO", categoría y fecha |
+| 2.6–7.6s | Placa de marcador: torneo, categoría, sede, escudos, marcador que cuenta, VICTORIA/EMPATE/DERROTA |
+| 7.6–12.9s | Montaje de fotos con Ken Burns y barra compacta de marcador arriba |
+| 12.9–15s | Logo, "Wild Dogs Hockey Club", handle y sitio |
+
+Los tiempos están en la constante `T` de `build.mjs`. Cambiar `T.end` exige ajustar
+también `data-duration` (lo hace solo) y revisar que las tweens sigan dentro del rango.
+
+## Reglas de la composición
+
+`index.html` es **generado** — edita `build.mjs`, nunca el HTML, o el próximo
+`npm run build` borrará tus cambios.
+
+HyperFrames exige determinismo: sin `Date.now()`, sin `Math.random()`, sin peticiones
+de red en tiempo de render. Por eso GSAP y las tipografías están servidos desde
+`assets/` en vez de un CDN. Si añades una librería, vendorízala igual.
+
+## Entorno
+
+Este contenedor no tiene ffmpeg ni Chrome del sistema, y la política de egress
+bloquea las descargas que HyperFrames intenta por su cuenta. Ya está resuelto así:
+
+- **Chrome**: exporta `HYPERFRAMES_BROWSER_PATH=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell`
+  antes de `check` o `render`. Sin esto intenta bajar chrome-headless-shell y recibe 403.
+- **ffmpeg / ffprobe**: llegan como dependencias npm; `build.mjs` los enlaza en
+  `node_modules/.bin` en cada build. El ffmpeg de Playwright **no sirve** (solo VP8).
+- **`npm install`**: usa siempre `--ignore-scripts`. El postinstall de `onnxruntime-node`
+  intenta alcanzar `api.nuget.org`, que está bloqueado, y tumba la instalación entera.
+
+Bloqueados por egress en este entorno: `cdn.jsdelivr.net`, `storage.googleapis.com`,
+`api.nuget.org`, y las fuentes de las federaciones (`*.supabase.co`, `fedehockey.com`,
+`digitalshift.ca`). `registry.npmjs.org` sí está permitido. No intentes rodearlos.
+
+## Publicación
+
+El render no se publica solo. Entrega el archivo y deja que el usuario decida.
+Si pide publicarlo, confirma la cuenta y el texto antes de enviar nada.

@@ -1,0 +1,27 @@
+{
+  "tournament": "Liga de Bogotá · Fedehockey",
+  "division": "Sub 14",
+  "date": "2026-09-17",
+  "venue": "Coliseo El Salitre · Bogotá",
+  "status": "FINAL",
+  "home": {
+    "name": "Optima Wild Dogs",
+    "abbr": "WD",
+    "score": 4,
+    "isWildDogs": true
+  },
+  "away": {
+    "name": "Condors",
+    "abbr": "CON",
+    "score": 2,
+    "isWildDogs": false
+  },
+  "photos": [
+    "assets/photos/DSC01384.webp",
+    "assets/photos/IMG_7933.webp",
+    "assets/photos/IMG_8260.webp",
+    "assets/photos/Arquero.webp"
+  ],
+  "handle": "@optimawilddogs",
+  "site": "wilddogs.com.co"
+}

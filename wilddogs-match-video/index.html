@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family:"BigShoulders"; src:url("assets/fonts/BigShoulders-Bold.ttf") format("truetype"); font-weight:700; font-display:block; }
+      @font-face { font-family:"BigShoulders"; src:url("assets/fonts/BigShoulders-Regular.ttf") format("truetype"); font-weight:400; font-display:block; }
+      @font-face { font-family:"Outfit"; src:url("assets/fonts/Outfit-Bold.ttf") format("truetype"); font-weight:700; font-display:block; }
+      @font-face { font-family:"Outfit"; src:url("assets/fonts/Outfit-Regular.ttf") format("truetype"); font-weight:400; font-display:block; }
+
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body {
+        width:1080px; height:1920px; overflow:hidden;
+        background:#0a0f1e; color:#fff;
+        font-family:"BigShoulders", sans-serif;
+      }
+      .tex { position:absolute; inset:0; background:url("assets/textura.webp") center/cover no-repeat; }
+      .scene { position:absolute; top:0; left:0; width:1080px; height:1920px; overflow:hidden; background:#0a0f1e; }
+      .full-img { position:absolute; top:0; left:0; width:1080px; height:1920px; object-fit:cover; object-position:center; }
+      .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,0.95) 0%, rgba(10,15,30,0.28) 38%, rgba(10,15,30,0) 62%); }
+      .grad-top { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.30) 22%, rgba(10,15,30,0) 42%); }
+      .chip {
+        display:inline-block; font-family:Outfit, sans-serif; font-size:26px; font-weight:700;
+        letter-spacing:0.24em; text-transform:uppercase; padding:14px 30px;
+        border:2px solid rgba(234,88,12,0.55); border-radius:999px; color:#EA580C;
+      }
+      .meta { font-family:Outfit, sans-serif; font-size:28px; font-weight:400; letter-spacing:0.16em; color:rgba(255,255,255,0.62); text-transform:uppercase; }
+    </style>
+  </head>
+  <body>
+    <div id="root"
+         data-composition-id="wilddogs-match"
+         data-start="0" data-duration="15"
+         data-width="1080" data-height="1920">
+
+      <!-- ============ S1 · Apertura 0–2.6s ============ -->
+      <div id="s1" class="scene" style="z-index:1;">
+        <div class="tex" style="opacity:0.09;"></div>
+        <div id="s1-glow" style="
+          position:absolute; width:1040px; height:1040px; border-radius:50%;
+          background:radial-gradient(circle, rgba(234,88,12,0.34) 0%, rgba(234,88,12,0) 68%);
+          top:50%; left:50%; transform:translate(-50%,-50%);
+        "></div>
+        <div style="
+          position:absolute; inset:0; display:flex; flex-direction:column;
+          align-items:center; justify-content:center; z-index:2;
+        ">
+          <img id="s1-logo" src="assets/logo-wilddogs.png" alt="Wild Dogs" style="width:360px; height:auto;" />
+          <div id="s1-kicker" style="
+            font-size:96px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.06em; margin-top:34px; line-height:1;
+          ">Resultado</div>
+          <div id="s1-line" style="width:0; height:5px; background:#EA580C; margin-top:26px;"></div>
+          <div id="s1-div" class="meta" style="margin-top:30px;">Sub 14 · 17 SEP 2026</div>
+        </div>
+      </div>
+
+      <!-- ============ S2 · Marcador 2.6–7.6s ============ -->
+      <div id="s2" class="scene" style="z-index:10; opacity:0;">
+        <div class="tex" style="opacity:0.07;"></div>
+        <div style="
+          position:absolute; inset:0; padding:150px 70px;
+          display:flex; flex-direction:column; justify-content:center; z-index:2;
+        ">
+          <div style="text-align:center;">
+            <div id="s2-chip" class="chip">Liga de Bogotá · Fedehockey</div>
+            <div id="s2-cat" style="
+              font-size:112px; font-weight:700; text-transform:uppercase;
+              letter-spacing:0.03em; margin-top:34px; line-height:1;
+            ">Sub 14</div>
+            <div id="s2-meta" class="meta" style="margin-top:22px;">17 SEP 2026 · Coliseo El Salitre · Bogotá</div>
+          </div>
+
+          <div id="s2-card" style="
+            margin-top:86px; border-radius:40px; overflow:hidden;
+            background:rgba(255,255,255,0.045); border:2px solid rgba(255,255,255,0.10);
+          ">
+
+        <div id="row0" style="
+          display:flex; align-items:center; gap:34px; padding:38px 44px;
+          background:rgba(234,88,12,0.10);
+          border-left:8px solid #EA580C;
+        ">
+          <img id="shield0" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:150px;height:150px;object-fit:contain;" />
+          <div style="flex:1; min-width:0;">
+            <div style="
+              font-size:56px; font-weight:700; line-height:1.22; color:#fff;
+              text-transform:uppercase; letter-spacing:0.01em;
+              overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+            ">Optima Wild Dogs</div>
+            <div style="
+              font-family:Outfit,sans-serif; font-size:26px; font-weight:400;
+              color:rgba(255,255,255,0.55); letter-spacing:0.22em; margin-top:10px;
+            ">LOCAL</div>
+          </div>
+          <div id="score0" data-target="4" style="
+            font-size:168px; font-weight:700; line-height:0.82;
+            color:#EA580C; min-width:160px; text-align:right;
+            font-variant-numeric:tabular-nums;
+          ">0</div>
+        </div>
+            <div style="height:2px; background:rgba(255,255,255,0.10);"></div>
+
+        <div id="row1" style="
+          display:flex; align-items:center; gap:34px; padding:38px 44px;
+          background:transparent;
+          border-left:8px solid rgba(255,255,255,0.10);
+        ">
+          <svg id="shield1" width="150" height="150" viewBox="0 0 200 220" role="img" aria-label="Condors">
+        <defs><linearGradient id="g-condors" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="hsl(327 62% 52%)" stop-opacity="0.34"/>
+          <stop offset="100%" stop-color="hsl(327 55% 16%)" stop-opacity="0.92"/>
+        </linearGradient></defs>
+        <path d="M100 6 L192 38 V118 C192 170 148 200 100 214 C52 200 8 170 8 118 V38 Z"
+              fill="url(#g-condors)" stroke="hsl(327 62% 52%)" stroke-width="7"/>
+        <text x="100" y="128" text-anchor="middle" font-family="BigShoulders, sans-serif"
+              font-size="86" font-weight="700" fill="#fff" letter-spacing="2">CO</text>
+      </svg>
+          <div style="flex:1; min-width:0;">
+            <div style="
+              font-size:64px; font-weight:700; line-height:1.22; color:#fff;
+              text-transform:uppercase; letter-spacing:0.01em;
+              overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+            ">Condors</div>
+            <div style="
+              font-family:Outfit,sans-serif; font-size:26px; font-weight:400;
+              color:rgba(255,255,255,0.55); letter-spacing:0.22em; margin-top:10px;
+            ">VISITANTE</div>
+          </div>
+          <div id="score1" data-target="2" style="
+            font-size:168px; font-weight:700; line-height:0.82;
+            color:#fff; min-width:160px; text-align:right;
+            font-variant-numeric:tabular-nums;
+          ">0</div>
+        </div>
+          </div>
+
+          <div style="text-align:center; margin-top:82px;">
+            <div id="s2-result" style="
+              font-size:142px; font-weight:700; text-transform:uppercase;
+              letter-spacing:0.09em; line-height:1; color:#EA580C;
+            ">VICTORIA</div>
+            <div id="s2-status" class="meta" style="margin-top:26px; letter-spacing:0.34em;">FINAL</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ S3 · Fotos 7.6–12.9s ============ -->
+
+      <div id="p0" class="scene" style="z-index:20; opacity:0;">
+        <img id="p0-img" class="full-img" data-layout-allow-overflow src="assets/photos/DSC01384.webp" alt="Partido Wild Dogs 1" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p1" class="scene" style="z-index:21; opacity:0;">
+        <img id="p1-img" class="full-img" data-layout-allow-overflow src="assets/photos/IMG_7933.webp" alt="Partido Wild Dogs 2" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p2" class="scene" style="z-index:22; opacity:0;">
+        <img id="p2-img" class="full-img" data-layout-allow-overflow src="assets/photos/IMG_8260.webp" alt="Partido Wild Dogs 3" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p3" class="scene" style="z-index:23; opacity:0;">
+        <img id="p3-img" class="full-img" data-layout-allow-overflow src="assets/photos/Arquero.webp" alt="Partido Wild Dogs 4" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+
+      <!-- Barra de marcador compacta sobre las fotos -->
+      <div id="bar" style="
+        position:absolute; top:96px; left:60px; right:60px; z-index:60; opacity:0;
+        display:flex; align-items:center; gap:26px;
+        padding:26px 34px; border-radius:28px;
+        background:rgba(10,15,30,0.74); border:2px solid rgba(255,255,255,0.12);
+        backdrop-filter:blur(8px);
+      ">
+        <img id="bar-h" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:78px;height:78px;object-fit:contain;" />
+        <div style="flex:1; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">WD</div>
+        <div style="font-size:74px; font-weight:700; line-height:0.85; color:#EA580C; font-variant-numeric:tabular-nums;">4<span style="color:rgba(255,255,255,0.55); margin:0 14px;">–</span>2</div>
+        <div style="flex:1; text-align:right; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">CON</div>
+        <svg id="bar-a" width="78" height="78" viewBox="0 0 200 220" role="img" aria-label="Condors">
+        <defs><linearGradient id="g-condors" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="hsl(327 62% 52%)" stop-opacity="0.34"/>
+          <stop offset="100%" stop-color="hsl(327 55% 16%)" stop-opacity="0.92"/>
+        </linearGradient></defs>
+        <path d="M100 6 L192 38 V118 C192 170 148 200 100 214 C52 200 8 170 8 118 V38 Z"
+              fill="url(#g-condors)" stroke="hsl(327 62% 52%)" stroke-width="7"/>
+        <text x="100" y="128" text-anchor="middle" font-family="BigShoulders, sans-serif"
+              font-size="86" font-weight="700" fill="#fff" letter-spacing="2">CO</text>
+      </svg>
+      </div>
+
+      <!-- ============ S4 · Cierre 12.9–15s ============ -->
+      <div id="s4" class="scene" style="z-index:80; opacity:0;">
+        <div class="tex" style="opacity:0.08;"></div>
+        <div id="s4-glow" style="
+          position:absolute; width:980px; height:980px; border-radius:50%;
+          background:radial-gradient(circle, rgba(234,88,12,0.30) 0%, rgba(234,88,12,0) 68%);
+          top:50%; left:50%; transform:translate(-50%,-50%);
+        "></div>
+        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:2;">
+          <div id="s4-logo" role="img" aria-label="Wild Dogs" style="width:300px; height:300px; background:url('assets/logo-wilddogs.png') center/contain no-repeat;"></div>
+          <div id="s4-name" style="
+            font-size:92px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.07em; margin-top:30px; line-height:1; text-align:center;
+          ">Wild Dogs<br/>Hockey Club</div>
+          <div id="s4-bar" style="width:0; height:5px; background:#EA580C; margin-top:30px;"></div>
+          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">@optimawilddogs · wilddogs.com.co</div>
+        </div>
+        <div id="s4-fade" style="position:absolute; inset:0; background:#0a0f1e; opacity:0; z-index:10;"></div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ---- S1 Apertura
+      tl.from("#s1-glow",   { scale: 0.2, opacity: 0, duration: 1.2, ease: "power2.out" }, 0.1);
+      tl.from("#s1-logo",   { scale: 0.62, opacity: 0, duration: 0.72, ease: "back.out(1.7)" }, 0.25);
+      tl.from("#s1-kicker", { y: 70, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.85);
+      tl.to("#s1-line",     { width: 260, duration: 0.5, ease: "power3.out" }, 1.2);
+      tl.from("#s1-div",    { opacity: 0, letterSpacing: "0.6em", duration: 0.6, ease: "power2.out" }, 1.4);
+
+      // ---- S1 -> S2
+      tl.to("#s1", { opacity: 0, filter: "blur(12px)", duration: 0.26, ease: "power2.in" }, 2.32);
+      tl.fromTo("#s2", { opacity: 0, filter: "blur(12px)" },
+                       { opacity: 1, filter: "blur(0px)", duration: 0.36, ease: "power3.out" }, 2.42);
+
+      // ---- S2 Marcador
+      tl.from("#s2-chip",   { y: -30, opacity: 0, duration: 0.42, ease: "power3.out" }, 2.72);
+      tl.from("#s2-cat",    { y: 56, opacity: 0, duration: 0.52, ease: "expo.out" }, 2.90);
+      tl.from("#s2-meta",   { opacity: 0, duration: 0.45, ease: "power2.out" }, 3.15);
+      tl.from("#s2-card",   { y: 70, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.20);
+      tl.from("#row0",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.42);
+      tl.from("#row1",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.58);
+
+      // Contadores del marcador (deterministas: el valor depende solo del progreso del timeline)
+      ["score0", "score1"].forEach(function (id, i) {
+        var el = document.getElementById(id);
+        var target = Number(el.dataset.target);
+        var proxy = { v: 0 };
+        tl.to(proxy, {
+          v: target, duration: 0.7, ease: "power1.out",
+          onUpdate: function () { el.textContent = String(Math.round(proxy.v)); }
+        }, 3.75 + i * 0.16);
+      });
+
+      tl.from("#s2-result", { scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.9)" }, 4.55);
+      tl.from("#s2-status", { opacity: 0, letterSpacing: "0.9em", duration: 0.55, ease: "power2.out" }, 4.90);
+
+      // ---- S2 -> fotos
+      tl.to("#s2",  { opacity: 0, duration: 0.2, ease: "power2.in" }, 7.36);
+      tl.fromTo("#bar", { opacity: 0, y: -60 },
+                        { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 7.70);
+
+      tl.to("#p0", { opacity: 1, duration: 0.3, ease: "power2.out" }, 7.5);
+      tl.fromTo("#p0-img", { scale: 1 }, { scale: 1.12, duration: 1.73, ease: "none" }, 7.6);
+      tl.to("#p0", { opacity: 0, duration: 0.12, ease: "none" }, 8.83);
+      tl.to("#p1", { opacity: 1, duration: 0.12, ease: "none" }, 8.83);
+      tl.fromTo("#p1-img", { scale: 1.12 }, { scale: 1, duration: 1.73, ease: "none" }, 8.93);
+      tl.to("#p1", { opacity: 0, duration: 0.12, ease: "none" }, 10.15);
+      tl.to("#p2", { opacity: 1, duration: 0.12, ease: "none" }, 10.15);
+      tl.fromTo("#p2-img", { scale: 1 }, { scale: 1.12, duration: 1.73, ease: "none" }, 10.25);
+      tl.to("#p2", { opacity: 0, duration: 0.12, ease: "none" }, 11.47);
+      tl.to("#p3", { opacity: 1, duration: 0.12, ease: "none" }, 11.47);
+      tl.fromTo("#p3-img", { scale: 1.12 }, { scale: 1, duration: 1.73, ease: "none" }, 11.57);
+
+      // ---- fotos -> S4
+      tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, 12.54);
+      tl.to("#p3", { opacity: 0, duration: 0.3, ease: "power2.in" }, 12.60);
+      tl.fromTo("#s4", { opacity: 0, scale: 0.94 },
+                       { opacity: 1, scale: 1, duration: 0.46, ease: "power3.out" }, 12.66);
+
+      // ---- S4 Cierre
+      tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 13.05);
+      tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, 13.40);
+      tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, 13.75);
+      tl.from("#s4-handle", { opacity: 0, letterSpacing: "0.5em", duration: 0.5, ease: "power2.out" }, 13.95);
+      tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, 14.40);
+
+      window.__timelines["wilddogs-match"] = tl;
+    </script>
+  </body>
+</html>
