@@ -80,6 +80,7 @@ export default function AdminDashboard() {
   const [newsExcerpt, setNewsExcerpt] = useState("");
   const [newsContent, setNewsContent] = useState("");
   const [newsImageUrl, setNewsImageUrl] = useState("");
+  const [newsVideoUrl, setNewsVideoUrl] = useState("");
 
   useEffect(() => {
     if (!isLoading && !authUser) {
@@ -752,6 +753,15 @@ export default function AdminDashboard() {
                           className="mt-1"
                         />
                       </div>
+                      <div>
+                        <Label className="text-sm font-semibold text-purple-900">URL de video MP4 (opcional)</Label>
+                        <Input
+                          value={newsVideoUrl}
+                          onChange={(e) => setNewsVideoUrl(e.target.value)}
+                          placeholder="/videos/resultado-2026-09-19.mp4"
+                          className="mt-1"
+                        />
+                      </div>
                       <div className="flex gap-2">
                         <Button
                           className="flex-1 bg-purple-600 hover:bg-purple-700"
@@ -768,6 +778,7 @@ export default function AdminDashboard() {
                                   excerpt: newsExcerpt.trim() || undefined,
                                   content: newsContent.trim(),
                                   imageUrl: newsImageUrl.trim() || undefined,
+                                  videoUrl: newsVideoUrl.trim() || undefined,
                                   status: "published",
                                   publishedAt: Date.now(),
                                   createdAt: Date.now(),
@@ -780,6 +791,7 @@ export default function AdminDashboard() {
                               setNewsExcerpt("");
                               setNewsContent("");
                               setNewsImageUrl("");
+                              setNewsVideoUrl("");
                             } catch (error: any) {
                               toast({ title: "Error", description: error.message, variant: "destructive" });
                             }
@@ -803,6 +815,7 @@ export default function AdminDashboard() {
                                   excerpt: newsExcerpt.trim() || undefined,
                                   content: newsContent.trim(),
                                   imageUrl: newsImageUrl.trim() || undefined,
+                                  videoUrl: newsVideoUrl.trim() || undefined,
                                   status: "draft",
                                   createdAt: Date.now(),
                                   updatedAt: Date.now(),
@@ -814,6 +827,7 @@ export default function AdminDashboard() {
                               setNewsExcerpt("");
                               setNewsContent("");
                               setNewsImageUrl("");
+                              setNewsVideoUrl("");
                             } catch (error: any) {
                               toast({ title: "Error", description: error.message, variant: "destructive" });
                             }

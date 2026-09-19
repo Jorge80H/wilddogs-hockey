@@ -146,6 +146,8 @@ const graph = i.graph(
       content: i.string(),
       excerpt: i.string().optional(),
       imageUrl: i.string().optional(),
+      // MP4 vertical (ej. video de resultado de partido); si existe, la tarjeta lo muestra en vez de imageUrl
+      videoUrl: i.string().optional(),
       // status: 'draft' | 'published'
       status: i.string().indexed(),
       publishedAt: i.number(),

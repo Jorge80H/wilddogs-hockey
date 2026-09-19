@@ -349,15 +349,29 @@ export default function Landing() {
               {news.map((post: any) => (
                 <motion.div key={post.id} variants={fadeIn}>
                   <div className="group cursor-pointer" onClick={() => setSelectedPost(post)}>
-                    <div className="aspect-[4/3] overflow-hidden rounded-2xl mb-6 relative shadow-lg bg-slate-100">
+                    <div className={`aspect-[4/3] overflow-hidden rounded-2xl mb-6 relative shadow-lg ${post.videoUrl ? "bg-[#0a0f1e]" : "bg-slate-100"}`}>
                       <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                      <img
-                        src={post.imageUrl || heroImage}
-                        alt={post.title}
-                        className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500 ease-out"
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      {post.videoUrl ? (
+                        <video
+                          src={post.videoUrl}
+                          poster={post.imageUrl || undefined}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          aria-label={post.title}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <img
+                          src={post.imageUrl || heroImage}
+                          alt={post.title}
+                          className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
                     </div>
                     <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{post.title}</h3>
                     <p className="text-muted-foreground line-clamp-2 leading-relaxed">
@@ -386,7 +400,19 @@ export default function Landing() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
           {selectedPost && (
             <>
-              {selectedPost.imageUrl && (
+              {selectedPost.videoUrl ? (
+                <div className="w-full bg-[#0a0f1e] flex items-center justify-center">
+                  <video
+                    src={selectedPost.videoUrl}
+                    poster={selectedPost.imageUrl || undefined}
+                    controls
+                    autoPlay
+                    playsInline
+                    aria-label={selectedPost.title}
+                    className="w-full max-h-[70vh] object-contain"
+                  />
+                </div>
+              ) : selectedPost.imageUrl && (
                 <div className="w-full bg-slate-100 flex items-center justify-center">
                   <img
                     src={selectedPost.imageUrl}
