@@ -51,8 +51,10 @@ para que el escudo real se resuelva (ver §3).
 Por orden de preferencia:
 
 1. **Adjuntas en el chat** o ya en disco → cópialas a `wilddogs-match-video/assets/photos/`.
-2. **Google Drive** → `mcp__Google_Drive__search_files` para ubicar la carpeta del
-   partido, luego `mcp__Google_Drive__download_file_content` por cada imagen.
+2. **Google Drive** → `mcp__Google_Drive__search_files` para ubicar las fotos (por carpeta,
+   o por `modifiedTime` del día y `owner = 'me'` si están sueltas — las de WhatsApp se llaman
+   `IMG-AAAAMMDD-WA00NN.jpg`). En el PC del usuario Drive está sincronizado en `H:\Mi unidad`:
+   copia desde ahí en vez de bajar base64 con `download_file_content` (solo como último recurso).
    Si el usuario no dice cuál es la carpeta, busca por fecha o por el nombre del rival.
    El repositorio de fotos del club es la carpeta compartida **"Redes Sociales"**
    (id `1Xi9xbpL8r1eM6xfVo8WTwVX2_RsSbURZ`, dueño `tgohockeyacademy@gmail.com`): tiene
