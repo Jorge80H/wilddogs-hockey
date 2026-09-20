@@ -143,7 +143,7 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
   del club, sea cual sea. De ahí sale el destacado naranja y el veredicto.
 
 **Veredicto en las derrotas:** el marcador real siempre se muestra, pero la palabra es
-**"SEGUIMOS"** en naranja, nunca "DERROTA" (decisión del club 2026-09-20). Son categorías
+**"CABEZA ARRIBA"** en naranja, nunca "DERROTA" (decisión del club 2026-09-20). Son categorías
 formativas y el video se comparte en el grupo de padres: el resultado no se esconde, pero
 tampoco se subraya la pérdida. Empate sigue siendo "EMPATE" en azul.
 - `abbr`: 2-4 letras, es lo que aparece en la barra sobre las fotos.

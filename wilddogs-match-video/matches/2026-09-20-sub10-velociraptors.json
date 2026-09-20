@@ -1,0 +1,32 @@
+{
+  "tournament": "Liga Fedehockey Colombia",
+  "division": "Sub 10",
+  "date": "2026-09-20",
+  "venue": "Bogotá",
+  "status": "FINAL",
+  "home": {
+    "name": "Optima Wild Dogs",
+    "abbr": "WD",
+    "score": 2,
+    "isWildDogs": true
+  },
+  "away": {
+    "name": "Velociraptors",
+    "abbr": "VEL",
+    "score": 6,
+    "isWildDogs": false
+  },
+  "photos": [
+    "assets/photos/2026-09-20-sub10-velo/01.webp",
+    "assets/photos/2026-09-20-sub10-velo/02.webp",
+    "assets/photos/2026-09-20-sub10-velo/03.webp",
+    "assets/photos/2026-09-20-sub10-velo/04.webp",
+    "assets/photos/2026-09-20-sub10-velo/05.webp",
+    "assets/photos/2026-09-20-sub10-velo/06.webp",
+    "assets/photos/2026-09-20-sub10-velo/07.webp",
+    "assets/photos/2026-09-20-sub10-velo/08.webp"
+  ],
+  "music": "auto",
+  "handle": "@optimawilddogs",
+  "site": "optimawilddogs.com"
+}

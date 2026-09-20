@@ -1,47 +1,29 @@
 {
   "tournament": "Liga Fedehockey Colombia",
-  "division": "Sub 8",
-  "date": "2026-09-19",
+  "division": "Sub 10",
+  "date": "2026-09-20",
   "venue": "Bogotá",
   "status": "FINAL",
   "home": {
-    "name": "Velociraptors",
-    "abbr": "VEL",
-    "score": 4,
+    "name": "H2S Lions",
+    "abbr": "H2S",
+    "score": 3,
     "isWildDogs": false
   },
   "away": {
     "name": "Optima Wild Dogs",
     "abbr": "WD",
-    "score": 6,
+    "score": 0,
     "isWildDogs": true
   },
   "photos": [
-    "assets/photos/2026-09-19-velo/151951.webp",
-    "assets/photos/2026-09-19-velo/151455.webp",
-    "assets/photos/2026-09-19-velo/151454.webp",
-    "assets/photos/2026-09-19-velo/151459.webp",
-    "assets/photos/2026-09-19-velo/151904.webp",
-    "assets/photos/2026-09-19-velo/152436.webp",
-    "assets/photos/2026-09-19-velo/153524.webp",
-    "assets/photos/2026-09-19-velo/152858.webp",
-    "assets/photos/2026-09-19-velo/155016.webp"
+    "assets/photos/2026-09-20-sub10-h2s/01.webp",
+    "assets/photos/2026-09-20-sub10-h2s/03.webp",
+    "assets/photos/2026-09-20-sub10-h2s/04.webp",
+    "assets/photos/2026-09-20-sub10-h2s/02.webp"
   ],
   "music": "auto",
   "handle": "@optimawilddogs",
   "site": "optimawilddogs.com",
-  "quotes": [
-    {
-      "text": "Hoy demostraron que son unos guerreros",
-      "author": "Andy"
-    },
-    {
-      "text": "Están hechos para cosas grandes",
-      "author": "Andy"
-    },
-    {
-      "text": "Estas victorias van construyendo un equipo",
-      "author": "Andy"
-    }
-  ]
+  "duration": 20
 }

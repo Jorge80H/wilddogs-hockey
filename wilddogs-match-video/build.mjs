@@ -102,7 +102,7 @@ const wd = home.isWildDogs ? home : away;
 const rival = home.isWildDogs ? away : home;
 const RESULTADO =
   wd.score > rival.score ? { texto: "VICTORIA", color: "#EA580C" }
-  : wd.score < rival.score ? { texto: "SEGUIMOS", color: "#EA580C" }
+  : wd.score < rival.score ? { texto: "CABEZA ARRIBA", color: "#EA580C" }
   : { texto: "EMPATE", color: "#38bdf8" };
 
 const fotos = m.photos ?? [];
