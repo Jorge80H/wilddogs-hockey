@@ -121,7 +121,7 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
   el mensaje que el entrenador manda al grupo de WhatsApp después del partido — pídeselo al
   usuario o usa el que pegue en el chat. Saca 2-3 frases **cortas** (máx ~45 caracteres se
   ven grandes; hasta ~100 aún caben), recortadas del mensaje real sin inventar nada ni
-  cambiarle el sentido, y acredítalas a quien las dijo (`author` + `role`).
+  cambiarle el sentido, y acredítalas con el nombre a secas (`author`); `role` existe pero el club lo prefiere sin él.
 
 - `music`: `"auto"` elige una pista de `assets/music/` de forma estable para ese partido
   (misma fecha+categoría+rival → misma pista), un nombre de archivo (`"furia-sobre-el-hielo.mp3"`)

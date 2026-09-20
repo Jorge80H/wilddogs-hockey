@@ -5,28 +5,27 @@
   "venue": "Bogotá",
   "status": "FINAL",
   "home": {
-    "name": "H2S Lions",
-    "abbr": "H2S",
-    "score": 2,
+    "name": "Velociraptors",
+    "abbr": "VEL",
+    "score": 4,
     "isWildDogs": false
   },
   "away": {
     "name": "Optima Wild Dogs",
     "abbr": "WD",
-    "score": 7,
+    "score": 6,
     "isWildDogs": true
   },
   "photos": [
-    "assets/photos/2026-09-19-h2s/0025.webp",
-    "assets/photos/2026-09-19-h2s/0005.webp",
-    "assets/photos/2026-09-19-h2s/0011.webp",
-    "assets/photos/2026-09-19-h2s/0012.webp",
-    "assets/photos/2026-09-19-h2s/0009.webp",
-    "assets/photos/2026-09-19-h2s/0022.webp",
-    "assets/photos/2026-09-19-h2s/0024.webp",
-    "assets/photos/2026-09-19-h2s/0016.webp",
-    "assets/photos/2026-09-19-h2s/0014.webp",
-    "assets/photos/2026-09-19-h2s/0028.webp"
+    "assets/photos/2026-09-19-velo/151951.webp",
+    "assets/photos/2026-09-19-velo/151455.webp",
+    "assets/photos/2026-09-19-velo/151454.webp",
+    "assets/photos/2026-09-19-velo/151459.webp",
+    "assets/photos/2026-09-19-velo/151904.webp",
+    "assets/photos/2026-09-19-velo/152436.webp",
+    "assets/photos/2026-09-19-velo/153524.webp",
+    "assets/photos/2026-09-19-velo/152858.webp",
+    "assets/photos/2026-09-19-velo/155016.webp"
   ],
   "music": "auto",
   "handle": "@optimawilddogs",
@@ -34,18 +33,15 @@
   "quotes": [
     {
       "text": "Hoy demostraron que son unos guerreros",
-      "author": "Andy",
-      "role": "Entrenador"
+      "author": "Andy"
     },
     {
       "text": "Están hechos para cosas grandes",
-      "author": "Andy",
-      "role": "Entrenador"
+      "author": "Andy"
     },
     {
       "text": "Estas victorias van construyendo un equipo",
-      "author": "Andy",
-      "role": "Entrenador"
+      "author": "Andy"
     }
   ]
 }
