@@ -90,6 +90,12 @@ function escudo(team, size, id) {
       </svg>`;
 }
 
+// Logo del patrocinador (Óptima): va al pie de la apertura, del montaje y del cierre.
+function logoOptima(id, alto, opacidad) {
+  return `<img id="${id}" src="assets/logo-optima.webp" alt="Óptima"
+               style="height:${alto}px; width:auto; opacity:${opacidad};" />`;
+}
+
 // ---------------------------------------------------------------- datos derivados
 const { home, away } = m;
 const wd = home.isWildDogs ? home : away;
@@ -301,6 +307,14 @@ ${audioHtml}
           ">Resultado</div>
           <div id="s1-line" style="width:260px; height:5px; background:#EA580C; margin-top:26px; transform-origin:center;"></div>
           <div id="s1-div" class="meta" style="margin-top:30px;">${esc(m.division)} · ${esc(fechaLarga(m.date))}</div>
+        <div id="s1-optima" style="
+          position:absolute; left:0; right:0; bottom:118px; z-index:3;
+          display:flex; flex-direction:column; align-items:center; gap:14px;
+        ">
+          <div style="width:64px; height:3px; background:rgba(255,255,255,0.16);"></div>
+          ${logoOptima("s1-optima-img", 120, 0.95)}
+        </div>
+        <div id="s1-vs-wrap" style="display:contents;">
           <div id="s1-vs" style="
             margin-top:44px; display:flex; align-items:center; gap:22px;
             font-size:54px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
@@ -309,6 +323,7 @@ ${audioHtml}
             ${escudo(rival, 96, "s1-rival")}
             <span>${esc(rival.name)}</span>
           </div>
+        </div>
         </div>
       </div>
 
@@ -365,6 +380,14 @@ ${escenasFoto}
         ${escudo(away, 78, "bar-a")}
       </div>
 
+      <!-- Logo del patrocinador sobre las fotos -->
+      <div id="opt-fotos" style="
+        position:absolute; left:0; right:0; bottom:58px; z-index:65; opacity:0;
+        display:flex; justify-content:center;
+      ">
+        ${logoOptima("opt-fotos-img", 74, 0.95)}
+      </div>
+
       <!-- Frases del entrenador sobre las fotos -->
 ${frasesHtml}
 
@@ -385,6 +408,13 @@ ${frasesHtml}
           <div id="s4-bar" style="width:0; height:5px; background:#EA580C; margin-top:30px;"></div>
           <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">${esc(m.handle)} · ${esc(m.site)}</div>
         </div>
+        <div id="s4-optima" style="
+          position:absolute; left:0; right:0; bottom:118px; z-index:3;
+          display:flex; flex-direction:column; align-items:center; gap:14px;
+        ">
+          <div style="width:64px; height:3px; background:rgba(255,255,255,0.16);"></div>
+          ${logoOptima("s4-optima-img", 132, 0.95)}
+        </div>
         <div id="s4-fade" style="position:absolute; inset:0; background:#0a0f1e; opacity:0; z-index:10;"></div>
       </div>
     </div>
@@ -400,6 +430,7 @@ ${frasesHtml}
       tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.85);
       tl.fromTo("#s1-line", { scaleX: 0.3 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.5);
       tl.from("#s1-vs",     { y: 26, opacity: 0.5, duration: 0.6, ease: "power2.out" }, 0.7);
+      tl.from("#s1-optima", { y: 18, opacity: 0.35, duration: 0.7, ease: "power2.out" }, 1.0);
 
       // ---- S1 -> S2
       tl.to("#s1", { opacity: 0, filter: "blur(12px)", duration: 0.26, ease: "power2.in" }, ${(T.score - 0.28).toFixed(2)});
@@ -432,12 +463,15 @@ ${frasesHtml}
       tl.to("#s2",  { opacity: 0, duration: 0.2, ease: "power2.in" }, ${(T.photos - 0.24).toFixed(2)});
       tl.fromTo("#bar", { opacity: 0, y: -60 },
                         { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, ${(T.photos + 0.1).toFixed(2)});
+      tl.fromTo("#opt-fotos", { opacity: 0, y: 24 },
+                              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, ${(T.photos + 0.25).toFixed(2)});
 
 ${tweensFoto}
 ${frasesTweens}
 
       // ---- fotos -> S4
       tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, ${(T.outro - 0.36).toFixed(2)});
+      tl.to("#opt-fotos", { opacity: 0, duration: 0.3, ease: "power2.in" }, ${(T.outro - 0.36).toFixed(2)});
       tl.to("#p${ultimaFoto}", { opacity: 0, duration: 0.3, ease: "power2.in" }, ${(T.outro - 0.3).toFixed(2)});
       tl.fromTo("#s4", { opacity: 0, scale: 0.94 },
                        { opacity: 1, scale: 1, duration: 0.46, ease: "power3.out" }, ${(T.outro - 0.24).toFixed(2)});
@@ -446,6 +480,7 @@ ${frasesTweens}
       tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, ${(T.outro + 0.15).toFixed(2)});
       tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, ${(T.outro + 0.5).toFixed(2)});
       tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, ${(T.outro + 0.85).toFixed(2)});
+      tl.from("#s4-optima", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, ${(T.outro + 0.95).toFixed(2)});
       tl.from("#s4-handle", { opacity: 0, scaleX: 1.15, duration: 0.5, ease: "power2.out" }, ${(T.outro + 1.05).toFixed(2)});
       tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, ${(T.end - 0.6).toFixed(2)});
 

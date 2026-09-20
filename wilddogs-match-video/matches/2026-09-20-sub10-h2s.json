@@ -1,0 +1,29 @@
+{
+  "tournament": "Liga Fedehockey Colombia",
+  "division": "Sub 10",
+  "date": "2026-09-20",
+  "venue": "Bogotá",
+  "status": "FINAL",
+  "home": {
+    "name": "H2S Lions",
+    "abbr": "H2S",
+    "score": 3,
+    "isWildDogs": false
+  },
+  "away": {
+    "name": "Optima Wild Dogs",
+    "abbr": "WD",
+    "score": 0,
+    "isWildDogs": true
+  },
+  "photos": [
+    "assets/photos/2026-09-20-sub10-h2s/01.webp",
+    "assets/photos/2026-09-20-sub10-h2s/03.webp",
+    "assets/photos/2026-09-20-sub10-h2s/04.webp",
+    "assets/photos/2026-09-20-sub10-h2s/02.webp"
+  ],
+  "music": "auto",
+  "handle": "@optimawilddogs",
+  "site": "optimawilddogs.com",
+  "duration": 20
+}

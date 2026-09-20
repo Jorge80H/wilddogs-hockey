@@ -72,6 +72,12 @@ con los jugadores lejos, **recorta a 9:16 alrededor del sujeto** con PIL antes d
 (1080x1920) — un plano cerrado vale más que la foto entera. Después de renderizar, siempre
 también hay que **publicar el video como noticia** en el inicio (ver §6).
 
+**Logo del patrocinador:** Óptima va al pie de la apertura, del montaje de fotos y del
+cierre (`assets/logo-optima.webp`, ya recortado al contenido). Es fijo, no sale de
+`match.json`. Si algún día cambia el patrocinador, se reemplaza ese archivo — y ojo: el
+original del sitio (`attached_assets/client_images/Logo_Optima.webp`) trae mucho margen
+transparente, hay que recortarlo con `getbbox()` o se ve diminuto.
+
 ### 3. Escudos de los equipos
 
 `build.mjs` busca `assets/teams/<slug-del-nombre>.{png,webp,svg,jpg}`.
@@ -143,6 +149,11 @@ tampoco se subraya la pérdida. Empate sigue siendo "EMPATE" en azul.
 - `abbr`: 2-4 letras, es lo que aparece en la barra sobre las fotos.
 - `photos`: rutas relativas a la raíz del proyecto, en el orden en que se verán.
   El tiempo de montaje se reparte entre ellas automáticamente.
+
+**Guarda la configuración:** cada partido queda archivado en `matches/<fecha>-<cat>-<rival>.json`.
+`match.json` es solo el que se está renderizando — antes de sobrescribirlo, copia el actual a
+`matches/`. Así un re-render (cambio de diseño, logo nuevo) es `cp matches/<x>.json match.json`
+en vez de reconstruir los datos a mano.
 
 ### 5. Renderiza y **mira** el resultado
 
