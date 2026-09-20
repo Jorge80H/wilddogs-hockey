@@ -199,6 +199,46 @@ const tweensFoto = fotos.map((_, i) => {
 
 const ultimaFoto = fotos.length - 1;
 
+// -------------------------------------------------------------------- frases
+// match.json `quotes`: frases del entrenador/club que aparecen sobre el montaje.
+// Sin frases, el video sale igual que siempre. Se reparten en la ventana de fotos
+// y cada una vive ~85% de su tramo, así nunca hay dos en pantalla a la vez.
+const frases = (m.quotes ?? []).filter((q) => q && q.text);
+const FRASE_MARGEN = 1.0;          // no arrancar pegado al primer corte
+const fraseVentana = frases.length
+  ? (PHOTO_WINDOW - FRASE_MARGEN * 2) / frases.length
+  : 0;
+
+function cuerpoFrase(texto) {
+  const n = texto.length;
+  if (n <= 42) return 74;
+  if (n <= 70) return 62;
+  if (n <= 100) return 52;
+  return 44;
+}
+
+const frasesHtml = frases.map((q, i) => `
+      <div id="q${i}" style="
+        position:absolute; left:72px; right:72px; bottom:210px; z-index:70; opacity:0;
+        text-align:left;
+      ">
+        <div style="width:96px; height:5px; background:#EA580C; margin-bottom:26px;"></div>
+        <div style="
+          font-size:${cuerpoFrase(q.text)}px; font-weight:700; line-height:1.14; color:#fff;
+          text-transform:uppercase; letter-spacing:0.005em;
+          text-shadow:0 4px 28px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9);
+        ">${esc(q.text)}</div>
+        ${q.author ? `<div class="meta" style="margin-top:22px; font-size:26px; color:rgba(255,255,255,0.82); text-shadow:0 2px 12px rgba(0,0,0,0.9);">${esc(q.author)}${q.role ? ` · ${esc(q.role)}` : ""}</div>` : ""}
+      </div>`).join("");
+
+const frasesTweens = frases.map((_, i) => {
+  const t0 = +(T.photos + FRASE_MARGEN + i * fraseVentana).toFixed(2);
+  const visible = +(fraseVentana * 0.85).toFixed(2);
+  return `      tl.fromTo("#q${i}", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, ${t0});
+      tl.to("#q${i}", { opacity: 0, y: -26, duration: 0.45, ease: "power2.in" }, ${(t0 + visible).toFixed(2)});`;
+}).join("\n");
+
+
 // --------------------------------------------------------------------- el HTML
 const html = `<!doctype html>
 <html lang="es">
@@ -221,7 +261,7 @@ const html = `<!doctype html>
       .tex { position:absolute; inset:0; background:url("assets/textura.webp") center/cover no-repeat; }
       .scene { position:absolute; top:0; left:0; width:1080px; height:1920px; overflow:hidden; background:#0a0f1e; }
       .full-img { position:absolute; top:0; left:0; width:1080px; height:1920px; object-fit:cover; object-position:center; }
-      .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,0.95) 0%, rgba(10,15,30,0.28) 38%, rgba(10,15,30,0) 62%); }
+      .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,${frases.length ? "0.97" : "0.95"}) 0%, rgba(10,15,30,${frases.length ? "0.55" : "0.28"}) ${frases.length ? "34" : "38"}%, rgba(10,15,30,0) ${frases.length ? "70" : "62"}%); }
       .grad-top { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.30) 22%, rgba(10,15,30,0) 42%); }
       .chip {
         display:inline-block; font-family:Outfit, sans-serif; font-size:26px; font-weight:700;
@@ -321,6 +361,9 @@ ${escenasFoto}
         ${escudo(away, 78, "bar-a")}
       </div>
 
+      <!-- Frases del entrenador sobre las fotos -->
+${frasesHtml}
+
       <!-- ============ S4 · Cierre ${T.outro}–${T.end}s ============ -->
       <div id="s4" class="scene" style="z-index:80; opacity:0;">
         <div class="tex" style="opacity:0.08;"></div>
@@ -387,6 +430,7 @@ ${escenasFoto}
                         { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, ${(T.photos + 0.1).toFixed(2)});
 
 ${tweensFoto}
+${frasesTweens}
 
       // ---- fotos -> S4
       tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, ${(T.outro - 0.36).toFixed(2)});
@@ -410,5 +454,5 @@ ${tweensFoto}
 writeFileSync(join(ROOT, "index.html"), html);
 console.log(
   `index.html generado · ${wd.name} ${wd.score}-${rival.score} ${rival.name} · ` +
-  `${RESULTADO.texto} · ${fotos.length} foto(s) · ${T.end}s · música: ${pista ?? "ninguna"}`
+  `${RESULTADO.texto} · ${fotos.length} foto(s) · ${frases.length} frase(s) · ${T.end}s · música: ${pista ?? "ninguna"}`
 );

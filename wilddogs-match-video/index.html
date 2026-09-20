@@ -19,7 +19,7 @@
       .tex { position:absolute; inset:0; background:url("assets/textura.webp") center/cover no-repeat; }
       .scene { position:absolute; top:0; left:0; width:1080px; height:1920px; overflow:hidden; background:#0a0f1e; }
       .full-img { position:absolute; top:0; left:0; width:1080px; height:1920px; object-fit:cover; object-position:center; }
-      .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,0.95) 0%, rgba(10,15,30,0.28) 38%, rgba(10,15,30,0) 62%); }
+      .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,0.97) 0%, rgba(10,15,30,0.55) 34%, rgba(10,15,30,0) 70%); }
       .grad-top { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.30) 22%, rgba(10,15,30,0) 42%); }
       .chip {
         display:inline-block; font-family:Outfit, sans-serif; font-size:26px; font-weight:700;
@@ -219,6 +219,45 @@
         <img id="bar-a" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:78px;height:78px;object-fit:contain;" />
       </div>
 
+      <!-- Frases del entrenador sobre las fotos -->
+
+      <div id="q0" style="
+        position:absolute; left:72px; right:72px; bottom:210px; z-index:70; opacity:0;
+        text-align:left;
+      ">
+        <div style="width:96px; height:5px; background:#EA580C; margin-bottom:26px;"></div>
+        <div style="
+          font-size:74px; font-weight:700; line-height:1.14; color:#fff;
+          text-transform:uppercase; letter-spacing:0.005em;
+          text-shadow:0 4px 28px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9);
+        ">Hoy demostraron que son unos guerreros</div>
+        <div class="meta" style="margin-top:22px; font-size:26px; color:rgba(255,255,255,0.82); text-shadow:0 2px 12px rgba(0,0,0,0.9);">Andy · Entrenador</div>
+      </div>
+      <div id="q1" style="
+        position:absolute; left:72px; right:72px; bottom:210px; z-index:70; opacity:0;
+        text-align:left;
+      ">
+        <div style="width:96px; height:5px; background:#EA580C; margin-bottom:26px;"></div>
+        <div style="
+          font-size:74px; font-weight:700; line-height:1.14; color:#fff;
+          text-transform:uppercase; letter-spacing:0.005em;
+          text-shadow:0 4px 28px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9);
+        ">Están hechos para cosas grandes</div>
+        <div class="meta" style="margin-top:22px; font-size:26px; color:rgba(255,255,255,0.82); text-shadow:0 2px 12px rgba(0,0,0,0.9);">Andy · Entrenador</div>
+      </div>
+      <div id="q2" style="
+        position:absolute; left:72px; right:72px; bottom:210px; z-index:70; opacity:0;
+        text-align:left;
+      ">
+        <div style="width:96px; height:5px; background:#EA580C; margin-bottom:26px;"></div>
+        <div style="
+          font-size:74px; font-weight:700; line-height:1.14; color:#fff;
+          text-transform:uppercase; letter-spacing:0.005em;
+          text-shadow:0 4px 28px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9);
+        ">Estas victorias van construyendo un equipo</div>
+        <div class="meta" style="margin-top:22px; font-size:26px; color:rgba(255,255,255,0.82); text-shadow:0 2px 12px rgba(0,0,0,0.9);">Andy · Entrenador</div>
+      </div>
+
       <!-- ============ S4 · Cierre 27.9–30s ============ -->
       <div id="s4" class="scene" style="z-index:80; opacity:0;">
         <div class="tex" style="opacity:0.08;"></div>
@@ -313,6 +352,12 @@
       tl.to("#p8", { opacity: 0, duration: 0.12, ease: "none" }, 25.81);
       tl.to("#p9", { opacity: 1, duration: 0.12, ease: "none" }, 25.81);
       tl.fromTo("#p9-img", { scale: 1.12 }, { scale: 1, duration: 2.39, ease: "none" }, 25.91);
+      tl.fromTo("#q0", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 9);
+      tl.to("#q0", { opacity: 0, y: -26, duration: 0.45, ease: "power2.in" }, 14.07);
+      tl.fromTo("#q1", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 14.97);
+      tl.to("#q1", { opacity: 0, y: -26, duration: 0.45, ease: "power2.in" }, 20.04);
+      tl.fromTo("#q2", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 20.93);
+      tl.to("#q2", { opacity: 0, y: -26, duration: 0.45, ease: "power2.in" }, 26.00);
 
       // ---- fotos -> S4
       tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, 27.54);

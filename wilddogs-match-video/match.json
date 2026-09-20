@@ -30,5 +30,22 @@
   ],
   "music": "auto",
   "handle": "@optimawilddogs",
-  "site": "optimawilddogs.com"
+  "site": "optimawilddogs.com",
+  "quotes": [
+    {
+      "text": "Hoy demostraron que son unos guerreros",
+      "author": "Andy",
+      "role": "Entrenador"
+    },
+    {
+      "text": "Están hechos para cosas grandes",
+      "author": "Andy",
+      "role": "Entrenador"
+    },
+    {
+      "text": "Estas victorias van construyendo un equipo",
+      "author": "Andy",
+      "role": "Entrenador"
+    }
+  ]
 }
