@@ -30,8 +30,12 @@ prepararFfmpeg();
 const m = JSON.parse(readFileSync(join(ROOT, "match.json"), "utf8"));
 
 // ---------------------------------------------------------------- timings (s)
-// 30s: la carátula (frame 0) debe verse completa porque WhatsApp la usa como miniatura.
-const T = { open: 0, score: 3.0, photos: 8.0, outro: 27.9, end: 30 };
+// 30s por defecto: la carátula (frame 0) debe verse completa porque WhatsApp la usa
+// como miniatura. `duration` en match.json lo acorta cuando hay pocas fotos — solo se
+// recorta el montaje, la apertura, el marcador y el cierre conservan su ritmo.
+const DURACION = Number(m.duration ?? 30);
+const T = { open: 0, score: 3.0, photos: 8.0, outro: +(DURACION - 2.1).toFixed(2), end: DURACION };
+if (T.outro - T.photos < 4) throw new Error(`match.json: 'duration' ${DURACION}s deja menos de 4s de fotos; usa 16s o más.`);
 const PHOTO_WINDOW = T.outro - T.photos;
 
 // ------------------------------------------------------------------- utilidades
@@ -92,7 +96,7 @@ const wd = home.isWildDogs ? home : away;
 const rival = home.isWildDogs ? away : home;
 const RESULTADO =
   wd.score > rival.score ? { texto: "VICTORIA", color: "#EA580C" }
-  : wd.score < rival.score ? { texto: "DERROTA", color: "#64748b" }
+  : wd.score < rival.score ? { texto: "SEGUIMOS", color: "#EA580C" }
   : { texto: "EMPATE", color: "#38bdf8" };
 
 const fotos = m.photos ?? [];

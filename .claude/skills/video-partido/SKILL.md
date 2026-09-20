@@ -123,6 +123,10 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
   ven grandes; hasta ~100 aún caben), recortadas del mensaje real sin inventar nada ni
   cambiarle el sentido, y acredítalas con el nombre a secas (`author`); `role` existe pero el club lo prefiere sin él.
 
+- `duration` (opcional, por defecto 30): acorta el video cuando hay poco material. Solo se
+  recorta el montaje; apertura, marcador y cierre mantienen su ritmo. Mínimo 16s. Con 4 o
+  menos fotos usables, 20s se ve mejor que estirar el montaje o rellenar con material malo.
+
 - `music`: `"auto"` elige una pista de `assets/music/` de forma estable para ese partido
   (misma fecha+categoría+rival → misma pista), un nombre de archivo (`"furia-sobre-el-hielo.mp3"`)
   la fuerza, `"none"` deja el video mudo. Cada pista entra en su tramo más enérgico
@@ -130,8 +134,12 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
   Para agregar una canción: copiarla a `assets/music/` y añadir su entrada en `tracks.json`.
 
 - `home` / `away` deben reflejar la localía real; `isWildDogs: true` va en el bloque
-  del club, sea cual sea. De ahí sale el destacado naranja y el cálculo de
-  VICTORIA / EMPATE / DERROTA.
+  del club, sea cual sea. De ahí sale el destacado naranja y el veredicto.
+
+**Veredicto en las derrotas:** el marcador real siempre se muestra, pero la palabra es
+**"SEGUIMOS"** en naranja, nunca "DERROTA" (decisión del club 2026-09-20). Son categorías
+formativas y el video se comparte en el grupo de padres: el resultado no se esconde, pero
+tampoco se subraya la pérdida. Empate sigue siendo "EMPATE" en azul.
 - `abbr`: 2-4 letras, es lo que aparece en la barra sobre las fotos.
 - `photos`: rutas relativas a la raíz del proyecto, en el orden en que se verán.
   El tiempo de montaje se reparte entre ellas automáticamente.
@@ -143,6 +151,11 @@ cd wilddogs-match-video
 npm run check    # build + lint + validate + inspect
 npm run render   # deja el MP4 en renders/
 ```
+
+**Espacio en disco:** el render de 30s necesita ~7 GB de temporales y `C:` suele tener menos.
+Si falla con "Disk capture may need ~N MB", crea `.render-tmp/` dentro del proyecto (unidad G:)
+y exporta `TEMP`/`TMP` apuntando ahí antes de `npm run render`; bórralo al terminar. No liberes
+espacio en `C:` borrando archivos del usuario.
 
 `npm run check` debe terminar con **0 errores de lint y 0 problemas de layout**.
 Los avisos `text_occluded` en `t=2.5s` (textos de S1 tapados por S2) y el warning
