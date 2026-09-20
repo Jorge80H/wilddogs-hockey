@@ -5,7 +5,7 @@ description: Genera el video vertical (1080x1920, Reels/TikTok/Shorts) con el re
 
 # Video de resultado de partido
 
-Convierte **marcador + fotos** en un MP4 vertical de 15s listo para publicar.
+Convierte **marcador + fotos** en un MP4 vertical de 30s listo para publicar.
 El proyecto vive en `wilddogs-match-video/` y ya está construido: tu trabajo es
 llenar `match.json`, poner las fotos y renderizar. **No rediseñes la composición**
 salvo que el usuario lo pida.
@@ -64,10 +64,13 @@ Por orden de preferencia:
    `createdTime` del día del partido.
 3. Si no hay fotos, **detente y pídelas**: el video no funciona sin ellas.
 
-De 3 a 6 fotos es el rango bueno. Con más, elige las mejores: acción, celebración,
+De 8 a 12 fotos es el rango bueno (los padres quieren ver a sus hijos: usa todas las que sirvan). Con más, elige las mejores: acción, celebración,
 caras visibles, horizonte recto. Descarta borrosas y repetidas. Las fotos se
 recortan a vertical desde el centro (`object-fit:cover`), así que evita aquellas
-cuyo sujeto quede en un extremo del encuadre.
+cuyo sujeto quede en un extremo del encuadre. Si vienen muy altas (9:20 de celular) o
+con los jugadores lejos, **recorta a 9:16 alrededor del sujeto** con PIL antes de guardarlas
+(1080x1920) — un plano cerrado vale más que la foto entera. Después de renderizar, siempre
+también hay que **publicar el video como noticia** en el inicio (ver §6).
 
 ### 3. Escudos de los equipos
 
@@ -113,7 +116,7 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
 - `music`: `"auto"` elige una pista de `assets/music/` de forma estable para ese partido
   (misma fecha+categoría+rival → misma pista), un nombre de archivo (`"furia-sobre-el-hielo.mp3"`)
   la fuerza, `"none"` deja el video mudo. Cada pista entra en su tramo más enérgico
-  (`assets/music/tracks.json`, campo `start`) con fade-in de 0.8s y fade-out de 2.2s.
+  (`assets/music/tracks.json`, campo `start`, ventana de 30s) con fade-in de 0.8s y fade-out de 2.2s.
   Para agregar una canción: copiarla a `assets/music/` y añadir su entrada en `tracks.json`.
 
 - `home` / `away` deben reflejar la localía real; `isWildDogs: true` va en el bloque
@@ -144,19 +147,34 @@ que no cargó:
 ```bash
 FF=node_modules/@ffmpeg-installer/linux-x64/ffmpeg
 V=$(ls -t renders/*.mp4 | head -1)
-for t in 1.8 5.8 9.5 14.3; do $FF -v error -ss $t -i "$V" -frames:v 1 -vf scale=432:-1 /tmp/f_$t.png -y; done
+for t in 0 5.8 12 20 29; do $FF -v error -ss $t -i "$V" -frames:v 1 -vf scale=432:-1 /tmp/f_$t.png -y; done
 ```
 
 Entrega el MP4 con `SendUserFile` y di el marcador, la duración y cuántas fotos entraron.
 
-## Estructura del video (15s)
+### 6. Publica en el inicio (sección "Noticias Recientes")
+
+```bash
+# comprimir para web (~2-4 MB) + póster
+ffmpeg -y -i renders/<render>.mp4 -c:v libx264 -preset slow -crf 26 -profile:v high -pix_fmt yuv420p   -movflags +faststart -c:a aac -b:a 128k ../public/videos/resultado-<fecha>-<cat>-<rival>.mp4
+ffmpeg -y -i ../public/videos/<mismo>.mp4 -frames:v 1 -vf scale=540:-1 ../public/videos/<mismo>.jpg
+```
+
+Luego crea el `newsPosts` en InstantDB (`POST admin/transact`, step `["update","newsPosts",<uuid>,{...}]`)
+con `title`, `excerpt`, `content` (3 párrafos cortos, tono de club), `imageUrl` (el .jpg),
+`videoUrl` (el .mp4), `status:"published"`, `publishedAt/createdAt/updatedAt`. La tarjeta
+del Landing reproduce el video en bucle silencioso y el modal con controles. Commit + push
+a `main` despliega en Netlify. Si se re-renderiza un partido, sobrescribe el mismo archivo
+para no tocar la noticia.
+
+## Estructura del video (30s)
 
 | Tramo | Contenido |
 |---|---|
-| 0–2.6s | Logo Wild Dogs, "RESULTADO", categoría y fecha (la música entra con fade) |
-| 2.6–7.6s | Placa de marcador: torneo, categoría, sede, escudos, marcador que cuenta, VICTORIA/EMPATE/DERROTA |
-| 7.6–12.9s | Montaje de fotos con Ken Burns y barra compacta de marcador arriba |
-| 12.9–15s | Logo, "Wild Dogs Hockey Club", handle y sitio (la música sale con fade) |
+| 0–3s | Carátula: logo, "RESULTADO", categoría, fecha y "VS rival". **Visible completa desde el fotograma 0** — WhatsApp usa ese frame como miniatura; si sale oscuro nadie da play |
+| 3–8s | Placa de marcador: torneo, categoría, sede, escudos, marcador que cuenta, VICTORIA/EMPATE/DERROTA |
+| 8–27.9s | Montaje de fotos (~2s por foto) con Ken Burns y barra compacta de marcador arriba |
+| 27.9–30s | Logo, "Wild Dogs Hockey Club", handle y sitio (la música sale con fade) |
 
 Los tiempos están en la constante `T` de `build.mjs`. Cambiar `T.end` exige ajustar
 también `data-duration` (lo hace solo) y revisar que las tweens sigan dentro del rango.

@@ -30,7 +30,8 @@ prepararFfmpeg();
 const m = JSON.parse(readFileSync(join(ROOT, "match.json"), "utf8"));
 
 // ---------------------------------------------------------------- timings (s)
-const T = { open: 0, score: 2.6, photos: 7.6, outro: 12.9, end: 15 };
+// 30s: la carátula (frame 0) debe verse completa porque WhatsApp la usa como miniatura.
+const T = { open: 0, score: 3.0, photos: 8.0, outro: 27.9, end: 30 };
 const PHOTO_WINDOW = T.outro - T.photos;
 
 // ------------------------------------------------------------------- utilidades
@@ -254,8 +255,16 @@ ${audioHtml}
             font-size:96px; font-weight:700; text-transform:uppercase;
             letter-spacing:0.06em; margin-top:34px; line-height:1;
           ">Resultado</div>
-          <div id="s1-line" style="width:0; height:5px; background:#EA580C; margin-top:26px;"></div>
+          <div id="s1-line" style="width:260px; height:5px; background:#EA580C; margin-top:26px; transform-origin:center;"></div>
           <div id="s1-div" class="meta" style="margin-top:30px;">${esc(m.division)} · ${esc(fechaLarga(m.date))}</div>
+          <div id="s1-vs" style="
+            margin-top:44px; display:flex; align-items:center; gap:22px;
+            font-size:54px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
+          ">
+            <span style="color:rgba(255,255,255,0.45); font-size:34px; letter-spacing:0.2em;">VS</span>
+            ${escudo(rival, 96, "s1-rival")}
+            <span>${esc(rival.name)}</span>
+          </div>
         </div>
       </div>
 
@@ -338,11 +347,12 @@ ${escenasFoto}
       const tl = gsap.timeline({ paused: true });
 
       // ---- S1 Apertura
-      tl.from("#s1-glow",   { scale: 0.2, opacity: 0, duration: 1.2, ease: "power2.out" }, 0.1);
-      tl.from("#s1-logo",   { scale: 0.62, opacity: 0, duration: 0.72, ease: "back.out(1.7)" }, 0.25);
-      tl.from("#s1-kicker", { y: 70, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.85);
-      tl.to("#s1-line",     { width: 260, duration: 0.5, ease: "power3.out" }, 1.2);
-      tl.from("#s1-div",    { opacity: 0, scaleX: 1.18, duration: 0.6, ease: "power2.out" }, 1.4);
+      // Todo visible desde el frame 0 (miniatura de WhatsApp); solo hay movimiento sutil después.
+      tl.fromTo("#s1-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.08, opacity: 1, duration: 1.6, ease: "sine.inOut" }, 0.2);
+      tl.to("#s1-logo",     { scale: 1.06, duration: 0.45, ease: "power2.out" }, 0.4);
+      tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.85);
+      tl.fromTo("#s1-line", { scaleX: 0.3 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.5);
+      tl.from("#s1-vs",     { y: 26, opacity: 0.5, duration: 0.6, ease: "power2.out" }, 0.7);
 
       // ---- S1 -> S2
       tl.to("#s1", { opacity: 0, filter: "blur(12px)", duration: 0.26, ease: "power2.in" }, ${(T.score - 0.28).toFixed(2)});
