@@ -8,6 +8,8 @@
  * con los horarios publicados en `client/src/pages/Services.tsx`.
  */
 
+import { normalizeLeadSource, type LeadSource } from "./attribution";
+
 /** WhatsApp oficial del club en formato internacional sin '+' (requerido por wa.me). */
 export const CLUB_WHATSAPP = "573181681336";
 
@@ -89,6 +91,26 @@ export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
 export interface LeadRecord {
   isRead?: boolean;
   status?: string;
+  source?: string;
+}
+
+export interface SourceSummary {
+  source: LeadSource;
+  total: number;
+  inscritos: number;
+}
+
+/** Leads e inscritos por origen, de mayor a menor volumen: el número que decide la pauta. */
+export function summarizeBySource(leads: LeadRecord[]): SourceSummary[] {
+  const bySource = new Map<LeadSource, SourceSummary>();
+  for (const lead of leads) {
+    const source = normalizeLeadSource(lead.source);
+    const row = bySource.get(source) ?? { source, total: 0, inscritos: 0 };
+    row.total += 1;
+    if (computeLeadStatus(lead) === "inscrito") row.inscritos += 1;
+    bySource.set(source, row);
+  }
+  return Array.from(bySource.values()).sort((a, b) => b.total - a.total);
 }
 
 export interface LeadSummary extends Record<LeadStatus, number> {

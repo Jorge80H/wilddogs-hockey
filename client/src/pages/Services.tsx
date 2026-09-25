@@ -11,6 +11,7 @@ import { id } from "@instantdb/react";
 import { useToast } from "@/hooks/use-toast";
 import { CLUB_WHATSAPP } from "@/lib/leads";
 import { trackLeadSubmitted, trackWhatsAppClick } from "@/lib/analytics";
+import { leadAttributionFields } from "@/lib/attribution";
 
 
 const containerVariants = {
@@ -86,6 +87,7 @@ function LeadFormModal({ mode, price, onClose }: { mode: LeadMode; price: string
           subject,
           message: `${reqLabel} | Interesado/a: ${form.name} | Jugador/a: ${form.playerName || "—"} | Edad: ${form.age || "—"} | Tel: ${form.phone} | Email: ${form.email || "—"}`,
           status: "nuevo",
+          ...leadAttributionFields(),
           isRead: false,
           createdAt: Date.now(),
         }),

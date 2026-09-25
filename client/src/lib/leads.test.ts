@@ -9,8 +9,25 @@ import {
   buildLeadMessage,
   computeLeadStatus,
   summarizeLeads,
+  summarizeBySource,
   type TrialLead,
 } from "./leads";
+
+describe("summarizeBySource", () => {
+  it("cuenta leads e inscritos por origen, ordenado por volumen; sin origen = directo", () => {
+    const rows = summarizeBySource([
+      { source: "meta_ads", status: "inscrito" },
+      { source: "meta_ads", status: "nuevo" },
+      { source: "google_ads", status: "agendado" },
+      { status: "inscrito" },
+    ]);
+    expect(rows).toEqual([
+      { source: "meta_ads", total: 2, inscritos: 1 },
+      { source: "google_ads", total: 1, inscritos: 0 },
+      { source: "directo", total: 1, inscritos: 1 },
+    ]);
+  });
+});
 
 const lead: TrialLead = {
   parentName: "María Gómez",

@@ -13,6 +13,7 @@ import {
     CLUB_WHATSAPP,
 } from "@/lib/leads";
 import { trackLeadSubmitted, trackWhatsAppClick } from "@/lib/analytics";
+import { leadAttributionFields } from "@/lib/attribution";
 import heroImage from "@assets/client_images/Jugadores_Wilddogs.webp";
 import celebrationImage from "@assets/client_images/IMG_8260.webp";
 import sub8Image from "@assets/client_images/Rooster_Sub8.webp";
@@ -69,6 +70,7 @@ function LeadModal({ onClose }: { onClose: () => void }) {
                     subject: buildLeadSubject(form),
                     message: buildLeadMessage(form),
                     status: "nuevo",
+                    ...leadAttributionFields(),
                     isRead: false,
                     createdAt: Date.now(),
                 }),
@@ -693,7 +695,7 @@ export default function LeadLanding() {
                     </div>
                     <div className="flex items-center gap-6 text-zinc-600 text-xs">
                         <a href="https://optimawilddogs.com" className="hover:text-white transition-colors">optimawilddogs.com</a>
-                        <a href={`https://wa.me/${CLUB_WHATSAPP}?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp</a>
+                        <a href={`https://wa.me/${CLUB_WHATSAPP}?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20Optima%20Wild%20Dogs%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20club%20%F0%9F%8F%92`} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick("unete_footer")} className="hover:text-white transition-colors">WhatsApp</a>
                         <a href="https://www.instagram.com/optimawilddogs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
                     </div>
                 </div>

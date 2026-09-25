@@ -15,6 +15,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSEO } from "@/hooks/useSEO";
+import { leadAttributionFields } from "@/lib/attribution";
 
 
 const fadeIn = {
@@ -80,6 +81,7 @@ export default function Contact() {
           phone: data.phone || null,
           subject: data.subject,
           message: data.message,
+          ...leadAttributionFields(),
           isRead: false,
           createdAt: Date.now(),
         }),

@@ -260,6 +260,9 @@ const graph = i.graph(
       // Embudo de captacion: nuevo | contactado | agendado | asistio | inscrito | descartado
       // (ver LEAD_STATUSES en client/src/lib/leads.ts)
       status: i.string().optional(),
+      // Origen del lead (ver LEAD_SOURCES en client/src/lib/attribution.ts) y utm_campaign
+      source: i.string().optional(),
+      campaign: i.string().optional(),
       isRead: i.boolean(),
       createdAt: i.number(),
     }),
@@ -382,6 +385,9 @@ const graph = i.graph(
       isHome: i.boolean().optional(),
       // status: 'Not Started' | 'Final' | etc
       status: i.string().optional(),
+      // Escritos por los flujos n8n de sync; Tournaments.tsx filtra por ambos.
+      league: i.string().optional(),
+      semester: i.string().optional(),
       createdAt: i.number(),
       updatedAt: i.number(),
     }),
@@ -398,6 +404,8 @@ const graph = i.graph(
       goalsAgainst: i.number(),
       goalDifference: i.number(),
       points: i.number(),
+      league: i.string().optional(),
+      semester: i.string().optional(),
       updatedAt: i.number(),
     }),
   },
