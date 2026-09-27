@@ -21,6 +21,12 @@
       .full-img { position:absolute; top:0; left:0; width:1080px; height:1920px; object-fit:cover; object-position:center; }
       .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,0.95) 0%, rgba(10,15,30,0.28) 38%, rgba(10,15,30,0) 62%); }
       .grad-top { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.30) 22%, rgba(10,15,30,0) 42%); }
+      .velo { position:absolute; inset:0; }
+      .franja { position:absolute; left:-200px; width:1480px; transform:rotate(-12deg); }
+      .banda {
+        display:inline-block; padding:22px 56px 14px; background:#EA580C;
+        transform:skewX(-12deg); box-shadow:0 18px 60px rgba(0,0,0,0.5);
+      }
       .chip {
         display:inline-block; font-family:Outfit, sans-serif; font-size:26px; font-weight:700;
         letter-spacing:0.24em; text-transform:uppercase; padding:14px 30px;
@@ -32,154 +38,201 @@
   <body>
     <div id="root"
          data-composition-id="wilddogs-match"
-         data-start="0" data-duration="20"
+         data-start="0" data-duration="30"
          data-width="1080" data-height="1920">
 
-      <audio id="bgm" src="assets/music/hockey-shots-2.mp3"
-             data-start="0" data-duration="20"
-             data-media-start="48"
-             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.8,"v":0.85},{"t":17.8,"v":0.85},{"t":20,"v":0}]}]}'></audio>
+      <audio id="bgm" src="assets/music/roster-of-the-reckless.mp3"
+             data-start="0" data-duration="30"
+             data-media-start="89"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.8,"v":0.85},{"t":27.8,"v":0.85},{"t":30,"v":0}]}]}'></audio>
 
       <!-- ============ S1 · Apertura 0–3s ============ -->
+      <!-- Carátula tipo póster: foto del partido de fondo y cara a cara de escudos.
+           Todo visible desde el frame 0 (miniatura de WhatsApp). -->
       <div id="s1" class="scene" style="z-index:1;">
-        <div class="tex" style="opacity:0.09;"></div>
-        <div id="s1-glow" style="
-          position:absolute; width:1040px; height:1040px; border-radius:50%;
-          background:radial-gradient(circle, rgba(234,88,12,0.34) 0%, rgba(234,88,12,0) 68%);
-          top:50%; left:50%; transform:translate(-50%,-50%);
+
+        <img id="s1-bg" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/01.webp" alt="" style="filter:saturate(1.15) brightness(0.7);" />
+        <div class="velo" style="background:linear-gradient(to bottom, rgba(10,15,30,0.78) 0%, rgba(10,15,30,0.18) 24%, rgba(10,15,30,0.30) 46%, rgba(10,15,30,0.92) 68%, rgba(10,15,30,0.98) 100%);"></div>
+        <div id="s1-glow" data-layout-allow-overflow style="
+          position:absolute; width:1100px; height:1100px; border-radius:50%;
+          background:radial-gradient(circle, rgba(234,88,12,0.30) 0%, rgba(234,88,12,0) 66%);
+          top:1330px; left:50%; transform:translate(-50%,-50%);
         "></div>
-        <div style="
-          position:absolute; inset:0; display:flex; flex-direction:column;
-          align-items:center; justify-content:center; z-index:2;
-        ">
-          <img id="s1-logo" src="assets/logo-wilddogs.png" alt="Wild Dogs" style="width:360px; height:auto;" />
-          <div id="s1-kicker" style="
-            font-size:96px; font-weight:700; text-transform:uppercase;
-            letter-spacing:0.06em; margin-top:34px; line-height:1;
-          ">Resultado</div>
-          <div id="s1-line" style="width:260px; height:5px; background:#EA580C; margin-top:26px; transform-origin:center;"></div>
-          <div id="s1-div" class="meta" style="margin-top:30px;">Sub 10 · 20 SEP 2026</div>
-        <div id="s1-optima" style="
-          position:absolute; left:0; right:0; bottom:118px; z-index:3;
-          display:flex; flex-direction:column; align-items:center; gap:14px;
-        ">
-          <div style="width:64px; height:3px; background:rgba(255,255,255,0.16);"></div>
-          <img id="s1-optima-img" src="assets/logo-optima.webp" alt="Óptima"
-               style="height:120px; width:auto; opacity:0.95;" />
+        <div class="franja" data-layout-allow-overflow style="top:1010px; height:14px; background:#EA580C; opacity:0.95;"></div>
+        <div class="franja" data-layout-allow-overflow style="top:1046px; height:4px; background:rgba(255,255,255,0.55);"></div>
+
+        <div style="position:absolute; top:110px; left:0; right:0; text-align:center; z-index:2;">
+          <div class="chip" style="background:rgba(10,15,30,0.72); border-color:#EA580C;">Liga Fedehockey Colombia</div>
         </div>
-        <div id="s1-vs-wrap" style="display:contents;">
-          <div id="s1-vs" style="
-            margin-top:44px; display:flex; align-items:center; gap:22px;
-            font-size:54px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
-          ">
-            <span style="color:rgba(255,255,255,0.45); font-size:34px; letter-spacing:0.2em;">VS</span>
-            <img id="s1-rival" src="assets/teams/h2s-lions.png" alt="H2S Lions" style="width:96px;height:96px;object-fit:contain;" />
-            <span>H2S Lions</span>
+
+        <div style="
+          position:absolute; left:0; right:0; top:1110px; z-index:2;
+          display:flex; flex-direction:column; align-items:center;
+        ">
+          <div id="s1-kicker" style="
+            font-size:176px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.04em; line-height:0.9; text-shadow:0 8px 40px rgba(0,0,0,0.6);
+          ">Resultado</div>
+          <div id="s1-line" style="width:300px; height:6px; background:#EA580C; margin-top:22px; transform-origin:center;"></div>
+          <div id="s1-div" class="meta" style="margin-top:24px; font-size:32px; color:rgba(255,255,255,0.85);">Sub 14 · 26 SEP 2026</div>
+          <div id="s1-vs" style="margin-top:46px; display:flex; align-items:center; gap:44px;">
+            <div id="s1-logo" style="width:170px; height:170px; display:flex; align-items:center; justify-content:center;"><img id="s1-wd" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:170px;height:170px;object-fit:contain;" /></div>
+            <div style="font-size:64px; font-weight:700; color:#EA580C; letter-spacing:0.06em;">VS</div>
+            <div style="width:170px; height:170px; display:flex; align-items:center; justify-content:center;"><img id="s1-rival" src="assets/teams/h2s-lions.png" alt="H2S Lions" style="width:150px;height:150px;object-fit:contain;" /></div>
           </div>
         </div>
+
+        <div id="s1-optima" style="
+          position:absolute; left:0; right:0; bottom:84px; z-index:3;
+          display:flex; flex-direction:column; align-items:center; gap:14px;
+        ">
+          <div style="width:64px; height:3px; background:rgba(255,255,255,0.2);"></div>
+          <img id="s1-optima-img" src="assets/logo-optima.webp" alt="Óptima"
+               style="height:104px; width:auto; opacity:0.95;" />
         </div>
       </div>
 
       <!-- ============ S2 · Marcador 3–8s ============ -->
       <div id="s2" class="scene" style="z-index:10; opacity:0;">
-        <div class="tex" style="opacity:0.07;"></div>
+
+        <img id="s2-bg" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/02.webp" alt="" style="filter:blur(16px) brightness(0.42) saturate(0.85);" />
+        <div class="velo" style="background:linear-gradient(to bottom, rgba(10,15,30,0.72) 0%, rgba(10,15,30,0.45) 45%, rgba(10,15,30,0.9) 100%);"></div>
+        <div class="franja" data-layout-allow-overflow style="top:1330px; height:230px; background:rgba(234,88,12,0.10);"></div>
         <div style="
-          position:absolute; inset:0; padding:150px 70px;
-          display:flex; flex-direction:column; justify-content:center; z-index:2;
+          position:absolute; inset:0; padding:140px 60px;
+          display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2;
         ">
-          <div style="text-align:center;">
-            <div id="s2-chip" class="chip">Liga Fedehockey Colombia</div>
-            <div id="s2-cat" style="
-              font-size:112px; font-weight:700; text-transform:uppercase;
-              letter-spacing:0.03em; margin-top:34px; line-height:1;
-            ">Sub 10</div>
-            <div id="s2-meta" class="meta" style="margin-top:22px;">20 SEP 2026 · Bogotá</div>
-          </div>
+          <div id="s2-chip" class="chip" style="background:rgba(10,15,30,0.6);">Liga Fedehockey Colombia</div>
+          <div id="s2-cat" style="
+            font-size:120px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.03em; margin-top:30px; line-height:1;
+          ">Sub 14</div>
+          <div id="s2-meta" class="meta" style="margin-top:18px;">26 SEP 2026 · Bogotá</div>
 
           <div id="s2-card" style="
-            margin-top:86px; border-radius:40px; overflow:hidden;
-            background:rgba(255,255,255,0.045); border:2px solid rgba(255,255,255,0.10);
+            margin-top:70px; width:960px; padding:54px 30px 50px; border-radius:44px;
+            background:rgba(10,15,30,0.55); border:2px solid rgba(255,255,255,0.12);
+            box-shadow:0 30px 80px rgba(0,0,0,0.45);
+            display:flex; flex-direction:column; align-items:center;
           ">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; width:100%;">
 
-        <div id="row0" style="
-          display:flex; align-items:center; gap:34px; padding:38px 44px;
-          background:transparent;
-          border-left:8px solid rgba(255,255,255,0.10);
-        ">
-          <img id="shield0" src="assets/teams/h2s-lions.png" alt="H2S Lions" style="width:150px;height:150px;object-fit:contain;" />
-          <div style="flex:1; min-width:0;">
+          <div id="row0" style="width:300px; display:flex; flex-direction:column; align-items:center; text-align:center;">
             <div style="
-              font-size:64px; font-weight:700; line-height:1.22; color:#fff;
-              text-transform:uppercase; letter-spacing:0.01em;
-              overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+              width:230px; height:230px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+              background:radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 70%);
+            "><img id="shield0" src="assets/teams/h2s-lions.png" alt="H2S Lions" style="width:200px;height:200px;object-fit:contain;" /></div>
+            <div style="
+              margin-top:18px; font-size:46px; font-weight:700; line-height:1.05;
+              text-transform:uppercase; color:rgba(255,255,255,0.9);
             ">H2S Lions</div>
             <div style="
-              font-family:Outfit,sans-serif; font-size:26px; font-weight:400;
-              color:rgba(255,255,255,0.55); letter-spacing:0.22em; margin-top:10px;
+              margin-top:12px; font-family:Outfit,sans-serif; font-size:22px; font-weight:700;
+              letter-spacing:0.24em; color:rgba(255,255,255,0.5);
             ">LOCAL</div>
           </div>
-          <div id="score0" data-target="3" style="
-            font-size:168px; font-weight:700; line-height:0.82;
-            color:#fff; min-width:160px; text-align:right;
-            font-variant-numeric:tabular-nums;
-          ">0</div>
-        </div>
-            <div style="height:2px; background:rgba(255,255,255,0.10);"></div>
+              <div style="padding-top:88px; font-size:44px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:0.1em;">VS</div>
 
-        <div id="row1" style="
-          display:flex; align-items:center; gap:34px; padding:38px 44px;
-          background:rgba(234,88,12,0.10);
-          border-left:8px solid #EA580C;
-        ">
-          <img id="shield1" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:150px;height:150px;object-fit:contain;" />
-          <div style="flex:1; min-width:0;">
+          <div id="row1" style="width:300px; display:flex; flex-direction:column; align-items:center; text-align:center;">
             <div style="
-              font-size:56px; font-weight:700; line-height:1.22; color:#fff;
-              text-transform:uppercase; letter-spacing:0.01em;
-              overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+              width:230px; height:230px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+              background:radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 70%);
+            "><img id="shield1" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:200px;height:200px;object-fit:contain;" /></div>
+            <div style="
+              margin-top:18px; font-size:40px; font-weight:700; line-height:1.05;
+              text-transform:uppercase; color:#fff;
             ">Optima Wild Dogs</div>
             <div style="
-              font-family:Outfit,sans-serif; font-size:26px; font-weight:400;
-              color:rgba(255,255,255,0.55); letter-spacing:0.22em; margin-top:10px;
+              margin-top:12px; font-family:Outfit,sans-serif; font-size:22px; font-weight:700;
+              letter-spacing:0.24em; color:#EA580C;
             ">VISITANTE</div>
           </div>
-          <div id="score1" data-target="0" style="
-            font-size:168px; font-weight:700; line-height:0.82;
-            color:#EA580C; min-width:160px; text-align:right;
-            font-variant-numeric:tabular-nums;
-          ">0</div>
-        </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:40px; margin-top:40px;">
+              <div id="score0" data-target="2" style="
+              font-size:250px; font-weight:700; line-height:0.8; min-width:130px; text-align:center;
+              color:#fff; font-variant-numeric:tabular-nums;
+              text-shadow:0 10px 40px rgba(0,0,0,0.6);
+            ">0</div>
+              <div style="width:60px; height:12px; background:rgba(255,255,255,0.45);"></div>
+              <div id="score1" data-target="1" style="
+              font-size:250px; font-weight:700; line-height:0.8; min-width:130px; text-align:center;
+              color:#EA580C; font-variant-numeric:tabular-nums;
+              text-shadow:0 10px 40px rgba(0,0,0,0.6);
+            ">0</div>
+            </div>
           </div>
 
-          <div style="text-align:center; margin-top:82px;">
-            <div id="s2-result" style="
-              font-size:142px; font-weight:700; text-transform:uppercase;
-              letter-spacing:0.09em; line-height:1; color:#EA580C;
-            ">CABEZA ARRIBA</div>
-            <div id="s2-status" class="meta" style="margin-top:26px; letter-spacing:0.34em;">FINAL</div>
+          <div style="text-align:center; margin-top:70px;">
+            <div id="s2-result" class="banda" data-layout-allow-overflow>
+              <div style="
+                transform:skewX(12deg); font-size:112px; font-weight:700; text-transform:uppercase;
+                letter-spacing:0.06em; line-height:1; color:#fff;
+              ">CABEZA ARRIBA</div>
+            </div>
+            <div id="s2-status" class="meta" style="margin-top:30px; letter-spacing:0.34em;">FINAL</div>
           </div>
         </div>
       </div>
-
-      <!-- ============ S3 · Fotos 8–17.9s ============ -->
+      <!-- ============ S3 · Fotos 8–27.9s ============ -->
 
       <div id="p0" class="scene" style="z-index:20; opacity:0;">
-        <img id="p0-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-20-sub10-h2s/01.webp" alt="Partido Wild Dogs 1" />
+        <img id="p0-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/01.webp" alt="Partido Wild Dogs 1" />
         <div class="grad-bottom"></div>
         <div class="grad-top"></div>
       </div>
       <div id="p1" class="scene" style="z-index:21; opacity:0;">
-        <img id="p1-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-20-sub10-h2s/03.webp" alt="Partido Wild Dogs 2" />
+        <img id="p1-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/02.webp" alt="Partido Wild Dogs 2" />
         <div class="grad-bottom"></div>
         <div class="grad-top"></div>
       </div>
       <div id="p2" class="scene" style="z-index:22; opacity:0;">
-        <img id="p2-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-20-sub10-h2s/04.webp" alt="Partido Wild Dogs 3" />
+        <img id="p2-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/03.webp" alt="Partido Wild Dogs 3" />
         <div class="grad-bottom"></div>
         <div class="grad-top"></div>
       </div>
       <div id="p3" class="scene" style="z-index:23; opacity:0;">
-        <img id="p3-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-20-sub10-h2s/02.webp" alt="Partido Wild Dogs 4" />
+        <img id="p3-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/04.webp" alt="Partido Wild Dogs 4" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p4" class="scene" style="z-index:24; opacity:0;">
+        <img id="p4-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/05.webp" alt="Partido Wild Dogs 5" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p5" class="scene" style="z-index:25; opacity:0;">
+        <img id="p5-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/06.webp" alt="Partido Wild Dogs 6" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p6" class="scene" style="z-index:26; opacity:0;">
+        <img id="p6-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/07.webp" alt="Partido Wild Dogs 7" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p7" class="scene" style="z-index:27; opacity:0;">
+        <img id="p7-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/08.webp" alt="Partido Wild Dogs 8" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p8" class="scene" style="z-index:28; opacity:0;">
+        <img id="p8-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/09.webp" alt="Partido Wild Dogs 9" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p9" class="scene" style="z-index:29; opacity:0;">
+        <img id="p9-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/10.webp" alt="Partido Wild Dogs 10" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p10" class="scene" style="z-index:30; opacity:0;">
+        <img id="p10-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/11.webp" alt="Partido Wild Dogs 11" />
+        <div class="grad-bottom"></div>
+        <div class="grad-top"></div>
+      </div>
+      <div id="p11" class="scene" style="z-index:31; opacity:0;">
+        <img id="p11-img" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/12.webp" alt="Partido Wild Dogs 12" />
         <div class="grad-bottom"></div>
         <div class="grad-top"></div>
       </div>
@@ -188,16 +241,77 @@
       <div id="bar" style="
         position:absolute; top:96px; left:60px; right:60px; z-index:60; opacity:0;
         display:flex; align-items:center; gap:26px;
-        padding:26px 34px; border-radius:28px;
+        padding:26px 34px 32px; border-radius:28px;
         background:rgba(10,15,30,0.74); border:2px solid rgba(255,255,255,0.12);
         backdrop-filter:blur(8px);
       ">
         <img id="bar-h" src="assets/teams/h2s-lions.png" alt="H2S Lions" style="width:78px;height:78px;object-fit:contain;" />
         <div style="flex:1; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">H2S</div>
-        <div style="font-size:74px; font-weight:700; line-height:0.85; color:#EA580C; font-variant-numeric:tabular-nums;">3<span style="color:rgba(255,255,255,0.55); margin:0 14px;">–</span>0</div>
+        <div style="font-size:74px; font-weight:700; line-height:0.85; font-variant-numeric:tabular-nums;"><span style="color:#fff;">2</span><span style="color:rgba(255,255,255,0.45); margin:0 14px;">–</span><span style="color:#EA580C;">1</span></div>
         <div style="flex:1; text-align:right; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">WD</div>
         <img id="bar-a" src="assets/teams/optima-wild-dogs.png" alt="Optima Wild Dogs" style="width:78px;height:78px;object-fit:contain;" />
+        <div style="position:absolute; left:34px; right:34px; bottom:10px; height:5px; border-radius:3px; background:rgba(255,255,255,0.12); overflow:hidden;">
+          <div id="bar-prog" style="width:100%; height:100%; background:#EA580C; transform:scaleX(0); transform-origin:left;"></div>
+        </div>
       </div>
+
+      <!-- Barridos naranjas entre fotos -->
+
+      <div id="sw0" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw1" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw2" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw3" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw4" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw5" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw6" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw7" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw8" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw9" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
+      <div id="sw10" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:45;
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>
 
       <!-- Logo del patrocinador sobre las fotos -->
       <div id="opt-fotos" style="
@@ -211,9 +325,11 @@
       <!-- Frases del entrenador sobre las fotos -->
 
 
-      <!-- ============ S4 · Cierre 17.9–20s ============ -->
+      <!-- ============ S4 · Cierre 27.9–30s ============ -->
       <div id="s4" class="scene" style="z-index:80; opacity:0;">
-        <div class="tex" style="opacity:0.08;"></div>
+
+        <img id="s4-bg" class="full-img" data-layout-allow-overflow src="assets/photos/2026-09-26-sub14-h2s/12.webp" alt="" style="filter:blur(18px) brightness(0.35) saturate(0.8);" />
+        <div class="velo" style="background:radial-gradient(circle at 50% 45%, rgba(10,15,30,0.35) 0%, rgba(10,15,30,0.92) 75%);"></div>
         <div id="s4-glow" style="
           position:absolute; width:980px; height:980px; border-radius:50%;
           background:radial-gradient(circle, rgba(234,88,12,0.30) 0%, rgba(234,88,12,0) 68%);
@@ -226,7 +342,7 @@
             letter-spacing:0.07em; margin-top:30px; line-height:1; text-align:center;
           ">Wild Dogs<br/>Hockey Club</div>
           <div id="s4-bar" style="width:0; height:5px; background:#EA580C; margin-top:30px;"></div>
-          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">@optimawilddogs · optimawilddogs.com</div>
+          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; line-height:1.5; text-align:center; color:rgba(255,255,255,0.78);">@optimawilddogs<br/>optimawilddogs.com</div>
         </div>
         <div id="s4-optima" style="
           position:absolute; left:0; right:0; bottom:118px; z-index:3;
@@ -246,9 +362,12 @@
 
       // ---- S1 Apertura
       // Todo visible desde el frame 0 (miniatura de WhatsApp); solo hay movimiento sutil después.
+      tl.fromTo("#s1-bg",   { scale: 1.0 }, { scale: 1.07, duration: 3, ease: "none" }, 0);
+      tl.fromTo("#s2-bg",   { scale: 1.12 }, { scale: 1.2, duration: 5.20, ease: "none" }, 2.80);
+      tl.fromTo("#s4-bg",   { scale: 1.12 }, { scale: 1.2, duration: 2.40, ease: "none" }, 27.60);
       tl.fromTo("#s1-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.08, opacity: 1, duration: 1.6, ease: "sine.inOut" }, 0.2);
       tl.to("#s1-logo",     { scale: 1.06, duration: 0.45, ease: "power2.out" }, 0.4);
-      tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.85);
+      tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.86);
       tl.fromTo("#s1-line", { scaleX: 0.3 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.5);
       tl.from("#s1-vs",     { y: 26, opacity: 0.5, duration: 0.6, ease: "power2.out" }, 0.7);
       tl.from("#s1-optima", { y: 18, opacity: 0.35, duration: 0.7, ease: "power2.out" }, 1.0);
@@ -263,8 +382,8 @@
       tl.from("#s2-cat",    { y: 56, opacity: 0, duration: 0.52, ease: "expo.out" }, 3.30);
       tl.from("#s2-meta",   { opacity: 0, duration: 0.45, ease: "power2.out" }, 3.55);
       tl.from("#s2-card",   { y: 70, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.60);
-      tl.from("#row0",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.82);
-      tl.from("#row1",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.98);
+      tl.from("#row0",      { x: -120, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.82);
+      tl.from("#row1",      { x: 120, opacity: 0, duration: 0.48, ease: "expo.out" }, 3.98);
 
       // Contadores del marcador (deterministas: el valor depende solo del progreso del timeline)
       ["score0", "score1"].forEach(function (id, i) {
@@ -277,7 +396,7 @@
         }, 4.15 + i * 0.16);
       });
 
-      tl.from("#s2-result", { scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.9)" }, 4.95);
+      tl.from("#s2-result", { x: -700, opacity: 0, duration: 0.5, ease: "expo.out" }, 4.95);
       tl.from("#s2-status", { opacity: 0, scaleX: 1.25, duration: 0.55, ease: "power2.out" }, 5.30);
 
       // ---- S2 -> fotos
@@ -288,32 +407,68 @@
                               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 8.25);
 
       tl.to("#p0", { opacity: 1, duration: 0.3, ease: "power2.out" }, 7.9);
-      tl.fromTo("#p0-img", { scale: 1 }, { scale: 1.12, duration: 2.87, ease: "none" }, 8);
-      tl.to("#p0", { opacity: 0, duration: 0.12, ease: "none" }, 10.37);
-      tl.to("#p1", { opacity: 1, duration: 0.12, ease: "none" }, 10.37);
-      tl.fromTo("#p1-img", { scale: 1.12 }, { scale: 1, duration: 2.87, ease: "none" }, 10.47);
-      tl.to("#p1", { opacity: 0, duration: 0.12, ease: "none" }, 12.85);
-      tl.to("#p2", { opacity: 1, duration: 0.12, ease: "none" }, 12.85);
-      tl.fromTo("#p2-img", { scale: 1 }, { scale: 1.12, duration: 2.87, ease: "none" }, 12.95);
-      tl.to("#p2", { opacity: 0, duration: 0.12, ease: "none" }, 15.32);
-      tl.to("#p3", { opacity: 1, duration: 0.12, ease: "none" }, 15.32);
-      tl.fromTo("#p3-img", { scale: 1.12 }, { scale: 1, duration: 2.87, ease: "none" }, 15.42);
+      tl.fromTo("#p0-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 8);
+      tl.to("#p0", { opacity: 0, duration: 0.12, ease: "none" }, 9.56);
+      tl.to("#p1", { opacity: 1, duration: 0.12, ease: "none" }, 9.56);
+      tl.fromTo("#p1-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 9.66);
+      tl.to("#p1", { opacity: 0, duration: 0.12, ease: "none" }, 11.22);
+      tl.to("#p2", { opacity: 1, duration: 0.12, ease: "none" }, 11.22);
+      tl.fromTo("#p2-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 11.32);
+      tl.to("#p2", { opacity: 0, duration: 0.12, ease: "none" }, 12.87);
+      tl.to("#p3", { opacity: 1, duration: 0.12, ease: "none" }, 12.87);
+      tl.fromTo("#p3-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 12.97);
+      tl.to("#p3", { opacity: 0, duration: 0.12, ease: "none" }, 14.53);
+      tl.to("#p4", { opacity: 1, duration: 0.12, ease: "none" }, 14.53);
+      tl.fromTo("#p4-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 14.63);
+      tl.to("#p4", { opacity: 0, duration: 0.12, ease: "none" }, 16.19);
+      tl.to("#p5", { opacity: 1, duration: 0.12, ease: "none" }, 16.19);
+      tl.fromTo("#p5-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 16.29);
+      tl.to("#p5", { opacity: 0, duration: 0.12, ease: "none" }, 17.85);
+      tl.to("#p6", { opacity: 1, duration: 0.12, ease: "none" }, 17.85);
+      tl.fromTo("#p6-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 17.95);
+      tl.to("#p6", { opacity: 0, duration: 0.12, ease: "none" }, 19.51);
+      tl.to("#p7", { opacity: 1, duration: 0.12, ease: "none" }, 19.51);
+      tl.fromTo("#p7-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 19.61);
+      tl.to("#p7", { opacity: 0, duration: 0.12, ease: "none" }, 21.17);
+      tl.to("#p8", { opacity: 1, duration: 0.12, ease: "none" }, 21.17);
+      tl.fromTo("#p8-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 21.27);
+      tl.to("#p8", { opacity: 0, duration: 0.12, ease: "none" }, 22.82);
+      tl.to("#p9", { opacity: 1, duration: 0.12, ease: "none" }, 22.82);
+      tl.fromTo("#p9-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 22.92);
+      tl.to("#p9", { opacity: 0, duration: 0.12, ease: "none" }, 24.48);
+      tl.to("#p10", { opacity: 1, duration: 0.12, ease: "none" }, 24.48);
+      tl.fromTo("#p10-img", { scale: 1.04, x: -26 }, { scale: 1.16, x: 26, duration: 2.06, ease: "none" }, 24.58);
+      tl.to("#p10", { opacity: 0, duration: 0.12, ease: "none" }, 26.14);
+      tl.to("#p11", { opacity: 1, duration: 0.12, ease: "none" }, 26.14);
+      tl.fromTo("#p11-img", { scale: 1.16, x: 26 }, { scale: 1.04, x: -26, duration: 2.06, ease: "none" }, 26.24);
+      tl.fromTo("#sw0", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 9.39);
+      tl.fromTo("#sw1", { x: 1500 }, { x: -900, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 11.05);
+      tl.fromTo("#sw2", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 12.71);
+      tl.fromTo("#sw3", { x: 1500 }, { x: -900, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 14.36);
+      tl.fromTo("#sw4", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 16.02);
+      tl.fromTo("#sw5", { x: 1500 }, { x: -900, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 17.68);
+      tl.fromTo("#sw6", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 19.34);
+      tl.fromTo("#sw7", { x: 1500 }, { x: -900, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 21.00);
+      tl.fromTo("#sw8", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 22.65);
+      tl.fromTo("#sw9", { x: 1500 }, { x: -900, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 24.31);
+      tl.fromTo("#sw10", { x: -900 }, { x: 1500, duration: 0.34, ease: "power1.inOut", immediateRender: false }, 25.97);
 
+      tl.fromTo("#bar-prog", { scaleX: 0 }, { scaleX: 1, duration: 19.90, ease: "none" }, 8);
 
       // ---- fotos -> S4
-      tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, 17.54);
-      tl.to("#opt-fotos", { opacity: 0, duration: 0.3, ease: "power2.in" }, 17.54);
-      tl.to("#p3", { opacity: 0, duration: 0.3, ease: "power2.in" }, 17.60);
+      tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, 27.54);
+      tl.to("#opt-fotos", { opacity: 0, duration: 0.3, ease: "power2.in" }, 27.54);
+      tl.to("#p11", { opacity: 0, duration: 0.3, ease: "power2.in" }, 27.60);
       tl.fromTo("#s4", { opacity: 0, scale: 0.94 },
-                       { opacity: 1, scale: 1, duration: 0.46, ease: "power3.out" }, 17.66);
+                       { opacity: 1, scale: 1, duration: 0.46, ease: "power3.out" }, 27.66);
 
       // ---- S4 Cierre
-      tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 18.05);
-      tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, 18.40);
-      tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, 18.75);
-      tl.from("#s4-optima", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, 18.85);
-      tl.from("#s4-handle", { opacity: 0, scaleX: 1.15, duration: 0.5, ease: "power2.out" }, 18.95);
-      tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, 19.40);
+      tl.from("#s4-logo",   { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 28.05);
+      tl.from("#s4-name",   { y: 46, opacity: 0, duration: 0.55, ease: "power3.out" }, 28.40);
+      tl.to("#s4-bar",      { width: 340, duration: 0.55, ease: "power3.out" }, 28.75);
+      tl.from("#s4-optima", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, 28.85);
+      tl.from("#s4-handle", { opacity: 0, scaleX: 1.15, duration: 0.5, ease: "power2.out" }, 28.95);
+      tl.to("#s4-fade",     { opacity: 1, duration: 0.6, ease: "power2.in" }, 29.40);
 
       window.__timelines["wilddogs-match"] = tl;
     </script>

@@ -109,6 +109,17 @@ const fotos = m.photos ?? [];
 if (fotos.length === 0) throw new Error("match.json: se necesita al menos una foto en 'photos'.");
 const dur = PHOTO_WINDOW / fotos.length;
 
+// Fondos fotográficos de apertura, marcador y cierre. `cover` en match.json elige la foto
+// de la carátula (la que WhatsApp usa de miniatura); si no, la primera del montaje.
+const PORTADA = m.cover ?? fotos[0];
+const FONDO_MARCADOR = fotos[Math.min(1, fotos.length - 1)];
+const FONDO_CIERRE = fotos[fotos.length - 1];
+function fondoFoto(id, src, filtro, velo) {
+  return `
+        <img id="${id}" class="full-img" data-layout-allow-overflow src="${esc(src)}" alt="" style="filter:${filtro};" />
+        <div class="velo" style="background:${velo};"></div>`;
+}
+
 // ------------------------------------------------------------------------ música
 // assets/music/tracks.json guarda, por pista, el segundo de entrada (la ventana de 15s
 // más enérgica). match.json `music`: nombre de archivo, "auto" (elige por partido, estable
@@ -149,42 +160,40 @@ const audioHtml = pista ? `
              data-media-start="${tracks[pista].start}"
              data-automation='${automation}'></audio>` : "";
 
-// --------------------------------------------------------------- fila de marcador
-// El ancho útil del nombre en la fila es ~460px; se baja el cuerpo si el nombre es largo.
+// ------------------------------------------------------------ cara a cara (marcador)
+// Cada equipo es una columna de ~300px: escudo, nombre (hasta 2 líneas) y localía.
 function tamanoNombre(nombre) {
   const n = nombre.length;
-  if (n <= 10) return 64;
-  if (n <= 16) return 56;
-  if (n <= 22) return 46;
-  return 38;
+  if (n <= 10) return 46;
+  if (n <= 18) return 40;
+  return 34;
 }
 
-function fila(team, idx) {
+function lado(team, idx) {
   const destacado = team.isWildDogs;
   return `
-        <div id="row${idx}" style="
-          display:flex; align-items:center; gap:34px; padding:38px 44px;
-          background:${destacado ? "rgba(234,88,12,0.10)" : "transparent"};
-          border-left:8px solid ${destacado ? "#EA580C" : "rgba(255,255,255,0.10)"};
-        ">
-          ${escudo(team, 150, `shield${idx}`)}
-          <div style="flex:1; min-width:0;">
+          <div id="row${idx}" style="width:300px; display:flex; flex-direction:column; align-items:center; text-align:center;">
             <div style="
-              font-size:${tamanoNombre(team.name)}px; font-weight:700; line-height:1.22; color:#fff;
-              text-transform:uppercase; letter-spacing:0.01em;
-              overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+              width:230px; height:230px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+              background:radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 70%);
+            ">${escudo(team, 200, `shield${idx}`)}</div>
+            <div style="
+              margin-top:18px; font-size:${tamanoNombre(team.name)}px; font-weight:700; line-height:1.05;
+              text-transform:uppercase; color:${destacado ? "#fff" : "rgba(255,255,255,0.9)"};
             ">${esc(team.name)}</div>
             <div style="
-              font-family:Outfit,sans-serif; font-size:26px; font-weight:400;
-              color:rgba(255,255,255,0.55); letter-spacing:0.22em; margin-top:10px;
+              margin-top:12px; font-family:Outfit,sans-serif; font-size:22px; font-weight:700;
+              letter-spacing:0.24em; color:${destacado ? "#EA580C" : "rgba(255,255,255,0.5)"};
             ">${team === home ? "LOCAL" : "VISITANTE"}</div>
-          </div>
-          <div id="score${idx}" data-target="${team.score}" style="
-            font-size:168px; font-weight:700; line-height:0.82;
-            color:${destacado ? "#EA580C" : "#fff"}; min-width:160px; text-align:right;
-            font-variant-numeric:tabular-nums;
-          ">0</div>
-        </div>`;
+          </div>`;
+}
+
+function marcador(team, idx) {
+  return `<div id="score${idx}" data-target="${team.score}" style="
+              font-size:250px; font-weight:700; line-height:0.8; min-width:130px; text-align:center;
+              color:${team.isWildDogs ? "#EA580C" : "#fff"}; font-variant-numeric:tabular-nums;
+              text-shadow:0 10px 40px rgba(0,0,0,0.6);
+            ">0</div>`;
 }
 
 // -------------------------------------------------------------- escenas de fotos
@@ -203,8 +212,22 @@ const tweensFoto = fotos.map((_, i) => {
     : `tl.to("#p${i - 1}", { opacity: 0, duration: 0.12, ease: "none" }, ${cut});
       tl.to("#p${i}", { opacity: 1, duration: 0.12, ease: "none" }, ${cut});`;
   const zoomIn = i % 2 === 0;
+  const deriva = i % 2 === 0 ? 26 : -26;
   return `      ${entrada}
-      tl.fromTo("#p${i}-img", { scale: ${zoomIn ? 1.0 : 1.12} }, { scale: ${zoomIn ? 1.12 : 1.0}, duration: ${(dur + 0.4).toFixed(2)}, ease: "none" }, ${t0});`;
+      tl.fromTo("#p${i}-img", { scale: ${zoomIn ? 1.04 : 1.16}, x: ${-deriva} }, { scale: ${zoomIn ? 1.16 : 1.04}, x: ${deriva}, duration: ${(dur + 0.4).toFixed(2)}, ease: "none" }, ${t0});`;
+}).join("\n");
+
+// Barrido naranja en diagonal que tapa cada corte entre fotos (alterna el sentido).
+const barridosHtml = fotos.slice(1).map((_, k) => `
+      <div id="sw${k}" data-layout-allow-overflow style="
+        position:absolute; top:-200px; left:0; width:520px; height:2320px; z-index:${45};
+        background:linear-gradient(90deg, rgba(234,88,12,0) 0%, #EA580C 30%, #F97316 70%, rgba(249,115,22,0) 100%);
+        transform:translateX(-900px) skewX(-16deg); opacity:0.92;
+      "></div>`).join("");
+const barridosTweens = fotos.slice(1).map((_, k) => {
+  const corte = T.photos + (k + 1) * dur - 0.1;
+  const [desde, hasta] = k % 2 === 0 ? [-900, 1500] : [1500, -900];
+  return `      tl.fromTo("#sw${k}", { x: ${desde} }, { x: ${hasta}, duration: 0.34, ease: "power1.inOut", immediateRender: false }, ${(corte - 0.17).toFixed(2)});`;
 }).join("\n");
 
 const ultimaFoto = fotos.length - 1;
@@ -273,6 +296,12 @@ const html = `<!doctype html>
       .full-img { position:absolute; top:0; left:0; width:1080px; height:1920px; object-fit:cover; object-position:center; }
       .grad-bottom { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,15,30,${frases.length ? "0.97" : "0.95"}) 0%, rgba(10,15,30,${frases.length ? "0.55" : "0.28"}) ${frases.length ? "34" : "38"}%, rgba(10,15,30,0) ${frases.length ? "70" : "62"}%); }
       .grad-top { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.30) 22%, rgba(10,15,30,0) 42%); }
+      .velo { position:absolute; inset:0; }
+      .franja { position:absolute; left:-200px; width:1480px; transform:rotate(-12deg); }
+      .banda {
+        display:inline-block; padding:22px 56px 14px; background:${RESULTADO.color};
+        transform:skewX(-12deg); box-shadow:0 18px 60px rgba(0,0,0,0.5);
+      }
       .chip {
         display:inline-block; font-family:Outfit, sans-serif; font-size:26px; font-weight:700;
         letter-spacing:0.24em; text-transform:uppercase; padding:14px 30px;
@@ -289,79 +318,94 @@ const html = `<!doctype html>
 ${audioHtml}
 
       <!-- ============ S1 · Apertura ${T.open}–${T.score}s ============ -->
+      <!-- Carátula tipo póster: foto del partido de fondo y cara a cara de escudos.
+           Todo visible desde el frame 0 (miniatura de WhatsApp). -->
       <div id="s1" class="scene" style="z-index:1;">
-        <div class="tex" style="opacity:0.09;"></div>
-        <div id="s1-glow" style="
-          position:absolute; width:1040px; height:1040px; border-radius:50%;
-          background:radial-gradient(circle, rgba(234,88,12,0.34) 0%, rgba(234,88,12,0) 68%);
-          top:50%; left:50%; transform:translate(-50%,-50%);
+${fondoFoto("s1-bg", PORTADA, "saturate(1.15) brightness(0.7)",
+  "linear-gradient(to bottom, rgba(10,15,30,0.78) 0%, rgba(10,15,30,0.18) 24%, rgba(10,15,30,0.30) 46%, rgba(10,15,30,0.92) 68%, rgba(10,15,30,0.98) 100%)")}
+        <div id="s1-glow" data-layout-allow-overflow style="
+          position:absolute; width:1100px; height:1100px; border-radius:50%;
+          background:radial-gradient(circle, rgba(234,88,12,0.30) 0%, rgba(234,88,12,0) 66%);
+          top:1330px; left:50%; transform:translate(-50%,-50%);
         "></div>
-        <div style="
-          position:absolute; inset:0; display:flex; flex-direction:column;
-          align-items:center; justify-content:center; z-index:2;
-        ">
-          <img id="s1-logo" src="assets/logo-wilddogs.png" alt="Wild Dogs" style="width:360px; height:auto;" />
-          <div id="s1-kicker" style="
-            font-size:96px; font-weight:700; text-transform:uppercase;
-            letter-spacing:0.06em; margin-top:34px; line-height:1;
-          ">Resultado</div>
-          <div id="s1-line" style="width:260px; height:5px; background:#EA580C; margin-top:26px; transform-origin:center;"></div>
-          <div id="s1-div" class="meta" style="margin-top:30px;">${esc(m.division)} · ${esc(fechaLarga(m.date))}</div>
-        <div id="s1-optima" style="
-          position:absolute; left:0; right:0; bottom:118px; z-index:3;
-          display:flex; flex-direction:column; align-items:center; gap:14px;
-        ">
-          <div style="width:64px; height:3px; background:rgba(255,255,255,0.16);"></div>
-          ${logoOptima("s1-optima-img", 120, 0.95)}
+        <div class="franja" data-layout-allow-overflow style="top:1010px; height:14px; background:#EA580C; opacity:0.95;"></div>
+        <div class="franja" data-layout-allow-overflow style="top:1046px; height:4px; background:rgba(255,255,255,0.55);"></div>
+
+        <div style="position:absolute; top:110px; left:0; right:0; text-align:center; z-index:2;">
+          <div class="chip" style="background:rgba(10,15,30,0.72); border-color:#EA580C;">${esc(m.tournament)}</div>
         </div>
-        <div id="s1-vs-wrap" style="display:contents;">
-          <div id="s1-vs" style="
-            margin-top:44px; display:flex; align-items:center; gap:22px;
-            font-size:54px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
-          ">
-            <span style="color:rgba(255,255,255,0.45); font-size:34px; letter-spacing:0.2em;">VS</span>
-            ${escudo(rival, 96, "s1-rival")}
-            <span>${esc(rival.name)}</span>
+
+        <div style="
+          position:absolute; left:0; right:0; top:1110px; z-index:2;
+          display:flex; flex-direction:column; align-items:center;
+        ">
+          <div id="s1-kicker" style="
+            font-size:176px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.04em; line-height:0.9; text-shadow:0 8px 40px rgba(0,0,0,0.6);
+          ">Resultado</div>
+          <div id="s1-line" style="width:300px; height:6px; background:#EA580C; margin-top:22px; transform-origin:center;"></div>
+          <div id="s1-div" class="meta" style="margin-top:24px; font-size:32px; color:rgba(255,255,255,0.85);">${esc(m.division)} · ${esc(fechaLarga(m.date))}</div>
+          <div id="s1-vs" style="margin-top:46px; display:flex; align-items:center; gap:44px;">
+            <div id="s1-logo" style="width:170px; height:170px; display:flex; align-items:center; justify-content:center;">${escudo(wd, 170, "s1-wd")}</div>
+            <div style="font-size:64px; font-weight:700; color:#EA580C; letter-spacing:0.06em;">VS</div>
+            <div style="width:170px; height:170px; display:flex; align-items:center; justify-content:center;">${escudo(rival, 150, "s1-rival")}</div>
           </div>
         </div>
+
+        <div id="s1-optima" style="
+          position:absolute; left:0; right:0; bottom:84px; z-index:3;
+          display:flex; flex-direction:column; align-items:center; gap:14px;
+        ">
+          <div style="width:64px; height:3px; background:rgba(255,255,255,0.2);"></div>
+          ${logoOptima("s1-optima-img", 104, 0.95)}
         </div>
       </div>
 
       <!-- ============ S2 · Marcador ${T.score}–${T.photos}s ============ -->
       <div id="s2" class="scene" style="z-index:10; opacity:0;">
-        <div class="tex" style="opacity:0.07;"></div>
+${fondoFoto("s2-bg", FONDO_MARCADOR, "blur(16px) brightness(0.42) saturate(0.85)",
+  "linear-gradient(to bottom, rgba(10,15,30,0.72) 0%, rgba(10,15,30,0.45) 45%, rgba(10,15,30,0.9) 100%)")}
+        <div class="franja" data-layout-allow-overflow style="top:1330px; height:230px; background:rgba(234,88,12,0.10);"></div>
         <div style="
-          position:absolute; inset:0; padding:150px 70px;
-          display:flex; flex-direction:column; justify-content:center; z-index:2;
+          position:absolute; inset:0; padding:140px 60px;
+          display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2;
         ">
-          <div style="text-align:center;">
-            <div id="s2-chip" class="chip">${esc(m.tournament)}</div>
-            <div id="s2-cat" style="
-              font-size:112px; font-weight:700; text-transform:uppercase;
-              letter-spacing:0.03em; margin-top:34px; line-height:1;
-            ">${esc(m.division)}</div>
-            <div id="s2-meta" class="meta" style="margin-top:22px;">${esc(fechaLarga(m.date))} · ${esc(m.venue)}</div>
-          </div>
+          <div id="s2-chip" class="chip" style="background:rgba(10,15,30,0.6);">${esc(m.tournament)}</div>
+          <div id="s2-cat" style="
+            font-size:120px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.03em; margin-top:30px; line-height:1;
+          ">${esc(m.division)}</div>
+          <div id="s2-meta" class="meta" style="margin-top:18px;">${esc(fechaLarga(m.date))} · ${esc(m.venue)}</div>
 
           <div id="s2-card" style="
-            margin-top:86px; border-radius:40px; overflow:hidden;
-            background:rgba(255,255,255,0.045); border:2px solid rgba(255,255,255,0.10);
+            margin-top:70px; width:960px; padding:54px 30px 50px; border-radius:44px;
+            background:rgba(10,15,30,0.55); border:2px solid rgba(255,255,255,0.12);
+            box-shadow:0 30px 80px rgba(0,0,0,0.45);
+            display:flex; flex-direction:column; align-items:center;
           ">
-${fila(home, 0)}
-            <div style="height:2px; background:rgba(255,255,255,0.10);"></div>
-${fila(away, 1)}
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; width:100%;">
+${lado(home, 0)}
+              <div style="padding-top:88px; font-size:44px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:0.1em;">VS</div>
+${lado(away, 1)}
+            </div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:40px; margin-top:40px;">
+              ${marcador(home, 0)}
+              <div style="width:60px; height:12px; background:rgba(255,255,255,0.45);"></div>
+              ${marcador(away, 1)}
+            </div>
           </div>
 
-          <div style="text-align:center; margin-top:82px;">
-            <div id="s2-result" style="
-              font-size:142px; font-weight:700; text-transform:uppercase;
-              letter-spacing:0.09em; line-height:1; color:${RESULTADO.color};
-            ">${RESULTADO.texto}</div>
-            <div id="s2-status" class="meta" style="margin-top:26px; letter-spacing:0.34em;">${esc(m.status)}</div>
+          <div style="text-align:center; margin-top:70px;">
+            <div id="s2-result" class="banda" data-layout-allow-overflow>
+              <div style="
+                transform:skewX(12deg); font-size:112px; font-weight:700; text-transform:uppercase;
+                letter-spacing:0.06em; line-height:1; color:#fff;
+              ">${RESULTADO.texto}</div>
+            </div>
+            <div id="s2-status" class="meta" style="margin-top:30px; letter-spacing:0.34em;">${esc(m.status)}</div>
           </div>
         </div>
       </div>
-
       <!-- ============ S3 · Fotos ${T.photos}–${T.outro}s ============ -->
 ${escenasFoto}
 
@@ -369,16 +413,22 @@ ${escenasFoto}
       <div id="bar" style="
         position:absolute; top:96px; left:60px; right:60px; z-index:60; opacity:0;
         display:flex; align-items:center; gap:26px;
-        padding:26px 34px; border-radius:28px;
+        padding:26px 34px 32px; border-radius:28px;
         background:rgba(10,15,30,0.74); border:2px solid rgba(255,255,255,0.12);
         backdrop-filter:blur(8px);
       ">
         ${escudo(home, 78, "bar-h")}
         <div style="flex:1; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">${esc(home.abbr)}</div>
-        <div style="font-size:74px; font-weight:700; line-height:0.85; color:#EA580C; font-variant-numeric:tabular-nums;">${home.score}<span style="color:rgba(255,255,255,0.55); margin:0 14px;">–</span>${away.score}</div>
+        <div style="font-size:74px; font-weight:700; line-height:0.85; font-variant-numeric:tabular-nums;"><span style="color:${home.isWildDogs ? "#EA580C" : "#fff"};">${home.score}</span><span style="color:rgba(255,255,255,0.45); margin:0 14px;">–</span><span style="color:${away.isWildDogs ? "#EA580C" : "#fff"};">${away.score}</span></div>
         <div style="flex:1; text-align:right; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; line-height:1;">${esc(away.abbr)}</div>
         ${escudo(away, 78, "bar-a")}
+        <div style="position:absolute; left:34px; right:34px; bottom:10px; height:5px; border-radius:3px; background:rgba(255,255,255,0.12); overflow:hidden;">
+          <div id="bar-prog" style="width:100%; height:100%; background:#EA580C; transform:scaleX(0); transform-origin:left;"></div>
+        </div>
       </div>
+
+      <!-- Barridos naranjas entre fotos -->
+${barridosHtml}
 
       <!-- Logo del patrocinador sobre las fotos -->
       <div id="opt-fotos" style="
@@ -393,7 +443,8 @@ ${frasesHtml}
 
       <!-- ============ S4 · Cierre ${T.outro}–${T.end}s ============ -->
       <div id="s4" class="scene" style="z-index:80; opacity:0;">
-        <div class="tex" style="opacity:0.08;"></div>
+${fondoFoto("s4-bg", FONDO_CIERRE, "blur(18px) brightness(0.35) saturate(0.8)",
+  "radial-gradient(circle at 50% 45%, rgba(10,15,30,0.35) 0%, rgba(10,15,30,0.92) 75%)")}
         <div id="s4-glow" style="
           position:absolute; width:980px; height:980px; border-radius:50%;
           background:radial-gradient(circle, rgba(234,88,12,0.30) 0%, rgba(234,88,12,0) 68%);
@@ -406,7 +457,7 @@ ${frasesHtml}
             letter-spacing:0.07em; margin-top:30px; line-height:1; text-align:center;
           ">Wild Dogs<br/>Hockey Club</div>
           <div id="s4-bar" style="width:0; height:5px; background:#EA580C; margin-top:30px;"></div>
-          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; color:rgba(255,255,255,0.72);">${esc(m.handle)} · ${esc(m.site)}</div>
+          <div id="s4-handle" class="meta" style="margin-top:30px; font-size:34px; line-height:1.5; text-align:center; color:rgba(255,255,255,0.78);">${esc(m.handle)}<br/>${esc(m.site)}</div>
         </div>
         <div id="s4-optima" style="
           position:absolute; left:0; right:0; bottom:118px; z-index:3;
@@ -425,9 +476,12 @@ ${frasesHtml}
 
       // ---- S1 Apertura
       // Todo visible desde el frame 0 (miniatura de WhatsApp); solo hay movimiento sutil después.
+      tl.fromTo("#s1-bg",   { scale: 1.0 }, { scale: 1.07, duration: ${T.score}, ease: "none" }, 0);
+      tl.fromTo("#s2-bg",   { scale: 1.12 }, { scale: 1.2, duration: ${(T.photos - T.score + 0.2).toFixed(2)}, ease: "none" }, ${(T.score - 0.2).toFixed(2)});
+      tl.fromTo("#s4-bg",   { scale: 1.12 }, { scale: 1.2, duration: ${(T.end - T.outro + 0.3).toFixed(2)}, ease: "none" }, ${(T.outro - 0.3).toFixed(2)});
       tl.fromTo("#s1-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.08, opacity: 1, duration: 1.6, ease: "sine.inOut" }, 0.2);
       tl.to("#s1-logo",     { scale: 1.06, duration: 0.45, ease: "power2.out" }, 0.4);
-      tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.85);
+      tl.to("#s1-logo",     { scale: 1.0,  duration: 0.55, ease: "power2.inOut" }, 0.86);
       tl.fromTo("#s1-line", { scaleX: 0.3 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.5);
       tl.from("#s1-vs",     { y: 26, opacity: 0.5, duration: 0.6, ease: "power2.out" }, 0.7);
       tl.from("#s1-optima", { y: 18, opacity: 0.35, duration: 0.7, ease: "power2.out" }, 1.0);
@@ -442,8 +496,8 @@ ${frasesHtml}
       tl.from("#s2-cat",    { y: 56, opacity: 0, duration: 0.52, ease: "expo.out" }, ${(T.score + 0.3).toFixed(2)});
       tl.from("#s2-meta",   { opacity: 0, duration: 0.45, ease: "power2.out" }, ${(T.score + 0.55).toFixed(2)});
       tl.from("#s2-card",   { y: 70, opacity: 0, duration: 0.6, ease: "power3.out" }, ${(T.score + 0.6).toFixed(2)});
-      tl.from("#row0",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, ${(T.score + 0.82).toFixed(2)});
-      tl.from("#row1",      { x: -70, opacity: 0, duration: 0.48, ease: "expo.out" }, ${(T.score + 0.98).toFixed(2)});
+      tl.from("#row0",      { x: -120, opacity: 0, duration: 0.48, ease: "expo.out" }, ${(T.score + 0.82).toFixed(2)});
+      tl.from("#row1",      { x: 120, opacity: 0, duration: 0.48, ease: "expo.out" }, ${(T.score + 0.98).toFixed(2)});
 
       // Contadores del marcador (deterministas: el valor depende solo del progreso del timeline)
       ["score0", "score1"].forEach(function (id, i) {
@@ -456,7 +510,7 @@ ${frasesHtml}
         }, ${(T.score + 1.15).toFixed(2)} + i * 0.16);
       });
 
-      tl.from("#s2-result", { scale: 0.7, opacity: 0, duration: 0.55, ease: "back.out(1.9)" }, ${(T.score + 1.95).toFixed(2)});
+      tl.from("#s2-result", { x: -700, opacity: 0, duration: 0.5, ease: "expo.out" }, ${(T.score + 1.95).toFixed(2)});
       tl.from("#s2-status", { opacity: 0, scaleX: 1.25, duration: 0.55, ease: "power2.out" }, ${(T.score + 2.3).toFixed(2)});
 
       // ---- S2 -> fotos
@@ -467,7 +521,9 @@ ${frasesHtml}
                               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, ${(T.photos + 0.25).toFixed(2)});
 
 ${tweensFoto}
+${barridosTweens}
 ${frasesTweens}
+      tl.fromTo("#bar-prog", { scaleX: 0 }, { scaleX: 1, duration: ${PHOTO_WINDOW.toFixed(2)}, ease: "none" }, ${T.photos});
 
       // ---- fotos -> S4
       tl.to("#bar", { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, ${(T.outro - 0.36).toFixed(2)});

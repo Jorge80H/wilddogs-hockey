@@ -146,6 +146,7 @@ color estable derivado del nombre (el mismo rival siempre sale del mismo color).
 **"CABEZA ARRIBA"** en naranja, nunca "DERROTA" (decisión del club 2026-09-20). Son categorías
 formativas y el video se comparte en el grupo de padres: el resultado no se esconde, pero
 tampoco se subraya la pérdida. Empate sigue siendo "EMPATE" en azul.
+- `cover` (opcional): foto de fondo de la carátula — es la miniatura de WhatsApp, elige la más fuerte (acción, caras). Sin `cover` se usa la primera de `photos`. El marcador usa de fondo la segunda foto y el cierre la última, desenfocadas.
 - `abbr`: 2-4 letras, es lo que aparece en la barra sobre las fotos.
 - `photos`: rutas relativas a la raíz del proyecto, en el orden en que se verán.
   El tiempo de montaje se reparte entre ellas automáticamente.
@@ -205,7 +206,7 @@ para no tocar la noticia.
 
 | Tramo | Contenido |
 |---|---|
-| 0–3s | Carátula: logo, "RESULTADO", categoría, fecha y "VS rival". **Visible completa desde el fotograma 0** — WhatsApp usa ese frame como miniatura; si sale oscuro nadie da play |
+| 0–3s | Carátula: foto `cover` de fondo, "RESULTADO", categoría, fecha y escudos cara a cara. **Visible completa desde el fotograma 0** — WhatsApp usa ese frame como miniatura; si sale oscuro nadie da play |
 | 3–8s | Placa de marcador: torneo, categoría, sede, escudos, marcador que cuenta, VICTORIA/EMPATE/DERROTA |
 | 8–27.9s | Montaje de fotos (~2s por foto) con Ken Burns y barra compacta de marcador arriba |
 | 27.9–30s | Logo, "Wild Dogs Hockey Club", handle y sitio (la música sale con fade) |
